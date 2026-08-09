@@ -3,7 +3,7 @@
 # until a fix exists.
 
 Contact: https://github.com/hunterinvariants/Promtact/security/advisories/new
-Contact: mailto:security@promtact.com
+Contact: mailto:contact@promtact.com
 Expires: 2027-08-07T00:00:00.000Z
 Preferred-Languages: en, de
 Canonical: https://promtact.com/.well-known/security.txt
