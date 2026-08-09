@@ -355,3 +355,15 @@ footer.site .colophon {
     gap: 22px;
   }
 }
+
+/* The category line above the headline.
+   A reader arriving cold needs to know what kind of thing this is before they
+   can care what it does. It is deliberately not a claim - a headline that
+   promises more than the page can defend costs more than it wins. */
+p.eyebrow {
+  margin: 0 0 10px;
+  font: 600 12px/1.4 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}

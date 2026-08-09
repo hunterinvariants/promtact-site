@@ -21,6 +21,8 @@
   </nav>
 </header>
 
+<p class="eyebrow">Zero-trust tool control for AI agents</p>
+
 <h1>An AI agent can be talked into calling the wrong tool. This decides whether it does.</h1>
 
 <p class="lede">Agents read documents, tickets and web pages, and then act on
@@ -28,6 +30,11 @@ them. Anything they read can carry an instruction. Promtact sits between the
 agent and the tools it can reach and decides, per call, whether the call
 happens - allow, hold for a person, or refuse - then writes that decision to a
 record your own administrators cannot quietly change.</p>
+
+<p class="lede"><b>The agent never holds your credentials.</b> API keys and
+tokens stay with the gateway and are attached only after a call has been
+allowed, so an agent that is talked into something has nothing to leak and
+nothing to reuse. A refused call never causes a secret to be read at all.</p>
 
 <div class="actions">
   <a class="btn btn-primary" href="#contact">Request an evaluation</a>
