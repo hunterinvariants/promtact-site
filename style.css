@@ -307,3 +307,51 @@ footer.site a {
     gap: 2px;
   }
 }
+
+/* The footer, in columns.
+   A visitor who has read this far is deciding whether to take the company
+   seriously. Four links in a row does not answer that; the legal pages, the
+   security policy and the documents that let them check the claims do. */
+footer.site .cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 40px;
+  margin-bottom: 28px;
+}
+
+footer.site .cols h3 {
+  margin: 0 0 10px;
+  font: 600 11.5px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+footer.site .cols p {
+  margin: 0 0 7px;
+}
+
+footer.site .cols a {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
+footer.site .cols a:hover,
+footer.site .cols a:focus-visible {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+footer.site .colophon {
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-3);
+  max-width: 68ch;
+}
+
+@media (max-width: 640px) {
+  footer.site .cols {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}

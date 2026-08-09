@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cookies - Promtact</title>
+<meta name="description" content="promtact.com sets no cookies and runs no analytics. This page says how to check that rather than asking to be believed.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="site">
+  <a class="brand" href="/">promtact</a>
+  <nav>
+    <a href="/security/">Security</a>
+    <a href="/privacy/">Privacy</a>
+    <a href="/legal/">Legal</a>
+    <a href="/terms/">Terms</a>
+    <a href="https://github.com/hunterinvariants/Promtact">Source</a>
+  </nav>
+</header>
+
+<h1>Cookies</h1>
+<p class="updated">Last reviewed 9 August 2026</p>
+
+<p class="lede">This site sets none. Not necessary ones, not functional ones,
+not analytics. There is no banner because there is nothing to consent to.</p>
+
+<h2>Why there is nothing here</h2>
+
+<p>promtact.com is a handful of static files. It has no accounts, no sessions,
+no shopping basket, no preferences to remember and no scripts of any kind. A
+cookie would have nothing to do.</p>
+
+<p>Most cookie notices exist because a site loads analytics, embedded video, a
+font service or a tag manager, each of which sets identifiers on somebody else's
+behalf. This site loads nothing from anywhere else. Its content security policy
+forbids every outbound request, which is why there is no third party here to set
+anything.</p>
+
+<h2>Check it rather than believe it</h2>
+
+<p>Open the developer tools in your browser, Application or Storage, and look at
+the cookie list for this domain. It is empty.</p>
+
+<p>Or ask the server what it sends. Cookies would arrive as
+<code>Set-Cookie</code> response headers:</p>
+
+<pre class="term"><b>$ curl -sI https://promtact.com | grep -i set-cookie</b>
+
+<span class="ok">(nothing)</span>
+
+<b>$ curl -sI https://promtact.com | grep -i content-security-policy</b>
+
+content-security-policy: default-src 'none'; style-src 'self'; img-src 'self';
+  base-uri 'none'; form-action 'none'; frame-ancestors 'none'</pre>
+
+<p class="note"><code>default-src 'none'</code> is the part that matters: no
+scripts, no fonts, no frames, no connections to anywhere. A tracker cannot run
+on a page that will not execute code.</p>
+
+<h2>What is recorded anyway</h2>
+
+<p>The hosting provider keeps ordinary server logs - address, user agent,
+referrer, time, requested path - which are technically necessary to serve the
+site and keep it available. That happens below the application and would happen
+for any website. It is not combined with anything else, not used to build a
+profile, and there is no identifier to combine it with.</p>
+
+<p>Details are in the <a href="/privacy/">privacy statement</a>.</p>
+
+<h2>The product</h2>
+
+<p>Promtact the software runs in your environment, not here. It issues a session
+cookie for its own console, which is a different thing from this website: it is
+set by your deployment, on your domain, and it exists so a person can stay
+signed in to a control panel. It is marked <code>HttpOnly</code> and
+<code>SameSite=Lax</code>, and it carries the <code>Secure</code> flag whenever
+the connection is over TLS.</p>
+
+<p>That cookie is strictly necessary for the console to function and never
+leaves your infrastructure. Nothing about it reaches us, because there is
+nowhere for it to reach.</p>
+
+<h2>If this changes</h2>
+
+<p>If this site ever needs a cookie, this page will say which, why, and for how
+long, before it is set. A consent mechanism would appear at the same time. The
+date at the top of this page says when it was last checked against reality.</p>
+
+<footer class="site">
+  <div class="cols">
+    <div>
+      <h3>Product</h3>
+      <p><a href="/">Overview</a></p>
+      <p><a href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a></p>
+      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/technical-claims.md">Technical claims</a></p>
+      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/verify-it-yourself.md">Verify it yourself</a></p>
+    </div>
+    <div>
+      <h3>Security</h3>
+      <p><a href="/security/">Security policy</a></p>
+      <p><a href="/.well-known/security.txt">security.txt</a></p>
+      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/security-findings.md">Security findings</a></p>
+      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/threat-model.md">Threat model</a></p>
+    </div>
+    <div>
+      <h3>Legal</h3>
+      <p><a href="/legal/">Impressum</a></p>
+      <p><a href="/privacy/">Privacy</a></p>
+      <p><a href="/terms/">Terms of use</a></p>
+      <p><a href="/cookies/">Cookies</a></p>
+    </div>
+  </div>
+  <p class="colophon">&copy; 2026 Promtact GmbH (in formation), Zurich, Switzerland.
+  No cookies, no analytics, no third-party requests on this site.</p>
+</footer>
+
+</div>
+</body>
+</html>
