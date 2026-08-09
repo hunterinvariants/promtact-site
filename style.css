@@ -169,6 +169,9 @@ code,
 
 /* ---------- Panels, pillars, terminal ---------- */
 
+/* The dividers are the container background showing through a 1px gap, which
+   means an odd number of cards leaves a visibly empty cell in the last row.
+   Keep these in multiples of two, or the layout announces the gap. */
 .pillars {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
