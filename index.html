@@ -21,22 +21,83 @@
   </nav>
 </header>
 
-<h1>Policy enforcement and an audit ledger for AI agent tool calls.</h1>
+<h1>An AI agent can be talked into calling the wrong tool. This decides whether it does.</h1>
 
-<p class="lede">Promtact sits between an agent and the tools it can reach. It
-decides, per call, whether the call happens - allow, hold for a person, or
-refuse - and writes every decision to a hash-linked record whose head is
-published to a witness outside the host.</p>
-
-<p class="lede">It runs in your environment, speaks the Model Context Protocol,
-and works in front of MCP servers you did not write. Built to be operated by
-security teams and embedded by the providers who serve them.</p>
+<p class="lede">Agents read documents, tickets and web pages, and then act on
+them. Anything they read can carry an instruction. Promtact sits between the
+agent and the tools it can reach and decides, per call, whether the call
+happens - allow, hold for a person, or refuse - then writes that decision to a
+record your own administrators cannot quietly change.</p>
 
 <div class="actions">
-  <a class="btn btn-primary" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/technical-claims.md">Technical claims</a>
-  <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/demonstration.md">Demonstration</a>
-  <a class="btn" href="/security/">Report a vulnerability</a>
+  <a class="btn btn-primary" href="#contact">Request an evaluation</a>
+  <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/demonstration.md">See the demonstration</a>
+  <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/technical-claims.md">Technical claims</a>
 </div>
+
+<h2>What this is for</h2>
+
+<div class="pillars">
+  <div class="pillar">
+    <h3>The call is stopped, not reported</h3>
+    <p>An agent that has read a poisoned document will do what the document
+    says. The decision happens before the tool runs: the message is not sent,
+    the record is not deleted, the payment is not made. A log that tells you
+    afterwards is an incident report, not a control.</p>
+  </div>
+
+  <div class="pillar">
+    <h3>You can prove what happened</h3>
+    <p>Every decision is hash-linked to the one before it, and the head of that
+    chain is countersigned by a witness outside the machine. Someone with root
+    on the server cannot remove a decision without the gap being visible. That
+    is the difference between a log and evidence.</p>
+  </div>
+
+  <div class="pillar">
+    <h3>Nothing leaves your network</h3>
+    <p>It runs where your agents run. There is no vendor endpoint, no telemetry,
+    no account. A gateway that inspects tool calls sees documents, arguments and
+    credentials - sending that to a supplier would build the exfiltration path
+    it exists to prevent.</p>
+  </div>
+</div>
+
+<h2>Where the obligation comes from</h2>
+
+<p>The EU AI Act requires high-risk systems to keep automatic records over their
+lifetime (Article 12) and to remain under meaningful human oversight (Article
+14). DORA requires demonstrable ICT risk controls over third-party components,
+and an agent calling tools through an MCP server is one. Both of those describe
+a record of what was decided and a point at which a person decides.</p>
+
+<p>That is what this produces: the record, and the decision point. Whether a
+given deployment satisfies a given obligation is a question for your counsel
+and your auditor, and this page does not answer it.</p>
+
+<h2>Who runs it</h2>
+
+<dl class="facts">
+  <div>
+    <dt>Security teams</dt>
+    <dd>You are being asked to approve agents that can reach ticketing, mail,
+    cloud APIs and customer data. This is the control that lets you say yes with
+    a boundary rather than no, and the evidence to show what that boundary
+    caught.</dd>
+  </div>
+  <div>
+    <dt>MDR and managed providers</dt>
+    <dd>Per-tenant policy and isolation, so one deployment serves a customer
+    base without their decisions or records meeting. The approval queue is
+    something an analyst works, not another dashboard nobody opens.</dd>
+  </div>
+  <div>
+    <dt>Vendors embedding it</dt>
+    <dd>Source-available, one binary, no service dependency. Run the witness
+    yourself and hold your own signing key: the arrangement that removes us from
+    your customers' trust argument entirely, with no code change.</dd>
+  </div>
+</dl>
 
 <h2>Where it sits</h2>
 
@@ -277,17 +338,35 @@ it would have contained.</p>
   </div>
 </dl>
 
-<h2>Regulatory context</h2>
+<h2 id="contact">Talk to us</h2>
 
-<p>The EU AI Act requires high-risk systems to keep automatic records of events
-over their lifetime (Article 12) and to remain under meaningful human oversight
-(Article 14). DORA requires demonstrable ICT risk controls, explicitly including
-third-party components. An agent calling tools through an MCP server is such a
-component.</p>
+<p>The useful first conversation is thirty minutes and technical: what your
+agents can reach today, which of those calls would be held, and what the record
+would look like afterwards. Bring an engineer.</p>
 
-<p class="note">Promtact produces the record and the human decision point those
-articles describe. Whether a given deployment satisfies a given obligation is a
-question for your counsel and your auditor, and this page does not answer it.</p>
+<dl class="facts">
+  <div>
+    <dt>Evaluation and OEM</dt>
+    <dd><a href="mailto:hello@promtact.com">hello@promtact.com</a></dd>
+  </div>
+  <div>
+    <dt>Security reports</dt>
+    <dd><a href="mailto:security@promtact.com">security@promtact.com</a> - see the
+    <a href="/security/">policy</a> and <a href="/.well-known/security.txt">security.txt</a></dd>
+  </div>
+  <div>
+    <dt>Where we are</dt>
+    <dd>Promtact GmbH (in formation), Zurich, Switzerland</dd>
+  </div>
+</dl>
+
+<p class="note">Independent assurance, stated plainly: there has been no
+third-party penetration test and no SOC 2 or ISO 27001 audit. This is version
+0.5 of a product built by a small team, and pretending otherwise would be the
+first thing your due diligence caught. What exists instead is reproducible - the
+scans, the commands and the findings are published so you can run them yourself
+rather than take a report on faith. An independent test is the natural next step
+and something we would scope together with a first partner.</p>
 
 <h2>Verify rather than believe</h2>
 
@@ -307,11 +386,6 @@ lists what has been found and the commit that fixed it, including a defect a
 human read past during the same review that the tool then caught. A page
 reporting nothing would mean either perfect software or a search that stopped
 early.</p>
-
-<p class="note">There has been no external penetration test and no SOC 2 or ISO
-27001 audit. Those are the next step, not a claim to make in advance.
-Reproducibility is a weaker property than independence, and a much stronger one
-than a report.</p>
 
 <p>The source is public. There is no exploit logic in it and nothing that
 attacks a target.</p>
@@ -333,7 +407,9 @@ attacks a target.</p>
       <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/threat-model.md">Threat model</a></p>
     </div>
     <div>
-      <h3>Legal</h3>
+      <h3>Contact</h3>
+      <p><a href="mailto:hello@promtact.com">hello@promtact.com</a></p>
+      <p><a href="mailto:security@promtact.com">security@promtact.com</a></p>
       <p><a href="/legal/">Impressum</a></p>
       <p><a href="/privacy/">Privacy</a></p>
       <p><a href="/terms/">Terms of use</a></p>
