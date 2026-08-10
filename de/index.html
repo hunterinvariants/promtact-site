@@ -56,6 +56,47 @@
   <div><dt>Anbieter, die Promtact integrieren</dt><dd>Quelloffen einsehbar, eine einzelne Binärdatei und keine Service-Abhängigkeit. Betreiben Sie die externe Bezeugung selbst und verwahren Sie Ihren eigenen Signaturschlüssel.</dd></div>
 </dl>
 
+<h2>Wo Promtact sitzt</h2>
+
+<figure class="diagram">
+  <svg viewBox="0 0 960 300" role="img" aria-labelledby="diagram-title-de" width="100%">
+    <title id="diagram-title-de">Der Werkzeugaufruf eines KI-Agenten durchläuft Promtact, das vor der Ausführung entscheidet und den Vorgang protokolliert</title>
+    <defs>
+      <marker id="arrow-de" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#8ba0b6"/>
+      </marker>
+    </defs>
+    <rect x="6" y="104" width="176" height="70" rx="4" fill="#17212c" stroke="rgba(219,228,237,.22)"/>
+    <text x="26" y="134" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="15" font-weight="600">KI-Agent</text>
+    <text x="26" y="156" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">MCP-Client</text>
+    <line x1="182" y1="139" x2="330" y2="139" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow-de)"/>
+    <text x="198" y="128" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">Werkzeugaufruf</text>
+    <rect x="330" y="62" width="264" height="154" rx="4" fill="#16232f" stroke="#4d90f0" stroke-width="1.4"/>
+    <text x="352" y="94" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="15" font-weight="600">Promtact-Gateway</text>
+    <text x="352" y="122" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">Richtlinie für die Anfrage</text>
+    <text x="352" y="144" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">Prüfung der Antwort</text>
+    <text x="352" y="166" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">Sitzungsherkunft</text>
+    <text x="352" y="188" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">verketteter Audit-Eintrag</text>
+    <line x1="594" y1="106" x2="756" y2="60" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow-de)"/>
+    <text x="616" y="72" fill="#3aa87a" font-family="ui-monospace, monospace" font-size="13" font-weight="600">zulassen</text>
+    <line x1="594" y1="139" x2="756" y2="139" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow-de)"/>
+    <text x="606" y="130" fill="#d6a03a" font-family="ui-monospace, monospace" font-size="13" font-weight="600">menschliche Freigabe</text>
+    <line x1="594" y1="172" x2="756" y2="220" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow-de)"/>
+    <text x="616" y="212" fill="#e05555" font-family="ui-monospace, monospace" font-size="13" font-weight="600">ablehnen</text>
+    <rect x="756" y="30" width="198" height="62" rx="4" fill="#17212c" stroke="rgba(219,228,237,.22)"/>
+    <text x="776" y="56" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="14" font-weight="600">Werkzeug / MCP-Server</text>
+    <text x="776" y="77" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">der Aufruf läuft</text>
+    <rect x="756" y="110" width="198" height="60" rx="4" fill="#17212c" stroke="rgba(219,228,237,.22)"/>
+    <text x="776" y="135" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="14" font-weight="600">Freigabewarteschlange</text>
+    <text x="776" y="156" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">ein Mensch entscheidet</text>
+    <rect x="756" y="188" width="198" height="60" rx="4" fill="#17212c" stroke="rgba(219,228,237,.22)"/>
+    <text x="776" y="213" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="14" font-weight="600">Nichts geschieht</text>
+    <text x="776" y="234" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">und es wird protokolliert</text>
+    <line x1="462" y1="216" x2="462" y2="266" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow-de)"/>
+    <text x="258" y="286" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">Audit-Kopf an externe Bezeugung und Ihr SIEM veröffentlicht</text>
+  </svg>
+  <figcaption>Die Entscheidung fällt, bevor das Werkzeug ausgeführt wird, nicht danach. Dadurch liegt dieser Dienst im Latenzpfad jedes Werkzeugaufrufs. Das ist ein realer Preis und wird offen benannt.</figcaption>
+</figure>
 <h2>Was Promtact tut</h2>
 <div class="pillars">
   <div class="pillar"><h3>Entscheidet vor der Nebenwirkung</h3><p>Ein Werkzeugaufruf wird anhand der Richtlinie bewertet und entweder ausgeführt, zur Freigabe angehalten oder abgelehnt.</p><span class="limit">Kontrolliert wird nur, was Promtact durchläuft. Ein anderer Zugriffsweg bleibt außerhalb dieser Kontrolle.</span></div>
