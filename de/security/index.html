@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sicherheit – Promtact</title>
+<title>Sicherheit - Promtact</title>
 <meta name="description" content="Wie Promtact abgesichert ist, was nicht behauptet wird und wie eine Schwachstelle gemeldet werden kann.">
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" hreflang="en" href="https://promtact.com/security/">
@@ -43,8 +43,8 @@
 <p>Meldende Personen werden genannt, sofern sie nichts anderes wünschen. Bitte gewähren Sie vor einer öffentlichen Bekanntgabe eine angemessene Frist. Die vollständige Richtlinie steht in <a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md">SECURITY.md</a>.</p>
 
 <h2>Wie Promtact entwickelt wird</h2>
-<p><strong>Zwei direkte Abhängigkeiten.</strong> Ein PostgreSQL-Treiber und eine SAML-Bibliothek. Verteiltes Tracing, TOTP und Verschlüsselung im Ruhezustand werden mit der Standardbibliothek umgesetzt, anstatt zusätzliche Pakete einzubinden – denn im Authentifizierungspfad ist eine kompromittierte Abhängigkeit für Angreifer besonders wertvoll.</p>
-<p><strong>Releases werden signiert</strong> – mit schlüsselloser Signierung – und enthalten jeweils eine SPDX-Softwarestückliste. Die Prüfschritte stehen in <a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md">SECURITY.md</a>.</p>
+<p><strong>Zwei direkte Abhängigkeiten.</strong> Ein PostgreSQL-Treiber und eine SAML-Bibliothek. Verteiltes Tracing, TOTP und Verschlüsselung im Ruhezustand werden mit der Standardbibliothek umgesetzt, anstatt zusätzliche Pakete einzubinden - denn im Authentifizierungspfad ist eine kompromittierte Abhängigkeit für Angreifer besonders wertvoll.</p>
+<p><strong>Releases werden signiert</strong> - mit schlüsselloser Signierung - und enthalten jeweils eine SPDX-Softwarestückliste. Die Prüfschritte stehen in <a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md">SECURITY.md</a>.</p>
 <p><strong>Kontrollen werden durch Tests abgesichert</strong>, die den verhinderten Fehler benennen und nicht nur das erwartete Verhalten. Eine harmlose, ATT&amp;CK-zugeordnete Validierungssuite läuft stündlich gegen die aktive Bereitstellung und warnt, wenn sich ein Ergebnis ändert.</p>
 
 <h2>Zugriffskontrolle</h2>
@@ -53,7 +53,7 @@
 
 <h2>Zugriff des Anbieters</h2>
 <p>Dieser Abschnitt verdient besondere Aufmerksamkeit, weil viele Anbieter ihn auslassen.</p>
-<p>Direkter Datenbankzugriff durch den Betreiber wird vorab <strong>angekündigt</strong>. Die Ankündigung wird Teil der manipulationssicheren Audit-Kette und an eine Instanz ausserhalb des Hosts veröffentlicht. Der Zugriff wird unabhängig über das Verbindungsprotokoll der Datenbank <strong>beobachtet</strong> – durch eine Komponente, deren Zugangsdaten ausschliesslich Meldungen erlauben. Beides wird <strong>abgeglichen</strong>: Eine Sitzung ohne passende Ankündigung erzeugt einen Audit-Eintrag und eine Warnung.</p>
+<p>Direkter Datenbankzugriff durch den Betreiber wird vorab <strong>angekündigt</strong>. Die Ankündigung wird Teil der manipulationssicheren Audit-Kette und an eine Instanz ausserhalb des Hosts veröffentlicht. Der Zugriff wird unabhängig über das Verbindungsprotokoll der Datenbank <strong>beobachtet</strong> - durch eine Komponente, deren Zugangsdaten ausschliesslich Meldungen erlauben. Beides wird <strong>abgeglichen</strong>: Eine Sitzung ohne passende Ankündigung erzeugt einen Audit-Eintrag und eine Warnung.</p>
 <p>Der Kopf der Audit-Kette wird an diese externe Instanz veröffentlicht. Sie lehnt eine verkürzte Kette sowie einen abweichenden Kopf für einen bereits gespeicherten Index ab. Ein Betreiber mit Root-Rechten kann den lokalen Verlauf umschreiben, aber nicht die externe Instanz zur Zustimmung bringen.</p>
 <div class="note">
 <strong>Die Grenze, offen benannt:</strong> Nichts davon <em>verhindert</em>, dass ein Betreiber Daten liest. Auf einem einzelnen Host mit einem Root-Benutzer kann das keine Software verhindern. Die Kontrollen machen den Zugriff zurechenbar und eine Löschung erkennbar. Weiter reicht die Aussage nicht.
@@ -65,7 +65,7 @@
 <tr><td><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/threat-model.md">Bedrohungsmodell</a></td><td>Wogegen Promtact schützt und wogegen nicht</td></tr>
 <tr><td><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/access-control.md">Zugriffskontrolle</a></td><td>Wer Kundendaten erreichen kann und was protokolliert wird</td></tr>
 <tr><td><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/incident-response.md">Vorfallsreaktion</a></td><td>Schweregrade, Benachrichtigungsfristen und Wiederherstellung</td></tr>
-<tr><td><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/design-decisions.md">Entwurfsentscheidungen</a></td><td>Warum Promtact so entwickelt wurde – einschliesslich verworfener Ansätze</td></tr>
+<tr><td><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/design-decisions.md">Entwurfsentscheidungen</a></td><td>Warum Promtact so entwickelt wurde - einschliesslich verworfener Ansätze</td></tr>
 </table>
 
 <footer class="site">

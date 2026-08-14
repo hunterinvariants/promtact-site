@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Datenschutz – Promtact</title>
+<title>Datenschutz - Promtact</title>
 <meta name="description" content="Welche Daten Promtact verarbeitet, wo sie gespeichert werden, wie lange und wer darauf zugreifen kann.">
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" hreflang="en" href="https://promtact.com/privacy/">
@@ -26,11 +26,11 @@
 <p class="updated">Zuletzt geprüft am 7. August 2026</p>
 
 <p class="lede">Welche Daten Promtact verarbeitet, wo sie gespeichert werden, wie lange und wer darauf zugreifen kann.</p>
-<p class="lede"><b>Promtact ist Infrastruktur, kein Dienst.</b> Es läuft in Ihrer Umgebung. Wir empfangen, speichern oder verarbeiten Ihre Werkzeugaufrufe, Prompts, Modellantworten, Dokumente oder Zugangsdaten nicht – weder zusammengefasst noch anonymisiert oder zu Diagnosezwecken. Es gibt hier keinen Endpunkt, an den die Software diese Daten senden könnte. Das ist eine stärkere Aussage als eine Richtlinie, die lediglich verspricht, nicht hinzusehen.</p>
+<p class="lede"><b>Promtact ist Infrastruktur, kein Dienst.</b> Es läuft in Ihrer Umgebung. Wir empfangen, speichern oder verarbeiten Ihre Werkzeugaufrufe, Prompts, Modellantworten, Dokumente oder Zugangsdaten nicht - weder zusammengefasst noch anonymisiert oder zu Diagnosezwecken. Es gibt hier keinen Endpunkt, an den die Software diese Daten senden könnte. Das ist eine stärkere Aussage als eine Richtlinie, die lediglich verspricht, nicht hinzusehen.</p>
 
 <h2>Diese Website</h2>
 <p>Die Website ist vom Produkt getrennt und einfacher: promtact.com setzt keine Cookies, lädt keine Schriftarten, Skripte, Bilder oder andere Inhalte von Drittanbietern und verwendet keine Analysedienste. Die Content Security Policy verbietet jede ausgehende Anfrage. Das lässt sich in den Antwort-Headern überprüfen und ist nicht nur ein Versprechen.</p>
-<p>Der Hosting-Anbieter führt gewöhnliche Serverprotokolle – Adresse, User-Agent, Referrer, Zeitpunkt und angeforderter Pfad. Diese Daten sind technisch erforderlich, um die Website bereitzustellen und verfügbar zu halten. Sie werden nicht mit anderen Daten kombiniert und nicht zur Erstellung eines Profils verwendet.</p>
+<p>Der Hosting-Anbieter führt gewöhnliche Serverprotokolle - Adresse, User-Agent, Referrer, Zeitpunkt und angeforderter Pfad. Diese Daten sind technisch erforderlich, um die Website bereitzustellen und verfügbar zu halten. Sie werden nicht mit anderen Daten kombiniert und nicht zur Erstellung eines Profils verwendet.</p>
 <p>Wenn Sie uns schreiben, werden die Nachricht und Ihre Adresse so lange aufbewahrt, wie es für die Antwort und die daraus folgenden Vorgänge erforderlich ist. Sie werden nicht weitergegeben.</p>
 <p>Nach dem revidierten Schweizer Datenschutzgesetz können Sie Auskunft darüber verlangen, welche Daten über Sie gespeichert sind, sowie deren Berichtigung oder Löschung verlangen. Schreiben Sie dazu an <a href="mailto:contact@promtact.com">contact@promtact.com</a>.</p>
 
@@ -41,18 +41,18 @@
 <h2>Was das System sieht</h2>
 <p>Promtact prüft Werkzeugaufrufe von Agenten. Daher speichert es Zeitpunkt, Mandant, aufrufende Maschine und Konto, Quelladresse, Werkzeugname und Argumente des Aufrufs.</p>
 <div class="note">
-<strong>Der ehrliche Teil:</strong> Die Argumente eines Werkzeugaufrufs enthalten alles, was der Agent übergeben hat – beispielsweise eine Abfrage, einen Dateipfad, einen E-Mail-Text oder einen Kundendatensatz. Promtact kann nicht im Voraus wissen, womit Ihre Agenten arbeiten. Daher muss davon ausgegangen werden, dass dieses Feld personenbezogene Daten enthalten kann.
+<strong>Der ehrliche Teil:</strong> Die Argumente eines Werkzeugaufrufs enthalten alles, was der Agent übergeben hat - beispielsweise eine Abfrage, einen Dateipfad, einen E-Mail-Text oder einen Kundendatensatz. Promtact kann nicht im Voraus wissen, womit Ihre Agenten arbeiten. Daher muss davon ausgegangen werden, dass dieses Feld personenbezogene Daten enthalten kann.
 <br><br>
-Das gehört zur Funktion: Eine Kontrolle, die entscheidet, ob ein Aufruf fortgesetzt werden darf, muss den Aufruf sehen. Daraus folgt, dass <em>Aufbewahrung</em> und <em>Zugriffskontrolle</em> die tatsächlichen Schutzmassnahmen sind – nicht die Behauptung, es würden keine sensiblen Daten verarbeitet.
+Das gehört zur Funktion: Eine Kontrolle, die entscheidet, ob ein Aufruf fortgesetzt werden darf, muss den Aufruf sehen. Daraus folgt, dass <em>Aufbewahrung</em> und <em>Zugriffskontrolle</em> die tatsächlichen Schutzmassnahmen sind - nicht die Behauptung, es würden keine sensiblen Daten verarbeitet.
 </div>
 
 <h2>Aufbewahrung</h2>
 <p>Ereignisse, Warnungen, Reaktionsmassnahmen und Audit-Einträge werden nach Ablauf der Aufbewahrungsfrist gelöscht: <strong>standardmässig nach 30 Tagen</strong>, je Bereitstellung konfigurierbar. Die Löschung erfolgt nach Alter; es gibt kein separates Archiv.</p>
-<p>Mandantenkonten, deren Benutzer und Hashes der API-Schlüssel werden bis zur Löschung des Mandanten gespeichert. Dasselbe gilt für den Zustand der Audit-Kette – seine Löschung würde den Manipulationsnachweis aller verbleibenden Einträge zerstören.</p>
+<p>Mandantenkonten, deren Benutzer und Hashes der API-Schlüssel werden bis zur Löschung des Mandanten gespeichert. Dasselbe gilt für den Zustand der Audit-Kette - seine Löschung würde den Manipulationsnachweis aller verbleibenden Einträge zerstören.</p>
 
 <h2>Verschlüsselung</h2>
 <p><strong>Bei der Übertragung:</strong> TLS endet bei Cloudflare und erreicht den Ursprung über einen ausschliesslich ausgehenden Tunnel. Der Dienst bindet an die Loopback-Schnittstelle und ist nicht direkt erreichbar.</p>
-<p><strong>Im Ruhezustand:</strong> Werte, die nur zur Überprüfung dienen – API-Schlüssel und Wiederherstellungscodes – werden ausschliesslich als Hash gespeichert und können nicht wiederhergestellt werden. Werte, die für ihre Funktion lesbar sein müssen, derzeit nur TOTP-Seeds, werden mit Envelope Encryption versiegelt: Ein Schlüssel pro Datensatz wird durch einen Schlüssel geschützt, der ausserhalb der Datenbank aufbewahrt wird.</p>
+<p><strong>Im Ruhezustand:</strong> Werte, die nur zur Überprüfung dienen - API-Schlüssel und Wiederherstellungscodes - werden ausschliesslich als Hash gespeichert und können nicht wiederhergestellt werden. Werte, die für ihre Funktion lesbar sein müssen, derzeit nur TOTP-Seeds, werden mit Envelope Encryption versiegelt: Ein Schlüssel pro Datensatz wird durch einen Schlüssel geschützt, der ausserhalb der Datenbank aufbewahrt wird.</p>
 <div class="plain">
 <strong>In der gehosteten Bereitstellung nicht aktiviert.</strong> Envelope Encryption ist optional und dort derzeit nicht eingeschaltet. Eine vollständige Datenbankverschlüsselung im Ruhezustand ist eine Eigenschaft des zugrunde liegenden Speichers und wird nicht von Promtact bereitgestellt.
 </div>
@@ -63,7 +63,7 @@ Das gehört zur Funktion: Eine Kontrolle, die entscheidet, ob ein Aufruf fortges
 <tr><td>Cloudflare</td><td>TLS, Tunnel, Empfang von Warnungen</td><td>Anfragemetadaten während der Übertragung; Zusammenfassungen von Warnungen</td></tr>
 <tr><td>Hosting-Anbieter</td><td>Virtuelle Maschine und Speicher</td><td>Auf Infrastrukturebene auf sämtliche Daten</td></tr>
 </table>
-<p>Die gehostete Bereitstellung läuft auf einer einzelnen virtuellen Maschine in Europa; die Datenbank befindet sich auf demselben Host. Von Ihnen selbst konfigurierte Integrationen – Webhook, Ticketsystem oder SIEM – sind Ihre Entscheidung und Ihre Vertragsbeziehung. Sie sind keine Unterauftragsbearbeiter von Promtact.</p>
+<p>Die gehostete Bereitstellung läuft in Europa. Von Ihnen selbst konfigurierte Integrationen - Webhook, Ticketsystem oder SIEM - sind Ihre Entscheidung und Ihre Vertragsbeziehung. Sie sind keine Unterauftragsbearbeiter von Promtact.</p>
 
 <h2>Ihre Rechte</h2>
 <p>Beim gehosteten Dienst sind Sie der Verantwortliche und Promtact unterstützt als Auftragsbearbeiter: bei der Suche nach Datensätzen einer identifizierten Person, deren Berichtigung oder ihrer Löschung vor Ablauf der Aufbewahrungsfrist.</p>
