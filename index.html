@@ -3,11 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Promtact - policy enforcement and audit ledger for AI agent tool calls</title>
-<meta name="description" content="Promtact decides, per tool call, whether an AI agent may proceed: allow, hold for a person, or refuse. Every decision lands on a hash-linked record published to an external witness.">
+<title>Promtact - deterministic testing for distributed protocols</title>
+<meta name="description" content="Run your own consensus code under deterministic virtual time and injected network faults, check invariants after every step, and reproduce any failure from its seed. A qualified Raft implementation ships as the worked reference.">
 <link rel="stylesheet" href="/style.css">
-<link rel="alternate" hreflang="en" href="https://promtact.com/">
-<link rel="alternate" hreflang="de" href="https://promtact.com/de/">
 </head>
 <body>
 <div class="wrap">
@@ -19,416 +17,220 @@
     <a href="/privacy/">Privacy</a>
     <a href="/terms/">Terms</a>
     <a href="https://github.com/hunterinvariants/Promtact">Source</a>
-    <span class="language-switch" aria-label="Language"><strong aria-current="page">EN</strong><span aria-hidden="true">/</span><a href="/de/" lang="de" hreflang="de">DE</a></span>
   </nav>
 </header>
 
-<p class="eyebrow">Zero-trust tool control for AI agents</p>
+<section class="hero">
+  <div>
+    <p class="eyebrow">Deterministic testing for distributed protocols</p>
 
-<h1>An AI agent can be talked into calling the wrong tool. This decides whether it does.</h1>
+    <h1>Test distributed protocols the way you test pure functions.</h1>
 
-<p class="lede">Agents read documents, tickets and web pages, and then act on
-them. Anything they read can carry an instruction. Promtact sits between the
-agent and the tools it can reach and decides, per call, whether the call
-happens - allow, hold for a person, or refuse - then writes that decision to a
-record your own administrators cannot quietly change.</p>
+    <p class="lede">Run your own consensus code under deterministic virtual time
+    and injected network faults. Check your invariants after every single step.
+    When one breaks, you get the step it broke on and a trace hash that replays
+    the identical run.</p>
 
-<p class="lede"><b>The agent never holds your credentials.</b> API keys and
-tokens stay with the gateway and are attached only after a call has been
-allowed, so an agent that is talked into something has nothing to leak and
-nothing to reuse. A refused call never causes a secret to be read at all.</p>
+    <p class="lede"><strong>A qualified Raft implementation ships as the worked
+    reference.</strong> Durable <code>io_uring</code> storage, a checksummed
+    write-ahead log, XDP and TC kernel fault injection, Jepsen linearizability,
+    and a bounded TLA+ model. Apache 2.0.</p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a>
+      <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a>
+      <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a>
+    </div>
+  </div>
+
+  <div class="demo">
+<pre class="term"><b>$ promtact simulate -config examples/leader-partition.json</b>
+scenario="leader partition and heal" seed=0x4A2C
+nodes=5 steps=1200
+leader=2 proposed=70 max_commit=42
+trace=<span class="ok">0ec85bc87c9895d2432ac5954c149f47</span>
+      <span class="ok">d2a1f1fed20d44a42483f12fcac6f0a4</span>
+fault="split[1]|[2 3 4 5]@[200,700)" dropped=945</pre>
+    <p class="note">The leader was cut off at step 200 and the majority carried
+    on without it. 945 messages were dropped by that partition, and the count is
+    reported because a fault that dropped nothing would have tested nothing.</p>
+  </div>
+</section>
+
+<h2>The bug you cannot reproduce</h2>
+
+<div class="prose2">
+  <div>
+    <p>A partition arrives during an election. A node crashes between the write
+    and the fsync. Two messages swap places on the wire. The cluster loses an
+    acknowledged write, and by the time anyone looks, the interleaving that
+    caused it is gone.</p>
+  </div>
+  <div>
+    <p>Promtact removes the part that makes this hard. Time is virtual,
+    scheduling is seeded, and every message loss and delay is drawn from that
+    seed. The same seed produces the same execution, so a failure found once is
+    a failure you can return to.</p>
+  </div>
+</div>
+
+<h2>Four things you plug in</h2>
+
+<div class="pillars">
+  <div class="pillar">
+    <h3>Your protocol</h3>
+    <p>Implement four methods for <code>dst.Cluster</code> and two for
+    <code>dst.Wire</code>. The engine supplies virtual time, a seeded schedule,
+    message loss and delay, and a reproducible execution trace.</p>
+    <p><span class="limit">Generic over your message type, so nothing is boxed
+    and the hot path allocates nothing.</span></p>
+  </div>
+  <div class="pillar">
+    <h3>Your properties</h3>
+    <p>A <code>dst.Invariant</code> is evaluated after every step. A failure
+    comes back as a <code>dst.Violation</code> carrying the property name, the
+    step, and the trace hash.</p>
+    <p><span class="limit">Invariants are safety properties. Progress is
+    asserted separately, where you decide what progress means.</span></p>
+  </div>
+  <div class="pillar">
+    <h3>Your faults</h3>
+    <p>Partitions, isolated nodes, one-way link failures, and time windows that
+    open and heal on their own. Declared once, applied deterministically.</p>
+    <p><span class="limit">Injectors are consulted after the engine draws each
+    message's loss and delay, so the same seed runs the same schedule with and
+    without a fault.</span></p>
+  </div>
+  <div class="pillar">
+    <h3>Your storage</h3>
+    <p>Implement <code>wal.Device</code> and inherit the checksummed record
+    format, sequence validation, and torn-tail recovery of <code>wal.Log</code>.</p>
+    <p><span class="limit">A conformance suite checks the ten properties the log
+    relies on before you trust it with consensus state.</span></p>
+  </div>
+</div>
+
+<h2>A run is a file, not a test you have to rewrite</h2>
+
+<div class="split">
+  <div>
+    <p>The seed, the topology, the faults and when they open are declared once.
+    Anyone holding the file reproduces the run exactly, on any machine, without
+    reading the test that produced it.</p>
+<pre class="term">{"seed": "0x4A2C", "nodes": 5, "steps": 1200,
+ "proposeEvery": 17,
+ "faults": [{"type": "split",
+             "a": [1], "b": [2,3,4,5],
+             "start": 200, "end": 700}]}</pre>
+  </div>
+  <div>
+    <p>When a property breaks, the engine stops on the step it broke on and
+    hands back the coordinate rather than a message you have to reproduce by
+    guesswork.</p>
+<pre class="term"><b>$ go run .</b>
+violated=<span class="stop">"one adopted value"</span> step=1
+trace=29f79b95c06cc89754c99c2b0ed7b107
+      da682cbe28b7d728830cbb9430855c93</pre>
+    <p class="note">That output comes from the starter project
+    <code>promtact new</code> generates. Its placeholder protocol is unsafe when
+    two nodes propose at once, and the generated test suite requires the engine
+    to catch it.</p>
+  </div>
+</div>
+
+<h2>Not just Raft</h2>
+
+<div class="prose2">
+  <div>
+    <p>The repository carries a complete single-decree Paxos implementation
+    driven through the same engine, with its own invariants, its own scenario
+    file, and partition campaigns across a thousand seeds. Sixty lines of
+    adapter connect it.</p>
+  </div>
+  <div>
+    <p>Its campaigns assert that a proposer actually had to abandon its own
+    value for one already accepted elsewhere. Across two hundred seeds that
+    happens about three thousand times, which is the situation Paxos exists to
+    survive.</p>
+  </div>
+</div>
+
+<h2>What has been measured</h2>
+
+<dl class="facts">
+  <div>
+    <dt>Bounded model check</dt>
+    <dd>46,667,923 states generated, 6,121,927 distinct, state graph exhausted,
+    no invariant violation.</dd>
+  </div>
+  <div>
+    <dt>Engine equivalence</dt>
+    <dd>7,000 paired runs compare the engine against the qualified simulator at
+    every tick and require a bit-identical execution.</dd>
+  </div>
+  <div>
+    <dt>Linearizability</dt>
+    <dd>Jepsen with the Knossos register checker reports <code>valid? true</code>
+    under leader kill and network loss.</dd>
+  </div>
+  <div>
+    <dt>Deterministic sweep</dt>
+    <dd>1,000 seeds at 1,000 steps each, run in parallel, no divergence.</dd>
+  </div>
+  <div>
+    <dt>Durable NVMe writes</dt>
+    <dd>10,000 operations at 7,971 ops/s, p50 117 us, p99 196 us, one completed
+    <code>FSYNC</code> each.</dd>
+  </div>
+  <div>
+    <dt>Durable file writes</dt>
+    <dd>1,000 operations at 2,189 ops/s, p50 450 us, p99 544 us, on ext4.</dd>
+  </div>
+  <div>
+    <dt>Record encoding</dt>
+    <dd>23.34 ns per operation, zero allocations.</dd>
+  </div>
+  <div>
+    <dt>Kernel fault injection</dt>
+    <dd>XDP and TC programs load and pass the verifier and JIT; injection and
+    cleanup are gated on every run.</dd>
+  </div>
+</dl>
+
+<p class="note">Every figure names the run that produced it in
+<a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">EVIDENCE.md</a>,
+with the host, the commit and the bounds it holds under. There has been no
+third-party penetration test and no SOC 2 or ISO 27001 audit.</p>
+
+<h2>Start</h2>
+
+<div class="split">
+  <div>
+    <p>Clone it and run the suite, the non-Raft example, and a scenario:</p>
+<pre class="term"><b>$ git clone https://github.com/hunterinvariants/Promtact.git</b>
+<b>$ cd Promtact</b>
+<b>$ go test ./...</b>
+<b>$ go test ./examples/paxos -v</b>
+<b>$ go run ./cmd/promtact simulate \
+    -config examples/leader-partition.json</b></pre>
+  </div>
+  <div>
+    <p>Or start your own from a skeleton that builds, runs and tests
+    immediately:</p>
+<pre class="term"><b>$ go run ./cmd/promtact new ../mysystem</b>
+<b>$ cd ../mysystem</b>
+<b>$ go mod tidy && go test ./... -v</b></pre>
+    <p class="note">Every command lives behind one binary. Commands that need
+    kernel facilities a build cannot reach are absent rather than listed and
+    failing.</p>
+  </div>
+</div>
 
 <div class="actions">
-  <a class="btn btn-primary" href="#contact">Request an evaluation</a>
-  <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/demonstration.md">See the demonstration</a>
-  <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/technical-claims.md">Technical claims</a>
+  <a class="btn btn-primary" href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a>
+  <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/API.md">What is contractual</a>
+  <a class="btn" href="mailto:contact@promtact.com">contact@promtact.com</a>
 </div>
-
-<h2>Why this cannot wait for the next budget round</h2>
-
-<p><b>The obligations are already written.</b> The EU AI Act requires high-risk
-systems to keep automatic records over their lifetime (Article 12) and to stay
-under meaningful human oversight (Article 14). DORA requires demonstrable
-controls over third-party ICT components, and an agent calling tools through an
-MCP server is one. Both describe the same two things: a record of what was
-decided, and a point at which a person decides.</p>
-
-<p><b>Evidence is not retroactive.</b> That record is written when the call
-happens, or it does not exist. Deploy in six months and the six months before it
-have no record - not a thin one, none. When somebody asks what the agent did in
-March, the answer is that nobody knows, and it is the same answer whether or not
-anything went wrong.</p>
-
-<p><b>The exposure grows with every tool you connect.</b> An agent with read
-access is a confidentiality question. An agent that can send mail, close
-tickets, call an API or move money is a consequences question, and the second
-kind is being connected now, by teams asked to move quickly.</p>
-
-<p>Thirty minutes is enough to see which of your agent's current calls would be
-allowed, held or refused today. That answer is useful before a budget decision,
-not after one.</p>
-
-<p class="note">None of this is an argument for buying this particular thing
-today. It is an argument for the record starting today, from whoever you choose.
-A control added later cannot describe what already happened.</p>
-
-<h2>What this is for</h2>
-
-<div class="pillars">
-  <div class="pillar">
-    <h3>The call is stopped, not reported</h3>
-    <p>An agent that has read a poisoned document will do what the document
-    says. The decision happens before the tool runs: the message is not sent,
-    the record is not deleted, the payment is not made. A log that tells you
-    afterwards is an incident report, not a control.</p>
-  </div>
-
-  <div class="pillar">
-    <h3>You can prove what happened</h3>
-    <p>Every decision is hash-linked to the one before it, and the head of that
-    chain is countersigned by a witness outside the machine. Someone with root
-    on the server cannot remove a decision without the gap being visible. That
-    is the difference between a log and evidence.</p>
-  </div>
-
-  <div class="pillar">
-    <h3>Nothing leaves your network</h3>
-    <p>It runs where your agents run. There is no vendor endpoint, no telemetry,
-    no account. A gateway that inspects tool calls sees documents, arguments and
-    credentials - sending that to a supplier would build the exfiltration path
-    it exists to prevent.</p>
-  </div>
-
-  <div class="pillar">
-    <h3>The agent does not have to be rewritten</h3>
-    <p>It speaks the Model Context Protocol, so it goes in front of the tool
-    servers you already run and the agent keeps calling them the way it always
-    did. Adoption is a configuration change, which matters more than it sounds:
-    a control that requires rebuilding the thing it protects does not get
-    deployed.</p>
-  </div>
-</div>
-
-<h2>Who runs it</h2>
-
-<dl class="facts">
-  <div>
-    <dt>Security teams</dt>
-    <dd>You are being asked to approve agents that can reach ticketing, mail,
-    cloud APIs and customer data. This is the control that lets you say yes with
-    a boundary rather than no, and the evidence to show what that boundary
-    caught.</dd>
-  </div>
-  <div>
-    <dt>MDR and managed providers</dt>
-    <dd>Per-tenant policy and isolation, so one deployment serves a customer
-    base without their decisions or records meeting. The approval queue is
-    something an analyst works, not another dashboard nobody opens.</dd>
-  </div>
-  <div>
-    <dt>Vendors embedding it</dt>
-    <dd>Source-available, one binary, no service dependency. Run the witness
-    yourself and hold your own signing key: the arrangement that removes us from
-    your customers' trust argument entirely, with no code change.</dd>
-  </div>
-</dl>
-
-<h2>Where it sits</h2>
-
-<figure class="diagram">
-  <!-- Every colour and font is a presentation attribute rather than a <style>
-       block. The content security policy on this site forbids inline styles,
-       and a diagram that needs the policy relaxed to be legible would be a poor
-       advertisement for a security product. It was invisible until this was
-       fixed: no fill meant black text on a black background. -->
-  <svg viewBox="0 0 960 300" role="img" aria-labelledby="diagram-title" width="100%">
-    <title id="diagram-title">An agent's tool call passes through Promtact, which decides and records it before the tool runs</title>
-    <defs>
-      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-        <path d="M 0 0 L 10 5 L 0 10 z" fill="#8ba0b6"/>
-      </marker>
-    </defs>
-
-    <rect x="6" y="104" width="176" height="70" rx="4" fill="#17212c" stroke="rgba(219,228,237,.22)"/>
-    <text x="26" y="134" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="15" font-weight="600">AI agent</text>
-    <text x="26" y="156" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">MCP client</text>
-
-    <line x1="182" y1="139" x2="330" y2="139" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
-    <text x="212" y="128" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">tool call</text>
-
-    <rect x="330" y="62" width="264" height="154" rx="4" fill="#16232f" stroke="#4d90f0" stroke-width="1.4"/>
-    <text x="352" y="94" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="15" font-weight="600">Promtact gateway</text>
-    <text x="352" y="122" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">policy on the request</text>
-    <text x="352" y="144" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">inspection of the response</text>
-    <text x="352" y="166" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">session provenance</text>
-    <text x="352" y="188" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">audit record, hash-linked</text>
-
-    <line x1="594" y1="106" x2="756" y2="60" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
-    <text x="616" y="72" fill="#3aa87a" font-family="ui-monospace, monospace" font-size="13" font-weight="600">allow</text>
-
-    <line x1="594" y1="139" x2="756" y2="139" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
-    <text x="606" y="130" fill="#d6a03a" font-family="ui-monospace, monospace" font-size="13" font-weight="600">hold for a person</text>
-
-    <line x1="594" y1="172" x2="756" y2="220" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
-    <text x="616" y="212" fill="#e05555" font-family="ui-monospace, monospace" font-size="13" font-weight="600">refuse</text>
-
-    <rect x="756" y="30" width="198" height="62" rx="4" fill="#17212c" stroke="rgba(219,228,237,.22)"/>
-    <text x="776" y="56" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="14" font-weight="600">Tool / MCP server</text>
-    <text x="776" y="77" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">the call runs</text>
-
-    <rect x="756" y="110" width="198" height="60" rx="4" fill="#17212c" stroke="rgba(219,228,237,.22)"/>
-    <text x="776" y="135" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="14" font-weight="600">Approval queue</text>
-    <text x="776" y="156" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">a person decides</text>
-
-    <rect x="756" y="188" width="198" height="60" rx="4" fill="#17212c" stroke="rgba(219,228,237,.22)"/>
-    <text x="776" y="213" fill="#e6eef6" font-family="ui-monospace, monospace" font-size="14" font-weight="600">Nothing happens</text>
-    <text x="776" y="234" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">and it is recorded</text>
-
-    <line x1="462" y1="216" x2="462" y2="266" stroke="#8ba0b6" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
-    <text x="286" y="286" fill="#9db0c4" font-family="ui-monospace, monospace" font-size="13">audit head published to an external witness, and to your SIEM</text>
-  </svg>
-  <figcaption>
-    The decision happens before the tool runs, not after. That places this
-    service in the latency path of every tool call, which is a real cost and is
-    stated rather than omitted.
-  </figcaption>
-</figure>
-
-<h2>What it does</h2>
-
-<div class="pillars">
-  <div class="pillar">
-    <h3>Decides before the side effect</h3>
-    <p>A tool call is evaluated against policy and either runs, waits for a
-    person, or is refused. Detection that reports what an agent already did is a
-    log, not a control.</p>
-    <span class="limit">It gates what passes through it. An agent with another
-    route to the same data has a route this does not see.</span>
-  </div>
-
-  <div class="pillar">
-    <h3>Inspects what comes back</h3>
-    <p>The answer is examined before the agent reads it: instructions smuggled
-    in characters that render as nothing, image URLs carrying data outward,
-    credential shapes. A poisoned response is withheld.</p>
-    <span class="limit">Prompt injection cannot be reliably detected, and this
-    does not claim to. Detection is the smaller half.</span>
-  </div>
-
-  <div class="pillar">
-    <h3>Carries provenance forward</h3>
-    <p>Content returned by a tool is untrusted by origin, whatever it contains.
-    A session that read it has its next outward action held for a person - with
-    no dependence on anything having been detected.</p>
-    <span class="limit">The mark expires, and only outward actions are affected.
-    A control that holds everything is one somebody switches off.</span>
-  </div>
-
-  <div class="pillar">
-    <h3>Records so the operator is not exempt</h3>
-    <p>Every decision is hash-linked to the one before it, and the chain head is
-    published to a witness outside the host, which refuses a chain that got
-    shorter or was rewritten.</p>
-    <span class="limit">Without that witness the chain detects accidental
-    corruption only: anyone able to write to the database can recompute every
-    hash.</span>
-  </div>
-</div>
-
-<h2>What it looks like</h2>
-
-<pre class="term"><b>$ promtactl audit trail --last 4</b>
-
-02:37:05  #270  allowed
-          tool      list_documents
-          because   tool "list_documents" matched the approved manifest
-
-02:37:05  #271  allowed
-          tool      read_document
-
-02:37:05  #272  <span class="stop">WITHHELD</span> - a tool's answer was kept from the agent
-          tool      read_document
-          because   tool result contains characters that are invisible to a
-                    reader but not to a model
-
-02:37:05  #273  <span class="held">HELD</span> - waiting for a person
-          tool      send_message
-          because   action reaches outward after this session read untrusted
-                    content, so it needs a person
-
-<b>$ promtactl audit verify</b>
-
-Records      267
-Hash-linked  267
-Chain        <span class="ok">intact</span> - every record still hashes to the one before it
-Witness      <span class="ok">agrees</span> at record 267
-             The witness refuses a chain that has been shortened or
-             rewritten, so an operator cannot quietly edit this record
-             even with full access to this server and its database.</pre>
-
-<p class="note">This is output from a running deployment, not a mock-up. The
-same information is in the console, and the same commands are in the
-repository.</p>
-
-<h2>In front of a server nobody here wrote</h2>
-
-<p>The demonstration above uses tool servers from this repository, which proves
-the mechanism and not the integration. This is the other half: the official
-Model Context Protocol reference server, unmodified, with the gateway in front
-of it and a policy approving exactly one of its twelve tools.</p>
-
-<pre class="term"><b>$ curl ... -d '{"method":"tools/list"}'</b>
-
-['echo', 'get-annotated-message', <b>'get-env'</b>, 'get-resource-links',
- 'get-resource-reference', 'get-structured-content', 'get-sum',
- 'get-tiny-image', 'gzip-file-as-resource', 'toggle-simulated-logging',
- 'toggle-subscriber-updates', 'trigger-long-running-operation']
-
-<b>$ curl ... -d '{"method":"tools/call","params":{"name":"echo", ...}}'</b>
-
-{"result":{"content":[{"type":"text","text":"Echo: through the gateway"}]}}
-
-<b>$ curl ... -d '{"method":"tools/call","params":{"name":"get-env"}}'</b>
-
-{"error":{"code":403,"message":<span class="stop">"blocked by policy"</span>,
-  "reason":"tool \"get-env\" is not on the approved manifest"}}</pre>
-
-<p class="note">The tool refused there is <code>get-env</code>, which returns
-the process environment. On a real host that is where database passwords and
-API keys live. The upstream offers it, the agent may ask for it, and the answer
-is no - with the refusal in the audit record and the agent never learning what
-it would have contained.</p>
-
-<h2>For providers embedding it</h2>
-
-<div class="pillars">
-  <div class="pillar">
-    <h3>The agent never holds the credential</h3>
-    <p>Upstream credentials stay with the gateway and are attached only after a
-    call has been allowed. A refused call never causes a secret to be read at
-    all, so a denied call cannot be used to find out which credentials exist.
-    The audit record carries a fingerprint, never the value.</p>
-    <span class="limit">A tool that returns a credential in its own response is
-    a different problem, and inspection is the smaller half of it.</span>
-  </div>
-
-  <div class="pillar">
-    <h3>Your witness, your key</h3>
-    <p>The witness signs what it saw with a P-256 key, and receipts are checked
-    offline against the public half by whoever holds it. Run the witness
-    yourself and the vendor is no longer part of the trust argument. The scheme
-    is identical either way; no code changes.</p>
-    <span class="limit">A receipt proves a third party saw this chain head at
-    this time. It does not prove the contents of any record.</span>
-  </div>
-
-  <div class="pillar">
-    <h3>Not a service you send data to</h3>
-    <p>Nothing leaves the deployment. There is no vendor endpoint, no telemetry
-    home, no account to create. A gateway that inspects tool calls sees document
-    contents, arguments and credential material - shipping that to a vendor
-    builds the exfiltration path it exists to prevent.</p>
-    <span class="limit">Which also means there is no vendor dashboard, and
-    support cannot see what happened unless you show it.</span>
-  </div>
-
-  <div class="pillar">
-    <h3>Per-tenant, for a customer base</h3>
-    <p>Policy, identities and isolation per tenant, so one deployment serves
-    many customers without their decisions or records meeting. Provisioning is
-    an API, and identities can come from SCIM.</p>
-    <span class="limit">Physical separation per tenant is a deployment choice
-    rather than the default, and the default is logical.</span>
-  </div>
-</div>
-
-<h2>Deployment</h2>
-
-<dl class="facts">
-  <div>
-    <dt>Where it runs</dt>
-    <dd>In your environment, beside your agents. A gateway that inspects tool
-    calls sees document contents, arguments and credential material; sending
-    that to a vendor builds the exfiltration path it exists to prevent.</dd>
-  </div>
-  <div>
-    <dt>What it is</dt>
-    <dd>A single Go binary with the console embedded, plus PostgreSQL. Linux, a
-    container image, or systemd.</dd>
-  </div>
-  <div>
-    <dt>Dependencies</dt>
-    <dd>Two, deliberately: a PostgreSQL driver and a SAML library.</dd>
-  </div>
-  <div>
-    <dt>Integration</dt>
-    <dd>MCP proxy, HTTP gateway, or a direct decision API. Findings stream to an
-    existing SIEM.</dd>
-  </div>
-  <div>
-    <dt>Multi-tenant</dt>
-    <dd>Per-tenant policy and isolation, for providers running it across a
-    customer base.</dd>
-  </div>
-</dl>
-
-<h2 id="contact">Talk to us</h2>
-
-<p>The useful first conversation is thirty minutes and technical: what your
-agents can reach today, which of those calls would be held, and what the record
-would look like afterwards. Bring an engineer.</p>
-
-<p>What comes out of it is a written answer to three questions - which of your
-current tool calls would be allowed, held or refused; what an auditor would see
-six months later; and what it would take to run it in front of your own stack.
-That is useful whether or not you buy anything, and it is yours either way.</p>
-
-<dl class="facts">
-  <div>
-    <dt>Evaluation, OEM, anything else</dt>
-    <dd><a href="mailto:contact@promtact.com">contact@promtact.com</a></dd>
-  </div>
-  <div>
-    <dt>Security reports</dt>
-    <dd>The same address, or a private advisory on GitHub, which keeps the
-    thread closed until a fix exists. See the <a href="/security/">policy</a>
-    and <a href="/.well-known/security.txt">security.txt</a>.</dd>
-  </div>
-  <div>
-    <dt>Where we are</dt>
-    <dd>Promtact, Zurich, Switzerland</dd>
-  </div>
-</dl>
-
-<p class="note">Independent assurance, stated plainly: there has been no
-third-party penetration test and no SOC 2 or ISO 27001 audit. This is version
-0.5 of a product built as an independent project, and pretending otherwise would
-be the first thing your due diligence caught. What exists instead is reproducible - the
-scans, the commands and the findings are published so you can run them yourself
-rather than take a report on faith. An independent test is the natural next step
-and something we would scope together with a first partner.</p>
-
-<h2>Verify rather than believe</h2>
-
-<p>Each claim in
-<a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/technical-claims.md">technical-claims.md</a>
-carries the command that checks it and states its own limits. Where a control
-does not do something, that is written next to what it does.</p>
-
-<p>The security scans are published as instructions rather than as results.
-<a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/verify-it-yourself.md">verify-it-yourself.md</a>
-gives four tools with pinned versions, the commands, and the numbers to expect -
-including why some findings are excluded rather than fixed. You get your own
-number, which is the only kind worth having.</p>
-
-<p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/security-findings.md">security-findings.md</a>
-lists what has been found and the commit that fixed it, including a defect a
-human read past during the same review that the tool then caught. A page
-reporting nothing would mean either perfect software or a search that stopped
-early.</p>
-
-<p>The source is public. There is no exploit logic in it and nothing that
-attacks a target.</p>
 
 <footer class="site">
   <div class="cols">
@@ -436,15 +238,15 @@ attacks a target.</p>
       <h3>Product</h3>
       <p><a href="/">Overview</a></p>
       <p><a href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/technical-claims.md">Technical claims</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/verify-it-yourself.md">Verify it yourself</a></p>
+      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a></p>
+      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a></p>
     </div>
     <div>
       <h3>Security</h3>
       <p><a href="/security/">Security policy</a></p>
       <p><a href="/.well-known/security.txt">security.txt</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/security-findings.md">Security findings</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/threat-model.md">Threat model</a></p>
+      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md">SECURITY.md</a></p>
+      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/LICENSE">Licence</a></p>
     </div>
     <div>
       <h3>Contact</h3>

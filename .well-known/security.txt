@@ -4,8 +4,9 @@
 
 Contact: https://github.com/hunterinvariants/Promtact/security/advisories/new
 Contact: mailto:contact@promtact.com
-Expires: 2027-08-07T00:00:00.000Z
-Preferred-Languages: en, de
+Expires: 2027-08-17T00:00:00.000Z
+Preferred-Languages: en
 Canonical: https://promtact.com/.well-known/security.txt
+Policy: https://promtact.com/security/
 Policy: https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md
 Acknowledgments: https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md
