@@ -338,6 +338,62 @@ figure.diagram figcaption {
   margin-top: 14px;
   color: var(--ink-3);
   font-size: 13px;
+  max-width: 78ch;
+}
+
+/* The workflow diagram is inline SVG rather than an image: the content security
+   policy allows no external request, and an inline graphic follows the theme
+   instead of baking a colour scheme into a bitmap. The colours live here and
+   not in style attributes, which style-src 'self' would refuse. */
+.d-file {
+  fill: var(--surface);
+  stroke: var(--accent);
+}
+
+.d-box {
+  fill: var(--raised);
+  stroke: rgba(219, 228, 237, 0.16);
+}
+
+/* The result, in the same near-black as pre.term - it is program output. */
+.d-out {
+  fill: #080e14;
+  stroke: var(--good);
+}
+
+.d-line {
+  fill: none;
+  stroke: var(--ink-3);
+  stroke-width: 1.5;
+}
+
+.d-head {
+  fill: var(--ink-3);
+}
+
+.d-t {
+  font: 500 14px var(--sans);
+  fill: var(--ink);
+}
+
+.d-m {
+  font: 500 13px var(--mono);
+  fill: var(--ink-2);
+}
+
+.d-k {
+  font: 600 14px var(--mono);
+  fill: var(--accent);
+}
+
+.d-s {
+  font: 500 12px var(--mono);
+  fill: var(--ink-3);
+}
+
+.d-h {
+  font: 600 13px var(--mono);
+  fill: var(--good);
 }
 
 .note {

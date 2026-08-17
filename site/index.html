@@ -112,6 +112,57 @@ fault="split[1]|[2 3 4 5]@[200,700)" dropped=945</pre>
 
 <h2>A run is a file, not a test you have to rewrite</h2>
 
+<figure class="diagram">
+<svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="One scenario file drives three separate machines - a laptop, a CI runner and a colleague's checkout - and all three produce the same trace hash.">
+  <defs>
+    <marker id="d-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path class="d-head" d="M0,0 L9,4.5 L0,9 Z"/>
+    </marker>
+  </defs>
+
+  <rect class="d-file" x="460" y="6" width="280" height="104" rx="3"/>
+  <text class="d-k" x="478" y="32">scenario.json</text>
+  <text class="d-m" x="478" y="58">seed   0x4A2C</text>
+  <text class="d-m" x="478" y="78">nodes  5</text>
+  <text class="d-m" x="478" y="98">split  [200,700)</text>
+
+  <path class="d-line" d="M600,110 V142"/>
+  <path class="d-line" d="M180,142 H1020"/>
+  <path class="d-line" d="M180,142 V166" marker-end="url(#d-arrow)"/>
+  <path class="d-line" d="M600,142 V166" marker-end="url(#d-arrow)"/>
+  <path class="d-line" d="M1020,142 V166" marker-end="url(#d-arrow)"/>
+
+  <rect class="d-box" x="70" y="178" width="220" height="54" rx="3"/>
+  <text class="d-t" x="180" y="202" text-anchor="middle">your laptop</text>
+  <text class="d-s" x="180" y="221" text-anchor="middle">go test ./...</text>
+
+  <rect class="d-box" x="490" y="178" width="220" height="54" rx="3"/>
+  <text class="d-t" x="600" y="202" text-anchor="middle">a CI runner</text>
+  <text class="d-s" x="600" y="221" text-anchor="middle">nightly sweep</text>
+
+  <rect class="d-box" x="910" y="178" width="220" height="54" rx="3"/>
+  <text class="d-t" x="1020" y="202" text-anchor="middle">a colleague</text>
+  <text class="d-s" x="1020" y="221" text-anchor="middle">fresh checkout</text>
+
+  <path class="d-line" d="M180,232 V248" marker-end="url(#d-arrow)"/>
+  <path class="d-line" d="M600,232 V248" marker-end="url(#d-arrow)"/>
+  <path class="d-line" d="M1020,232 V248" marker-end="url(#d-arrow)"/>
+
+  <rect class="d-out" x="70" y="256" width="220" height="40" rx="3"/>
+  <text class="d-h" x="180" y="281" text-anchor="middle">trace 0ec85bc8</text>
+
+  <rect class="d-out" x="490" y="256" width="220" height="40" rx="3"/>
+  <text class="d-h" x="600" y="281" text-anchor="middle">trace 0ec85bc8</text>
+
+  <rect class="d-out" x="910" y="256" width="220" height="40" rx="3"/>
+  <text class="d-h" x="1020" y="281" text-anchor="middle">trace 0ec85bc8</text>
+</svg>
+<figcaption>The seed and the faults live in the file, so the execution is a
+property of the file rather than of the machine that ran it. Three machines,
+one hash. A hash that differs is itself the bug report.</figcaption>
+</figure>
+
 <div class="split">
   <div>
     <p>The seed, the topology, the faults and when they open are declared once.

@@ -1,6 +1,0 @@
-# Repository files that are not part of the published site.
-# CNAME is a GitHub Pages leftover; Cloudflare takes custom domains from the
-# Pages project, not from a file in the tree.
-README.md
-CNAME
-.assetsignore
