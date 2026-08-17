@@ -45,7 +45,18 @@ deployment branch from git: on `main` that is a production deploy and
 names that one deployment; the custom domain is what visitors see.
 
 Each deployment replaces the whole asset manifest, so a file dropped from
-`site/` stops being served after the next deploy.
+`site/` stops being served after the next deploy — but only from the origin.
+A path that was fetched while it still existed keeps answering 200 from
+Cloudflare's edge for up to seven days, because the cached response outlives
+the file. Adding a query string reveals the truth:
+
+```bash
+curl -so /dev/null -w '%{http_code}\n' 'https://promtact.com/README.md?cb=1'
+```
+
+After removing a file, purge its URL in the dashboard under
+*Caching → Configuration → Purge Cache → Custom Purge*. Deploying alone does
+not do it.
 
 `promtact.com` and `www.promtact.com` are attached in the Pages project. Email
 for `contact@promtact.com` runs on Spacemail through separate MX, SPF, DKIM and
