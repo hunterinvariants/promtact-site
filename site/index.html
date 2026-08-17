@@ -283,15 +283,31 @@ third-party penetration test and no SOC 2 or ISO 27001 audit.</p>
 
 <div class="split">
   <div>
-    <p>Clone it and run the suite, the non-Raft example, and a scenario:</p>
+    <p>A released binary needs no Go, no compiler and no account. The installer
+    refuses to install anything whose checksum does not match, and checks the
+    build attestation when it can:</p>
 <pre class="term"><b>$ git clone https://github.com/hunterinvariants/Promtact.git</b>
 <b>$ cd Promtact</b>
-<b>$ go test ./...</b>
+<b>$ less scripts/install.sh</b>
+<b>$ ./scripts/install.sh</b>
+
+== checking the checksum
+   <span class="ok">ok</span>  0c1a9f61f26eac7f27d20d0c634466165924a7288c1
+       26c1673538fe4c991a1f2
+== checking the build attestation
+   <span class="ok">ok</span>  built by hunterinvariants/Promtact/.github/
+       workflows/release.yml@refs/tags/v0.3.5</pre>
+    <p class="note">Reading it before running it is the point, which is why
+    there is no one-line pipe from the network into a shell. A script you have
+    not read cannot prove anything to you, and proving where a binary came from
+    is what this one is for.</p>
+  </div>
+  <div>
+    <p>From source, with the suite, the non-Raft example and a scenario:</p>
+<pre class="term"><b>$ go test ./...</b>
 <b>$ go test ./examples/paxos -v</b>
 <b>$ go run ./cmd/promtact simulate \
     -config examples/leader-partition.json</b></pre>
-  </div>
-  <div>
     <p>Or start your own from a skeleton that builds, runs and tests
     immediately:</p>
 <pre class="term"><b>$ go run ./cmd/promtact new ../mysystem</b>
