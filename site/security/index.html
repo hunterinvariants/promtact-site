@@ -82,8 +82,22 @@ anything reachable is outstanding. The Go toolchain is pinned in
 
 <p><strong>Releases carry provenance.</strong> Each one ships a Sigstore
 keyless build attestation and an SPDX software bill of materials, alongside
-<code>SHA256SUMS</code>. Verification steps are in
-<a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md">SECURITY.md</a>.</p>
+<code>SHA256SUMS</code>. The attestation says more than a checksum does: it
+names the workflow, the repository and the tag that produced the file.</p>
+
+<pre class="term"><b>$ gh attestation verify promtact-v0.3.4-linux-amd64 \
+    --bundle bundle.json --repo hunterinvariants/Promtact</b>
+<span class="ok">&#10003; Verification succeeded!</span>
+
+- Attestation #1
+  - Build repo:..... hunterinvariants/Promtact
+  - Build workflow:. .github/workflows/release.yml@refs/tags/v0.3.4</pre>
+
+<p>The bundle is public, so checking it needs no GitHub account. The commands,
+including how to fetch the bundle, are in
+<a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md#verifying-a-release">SECURITY.md</a>.
+A downloaded binary also reports its own tag, commit and toolchain through
+<code>promtact version</code>, because a file name is not evidence.</p>
 
 <p><strong>Dependencies are kept few on purpose.</strong> The library and its
 commands build against the standard library. A smaller dependency graph is
