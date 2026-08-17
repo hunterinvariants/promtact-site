@@ -253,6 +253,32 @@ trace=29f79b95c06cc89754c99c2b0ed7b107
 with the host, the commit and the bounds it holds under. There has been no
 third-party penetration test and no SOC 2 or ISO 27001 audit.</p>
 
+<h2>Who wrote this</h2>
+
+<div class="split">
+  <div>
+    <p>Promtact is the work of one person. The same hands have five patches
+    merged into <a href="https://github.com/curl/curl">curl</a> and
+    <a href="https://github.com/libssh2/libssh2">libssh2</a> — upstream, on
+    master, through maintainer review.</p>
+
+    <p class="note">Two of them free state that nothing was freeing. One is a
+    test that pins down whether an authorisation scope survives a redirect.
+    Those are defects that need a particular sequence before they show
+    themselves, which is the reason the engine above exists.</p>
+  </div>
+  <div>
+    <table>
+    <tr><th>Project</th><th>Merged upstream</th></tr>
+    <tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/c7c42afab91c46e6baaa0e2801626e13acd6c30a"><code>file: support directory listing on Windows</code></a></td></tr>
+    <tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/419f6404d46d8f5e404988149a0881d015113bb9"><code>schannel: reuse the send buffer</code></a></td></tr>
+    <tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/574749016d6286c7a075041ef70edef7ee50c4be"><code>tests: verify AWS SigV4 redirect auth scope</code></a></td></tr>
+    <tr><td>libssh2</td><td><a href="https://github.com/libssh2/libssh2/commit/75b472cf0e8b790d60d485d5b2332a957beaa2d7"><code>session: free keyboard-interactive state in session_free()</code></a></td></tr>
+    <tr><td>libssh2</td><td><a href="https://github.com/libssh2/libssh2/commit/fb2b6d576e220b9da681766ddc965e6d693142ff"><code>test_hostkey: free decoded expected hostkey</code></a></td></tr>
+    </table>
+  </div>
+</div>
+
 <h2>Start</h2>
 
 <div class="split">
