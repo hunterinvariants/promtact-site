@@ -85,13 +85,13 @@ keyless build attestation and an SPDX software bill of materials, alongside
 <code>SHA256SUMS</code>. The attestation says more than a checksum does: it
 names the workflow, the repository and the tag that produced the file.</p>
 
-<pre class="term"><b>$ gh attestation verify promtact-v0.3.4-linux-amd64 \
+<pre class="term"><b>$ gh attestation verify promtact-v0.3.6-linux-amd64 \
     --bundle bundle.json --repo hunterinvariants/Promtact</b>
 <span class="ok">&#10003; Verification succeeded!</span>
 
 - Attestation #1
   - Build repo:..... hunterinvariants/Promtact
-  - Build workflow:. .github/workflows/release.yml@refs/tags/v0.3.4</pre>
+  - Build workflow:. .github/workflows/release.yml@refs/tags/v0.3.6</pre>
 
 <p>The bundle is public, so checking it needs no GitHub account. The commands,
 including how to fetch the bundle, are in
