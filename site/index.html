@@ -261,10 +261,57 @@ trace=29f79b95c06cc89754c99c2b0ed7b107
   </div>
 </div>
 
-<p class="note">A checked-in
-<a href="https://github.com/hunterinvariants/Promtact/tree/main/examples/tokenring-consumer">token-ring consumer</a>
-also tests Promtact as a separate downstream Go module pinned to the published
-release, without a local replacement or access to internal packages.</p>
+<h2>Proven as a downstream dependency</h2>
+
+<div class="split">
+  <div>
+    <h3>No local shortcut</h3>
+    <p>The checked-in
+    <a href="https://github.com/hunterinvariants/Promtact/tree/main/examples/tokenring-consumer">token-ring consumer</a>
+    is a separate Go module. Its <code>go.mod</code> pins Promtact v0.3.6, has no
+    local <code>replace</code> directive, and the simulation imports only the
+    public <code>dst</code> package.</p>
+<pre class="term"><b>$ go list -m all</b>
+github.com/hunterinvariants/promtact/examples/tokenring-consumer
+github.com/hunterinvariants/promtact v0.3.6</pre>
+  </div>
+  <div>
+    <h3>A failure an engineer can act on</h3>
+    <p>An intentional negative control gives two nodes the token. The invariant
+    stops the run immediately and reports the property, virtual step, trace and
+    conflicting protocol state.</p>
+<pre class="term">invariant=<span class="stop">"at-most-one-token"</span> step=1
+trace=<span class="ok">05fdf979afc105899fe55c01094316c4d</span>
+      <span class="ok">b984fb3c2fc61ccb3012b6167ea1eb5</span>
+cause="token held by nodes [2 3]"</pre>
+    <p class="note">The trace identifies the point within the run. Exact
+    reproduction also retains the seed and repeats the same caller actions.</p>
+  </div>
+</div>
+
+<dl class="facts">
+  <div>
+    <dt>Dependency graph</dt>
+    <dd>Two modules: the consumer and Promtact v0.3.6.</dd>
+  </div>
+  <div>
+    <dt>Promtact surface compiled</dt>
+    <dd>One public package: <code>github.com/hunterinvariants/promtact/dst</code>.</dd>
+  </div>
+  <div>
+    <dt>Clean-room qualification</dt>
+    <dd>Go 1.25.13 on Debian Bookworm, fresh module and build caches, read-only
+    source mount.</dd>
+  </div>
+  <div>
+    <dt>Test binary</dt>
+    <dd>4,361,726 bytes on linux/amd64 in that pinned clean-room build.</dd>
+  </div>
+</dl>
+
+<p class="note">The binary size is a qualification result for that toolchain
+and target, not a cross-platform size guarantee. The consumer, its deterministic
+campaigns and the diagnostic negative control are all reviewed source.</p>
 
 <h2>What has been measured</h2>
 
