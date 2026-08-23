@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Promtact - deterministic testing for distributed protocols</title>
-<meta name="description" content="Run your own consensus code under deterministic virtual time and injected network faults, check invariants after every step, and reproduce any failure from its seed. A qualified Raft implementation ships as the worked reference.">
+<meta name="description" content="Find distributed-system correctness failures before production. Run protocols under deterministic virtual time and network faults, check invariants after every step, and repeat failing executions locally or in CI.">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -17,6 +17,7 @@
     <a href="/privacy/">Privacy</a>
     <a href="/terms/">Terms</a>
     <a href="https://github.com/hunterinvariants/Promtact">Source</a>
+    <a class="nav-cta" href="mailto:contact@promtact.com?subject=Promtact%20protocol%20discussion">Discuss your protocol</a>
   </nav>
 </header>
 
@@ -24,12 +25,12 @@
   <div>
     <p class="eyebrow">Deterministic testing for distributed protocols</p>
 
-    <h1>Test distributed protocols the way you test pure functions.</h1>
+    <h1>Find distributed-system failures before production does.</h1>
 
-    <p class="lede">Run your own consensus code under deterministic virtual time
-    and injected network faults. Check your invariants after every single step.
-    When one breaks, you get the step it broke on and a trace hash that replays
-    the identical run.</p>
+    <p class="lede">Turn rare race conditions, lost writes and partition failures
+    into deterministic runs your engineers can repeat locally and in CI. When a
+    safety property breaks, Promtact identifies the step and trace instead of
+    leaving a production incident that cannot be reproduced.</p>
 
     <p class="lede"><strong>A qualified Raft implementation ships as the worked
     reference.</strong> Durable <code>io_uring</code> storage, a checksummed
@@ -37,8 +38,8 @@
     and a bounded TLA+ model. Apache 2.0.</p>
 
     <div class="actions">
-      <a class="btn btn-primary" href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a>
-      <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a>
+      <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20protocol%20discussion">Discuss your protocol</a>
+      <a class="btn" href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a>
       <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a>
     </div>
   </div>
@@ -57,6 +58,35 @@ fault="split[1]|[2 3 4 5]@[200,700)" dropped=945</pre>
   </div>
 </section>
 
+<h2>What changes for the business</h2>
+
+<div class="pillars">
+  <div class="pillar">
+    <h3>Diagnose instead of rediscover</h3>
+    <p>A rare interleaving becomes a stable seed, step and trace. Engineers can
+    return to the same failure while fixing it instead of waiting for it to
+    happen again.</p>
+  </div>
+  <div class="pillar">
+    <h3>Catch correctness failures earlier</h3>
+    <p>Safety invariants run after every simulated step and can expose lost
+    writes, conflicting decisions and invalid state transitions before a release
+    reaches customers.</p>
+  </div>
+  <div class="pillar">
+    <h3>Put fault campaigns in CI</h3>
+    <p>Virtual time, seeded schedules and declared network faults turn protocol
+    testing into a repeatable engineering gate rather than an occasional lab
+    exercise.</p>
+  </div>
+  <div class="pillar">
+    <h3>Review evidence, not assurances</h3>
+    <p>Scenarios, trace hashes, model checks and recorded qualification runs give
+    architecture and risk reviews concrete artifacts with explicit claim
+    boundaries.</p>
+  </div>
+</div>
+
 <h2>The bug you cannot reproduce</h2>
 
 <div class="prose2">
@@ -69,8 +99,33 @@ fault="split[1]|[2 3 4 5]@[200,700)" dropped=945</pre>
   <div>
     <p>Promtact removes the part that makes this hard. Time is virtual,
     scheduling is seeded, and every message loss and delay is drawn from that
-    seed. The same seed produces the same execution, so a failure found once is
-    a failure you can return to.</p>
+    seed. The same seed and caller actions produce the same execution, so a
+    failure found once is a failure you can return to.</p>
+  </div>
+</div>
+
+<h2>Where it fits</h2>
+
+<div class="pillars">
+  <div class="pillar">
+    <h3>Financial systems</h3>
+    <p>Ledger, payment and transaction engines where two accepted answers or a
+    lost acknowledged write become business-critical correctness failures.</p>
+  </div>
+  <div class="pillar">
+    <h3>Cloud and data infrastructure</h3>
+    <p>Databases, replicated storage, key-value systems, caches and control
+    planes that must remain safe through elections, retries and partitions.</p>
+  </div>
+  <div class="pillar">
+    <h3>Industrial and edge systems</h3>
+    <p>Message-passing protocols operating across intermittent, delayed or
+    one-way network links where production conditions are difficult to recreate.</p>
+  </div>
+  <div class="pillar">
+    <h3>Platform engineering</h3>
+    <p>Internal protocol libraries and shared infrastructure that need a reusable
+    way to define invariants, inject faults and preserve failing executions.</p>
   </div>
 </div>
 
@@ -206,6 +261,11 @@ trace=29f79b95c06cc89754c99c2b0ed7b107
   </div>
 </div>
 
+<p class="note">A checked-in
+<a href="https://github.com/hunterinvariants/Promtact/tree/main/examples/tokenring-consumer">token-ring consumer</a>
+also tests Promtact as a separate downstream Go module pinned to the published
+release, without a local replacement or access to internal packages.</p>
+
 <h2>What has been measured</h2>
 
 <dl class="facts">
@@ -254,6 +314,33 @@ trace=29f79b95c06cc89754c99c2b0ed7b107
 with the host, the commit and the bounds it holds under. There has been no
 third-party penetration test and no SOC 2 or ISO 27001 audit.</p>
 
+<h2>Deployment and trust boundary</h2>
+
+<div class="pillars">
+  <div class="pillar">
+    <h3>Runs in your environment</h3>
+    <p>The deterministic engine is a Go library and command-line tool for local
+    development and CI. Core simulation runs require no hosted control plane or
+    Promtact account.</p>
+  </div>
+  <div class="pillar">
+    <h3>Works inside restricted networks</h3>
+    <p>Once the source or release artifacts are available inside your boundary,
+    deterministic scenarios and replays do not depend on an external service.</p>
+  </div>
+  <div class="pillar">
+    <h3>Verifiable releases</h3>
+    <p>Published binaries carry checksums, GitHub build attestations and public
+    source, so teams can verify what they run before admitting it to CI.</p>
+  </div>
+  <div class="pillar">
+    <h3>Explicit assurance limits</h3>
+    <p>The security policy and evidence ledger state what has been tested and
+    what has not, including the absence of SOC 2, ISO 27001 and a third-party
+    penetration test.</p>
+  </div>
+</div>
+
 <h2>Who wrote this</h2>
 
 <div class="split">
@@ -278,6 +365,29 @@ third-party penetration test and no SOC 2 or ISO 27001 audit.</p>
     <tr><td>libssh2</td><td><a href="https://github.com/libssh2/libssh2/commit/fb2b6d576e220b9da681766ddc965e6d693142ff"><code>test_hostkey: free decoded expected hostkey</code></a></td></tr>
     </table>
   </div>
+</div>
+
+<h2>How to engage</h2>
+
+<div class="split">
+  <div>
+    <h3>Adopt the open-source framework</h3>
+    <p>Use the Apache 2.0 engine directly, start from the working protocol
+    examples, and keep simulations in the same repository and CI system as your
+    implementation.</p>
+  </div>
+  <div>
+    <h3>Discuss a scoped verification engagement</h3>
+    <p>For a protocol already in design or production, contact Promtact to discuss
+    adapter boundaries, safety invariants, deterministic fault campaigns and the
+    evidence needed for an architecture review.</p>
+  </div>
+</div>
+
+<div class="actions">
+  <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20protocol%20discussion">Discuss your protocol</a>
+  <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Developer guide</a>
+  <a class="btn" href="/security/">Review the security boundary</a>
 </div>
 
 <h2>Start</h2>
@@ -322,9 +432,9 @@ third-party penetration test and no SOC 2 or ISO 27001 audit.</p>
 </div>
 
 <div class="actions">
-  <a class="btn btn-primary" href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a>
+  <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20protocol%20discussion">Discuss your protocol</a>
+  <a class="btn" href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a>
   <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/API.md">What is contractual</a>
-  <a class="btn" href="mailto:contact@promtact.com">contact@promtact.com</a>
 </div>
 
 <footer class="site">
