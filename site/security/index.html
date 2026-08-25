@@ -21,9 +21,9 @@
 </header>
 
 <h1>Security</h1>
-<p class="updated">Last reviewed 17 August 2026</p>
+<p class="updated">Last reviewed 25 August 2026</p>
 
-<p class="lede">Promtact is source-available software you run yourself. There is
+<p class="lede">Promtact is open-source software you run yourself. There is
 no hosted service, no account, and no data held on anyone's behalf. This page
 says how to report a problem, which surfaces matter, and how a release is put
 together.</p>
@@ -55,7 +55,7 @@ full policy is in
 <tr><th>Surface</th><th>Why it matters</th></tr>
 <tr><td>The wire format</td><td><code>protocol</code> decodes CRC32C-framed messages from a socket. A crash, hang, or unbounded allocation reachable from a malformed frame is a denial of service against a consensus node.</td></tr>
 <tr><td>The durable format</td><td><code>storage/wal</code> parses records and recovers torn tails from disk. Relevant if a node can be made to accept a crafted log.</td></tr>
-<tr><td>The chaos controller</td><td><code>chaos</code> runs privileged network commands. The mandatory <code>promtact-*</code> namespace, the CIDR validation and the bounded delay and loss exist so a mistake cannot reach a real interface. A way around any of them is a real finding.</td></tr>
+<tr><td>The chaos controller</td><td><code>chaos</code> runs privileged network commands. A dedicated <code>promtact-chaos</code> namespace, <code>promtact-*</code> veth names, address and rate validation, and explicit ownership checks keep faults away from existing resources and management interfaces. A way around any of them is a real finding.</td></tr>
 <tr><td>The raw block-device benchmark</td><td><code>promtact raw-bench</code> refuses to write without a canonical <code>/dev/</code> path, an exact expected size, and an explicit <code>ERASE:</code> confirmation. A way to make it write to the wrong device is a real finding.</td></tr>
 <tr><td>Release artifacts</td><td>Anything that would let a published binary, <code>SHA256SUMS</code>, or the build attestation misrepresent what it is.</td></tr>
 </table>
@@ -106,8 +106,8 @@ fewer places for someone else's compromise to become yours.</p>
 <h2>Running it safely</h2>
 
 <p>The chaos controller and the raw block-device benchmark do real, privileged
-things to the machine they run on. Use them on a host you are willing to lose,
-inside the dedicated namespace and veth pair the controller creates, and never
+things to the machine they run on. Use them only on a dedicated test host,
+inside the namespace and veth pair the controller creates, and never
 attach a fault policy to a management interface. See
 <a href="https://github.com/hunterinvariants/Promtact/blob/main/bpf/README.md">bpf/README.md</a>.</p>
 

@@ -404,17 +404,22 @@ cause="token held by nodes [1, 2]"</pre>
   </div>
   <div>
     <dt>Kernel fault injection</dt>
-    <dd>XDP and TC programs load and pass the verifier and JIT; injection and
-    cleanup are gated on every run.</dd>
+    <dd>Live XDP drop and IPv4 partition, TC drop and corruption, and
+    <code>netem</code> delay and loss were measured on an isolated veth pair.
+    The controller refused resources it did not own, and every run cleaned up
+    its own resources.</dd>
   </div>
 </dl>
 
 <p class="note">Every figure names the run that produced it in
 <a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">EVIDENCE.md</a>,
 with the host, the commit and the bounds it holds under. Core simulations run
-in your environment and generate their evidence locally. Independent assurance
-status: Promtact has not undergone a third-party penetration test, SOC 2 audit
-or ISO 27001 certification.</p>
+in your environment and generate their evidence locally. A fresh Ubuntu 24.04.4
+VM reproduced the public installation, release verification, offline execution,
+cross-language behavior, failover, restore and kernel fault controls.
+<a href="https://github.com/hunterinvariants/Promtact/blob/main/benchmarks/ubuntu-vm-qualification-2026-08-24.md">Read the qualification run.</a>
+Independent assurance status: Promtact has not undergone a third-party
+penetration test, SOC 2 audit or ISO 27001 certification.</p>
 
 <h2>Deployment and trust boundary</h2>
 
@@ -514,8 +519,8 @@ or ISO 27001 certification.</p>
 <b>$ ./scripts/install.sh</b>
 
 == checking the checksum
-   <span class="ok">ok</span>  0c1a9f61f26eac7f27d20d0c634466165924a7288c1
-       26c1673538fe4c991a1f2
+   <span class="ok">ok</span>  2d28e7e93e9eebe6b6e7bef82cecbf6fd408c6cd
+       4c8c8e3d4e632b0a5c9d49d2
 == checking the build attestation
    <span class="ok">ok</span>  built by hunterinvariants/Promtact/.github/
        workflows/release.yml@refs/tags/v0.3.6</pre>
