@@ -63,27 +63,25 @@ fault="split[1]|[2 3 4 5]@[200,700)" dropped=945</pre>
 <div class="pillars">
   <div class="pillar">
     <h3>Diagnose instead of rediscover</h3>
-    <p>A rare interleaving becomes a stable seed, step and trace. Engineers can
-    return to the same failure while fixing it instead of waiting for it to
+    <p>A rare failure becomes a stable seed, step and trace. Engineers can
+    return to the same execution while fixing it instead of waiting for it to
     happen again.</p>
   </div>
   <div class="pillar">
-    <h3>Catch correctness failures earlier</h3>
-    <p>Safety invariants run after every simulated step and can expose lost
-    writes, conflicting decisions and invalid state transitions before a release
-    reaches customers.</p>
+    <h3>Catch correctness failures before release</h3>
+    <p>Safety invariants run after every simulated step, exposing lost writes,
+    conflicting decisions and invalid state transitions before software reaches
+    customers.</p>
   </div>
   <div class="pillar">
-    <h3>Put fault campaigns in CI</h3>
+    <h3>Make fault campaigns repeatable in CI</h3>
     <p>Virtual time, seeded schedules and declared network faults turn protocol
-    testing into a repeatable engineering gate rather than an occasional lab
-    exercise.</p>
+    testing into a repeatable CI gate instead of an occasional lab exercise.</p>
   </div>
   <div class="pillar">
-    <h3>Review evidence, not assurances</h3>
+    <h3>Give reviews concrete evidence</h3>
     <p>Scenarios, trace hashes, model checks and recorded qualification runs give
-    architecture and risk reviews concrete artifacts with explicit claim
-    boundaries.</p>
+    architecture and risk reviews concrete results with clearly stated bounds.</p>
   </div>
 </div>
 
@@ -334,7 +332,7 @@ cause="token held by nodes [2 3]"</pre>
   </div>
 </dl>
 
-<p class="note downstream-note">The negative-control trace retains the seed and
+<p class="note">The negative-control trace retains the seed and
 caller actions for exact reproduction. The binary size is specific to this
 pinned toolchain and target, not a cross-platform guarantee. The consumer, its
 deterministic campaigns and the diagnostic control are reviewed source.</p>
@@ -443,53 +441,49 @@ in your environment and generate their evidence locally.</p>
 
 <h2>Who wrote this</h2>
 
-<div class="split">
+<div class="prose2">
   <div>
     <p>Promtact is the work of one person. The same hands have five patches
     merged into <a href="https://github.com/curl/curl">curl</a> and
     <a href="https://github.com/libssh2/libssh2">libssh2</a>, upstream on
     master, through maintainer review.</p>
-
+  </div>
+  <div>
     <p class="note">Two of them free state that nothing was freeing. One is a
     test that pins down whether an authorisation scope survives a redirect.
     Those are defects that need a particular sequence before they show
     themselves, which is the reason the engine above exists.</p>
   </div>
-  <div>
-    <table>
-    <tr><th>Project</th><th>Merged upstream</th></tr>
-    <tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/c7c42afab91c46e6baaa0e2801626e13acd6c30a"><code>file: support directory listing on Windows</code></a></td></tr>
-    <tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/419f6404d46d8f5e404988149a0881d015113bb9"><code>schannel: reuse the send buffer</code></a></td></tr>
-    <tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/574749016d6286c7a075041ef70edef7ee50c4be"><code>tests: verify AWS SigV4 redirect auth scope</code></a></td></tr>
-    <tr><td>libssh2</td><td><a href="https://github.com/libssh2/libssh2/commit/75b472cf0e8b790d60d485d5b2332a957beaa2d7"><code>session: free keyboard-interactive state in session_free()</code></a></td></tr>
-    <tr><td>libssh2</td><td><a href="https://github.com/libssh2/libssh2/commit/fb2b6d576e220b9da681766ddc965e6d693142ff"><code>test_hostkey: free decoded expected hostkey</code></a></td></tr>
-    </table>
-  </div>
 </div>
+
+<table>
+<tr><th>Project</th><th>Merged upstream</th></tr>
+<tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/c7c42afab91c46e6baaa0e2801626e13acd6c30a"><code>file: support directory listing on Windows</code></a></td></tr>
+<tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/419f6404d46d8f5e404988149a0881d015113bb9"><code>schannel: reuse the send buffer</code></a></td></tr>
+<tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/574749016d6286c7a075041ef70edef7ee50c4be"><code>tests: verify AWS SigV4 redirect auth scope</code></a></td></tr>
+<tr><td>libssh2</td><td><a href="https://github.com/libssh2/libssh2/commit/75b472cf0e8b790d60d485d5b2332a957beaa2d7"><code>session: free keyboard-interactive state in session_free()</code></a></td></tr>
+<tr><td>libssh2</td><td><a href="https://github.com/libssh2/libssh2/commit/fb2b6d576e220b9da681766ddc965e6d693142ff"><code>test_hostkey: free decoded expected hostkey</code></a></td></tr>
+</table>
 
 <h2>How to engage</h2>
 
-<div class="split">
-  <div>
+<div class="pillars engagement-options">
+  <div class="pillar">
     <h3>Adopt the open-source framework</h3>
     <p>Use the Apache 2.0 engine directly, start from the working protocol
     examples, including the checked Rust process reference, and keep simulations
     in the same repository and CI system as your implementation.</p>
+    <p>The framework stays in your environment, alongside the scenarios and
+    evidence produced by your own runs.</p>
   </div>
-  <div>
+  <div class="pillar">
     <h3>Discuss a scoped verification engagement</h3>
-    <p>A scoped verification engagement can include a protocol adapter against
-    the public Promtact API, safety invariants, deterministic fault campaigns,
-    CI-ready scenarios, and a versioned evidence report with findings, trace
-    references, claim boundaries and recommended remediation.</p>
-    <p>For a non-Go system, the first step is an adapter assessment covering
-    process lifecycle, message schema, invariants and build constraints. A
-    commissioned C++ or Java integration is then scoped against the published
-    process protocol and accepted through language-specific conformance tests.</p>
-    <p class="note">After an initial protocol walkthrough, Promtact provides a
-    written scope, milestones and schedule based on the adapter boundary,
-    invariants and campaign depth. Scope and deliverables are agreed before work
-    begins.</p>
+    <p>An engagement can include a protocol adapter, safety invariants,
+    deterministic fault campaigns, CI-ready scenarios and a versioned evidence
+    report.</p>
+    <p>For a non-Go system, work starts with the process lifecycle, message
+    schema, invariants and build constraints. Scope, milestones and acceptance
+    evidence are agreed before implementation begins.</p>
   </div>
 </div>
 

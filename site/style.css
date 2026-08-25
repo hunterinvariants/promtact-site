@@ -275,12 +275,18 @@ code,
    Keep these in multiples of two, or the layout announces the gap. */
 .pillars {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
   border-radius: 3px;
   overflow: hidden;
+}
+
+@media (min-width: 760px) {
+  .pillars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .pillar {
@@ -419,9 +425,13 @@ figure.diagram figcaption {
   font-size: 14.5px;
 }
 
-.downstream-note {
+dl.facts + .note {
   max-width: none;
   margin-top: 16px;
+}
+
+.engagement-options .pillar p + p {
+  margin-top: 12px;
 }
 
 dl.facts {
