@@ -419,6 +419,11 @@ figure.diagram figcaption {
   font-size: 14.5px;
 }
 
+.downstream-note {
+  max-width: none;
+  margin-top: 16px;
+}
+
 dl.facts {
   display: grid;
   gap: 0;

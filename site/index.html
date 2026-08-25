@@ -311,8 +311,6 @@ github.com/hunterinvariants/promtact v0.3.6</pre>
 trace=<span class="ok">05fdf979afc105899fe55c01094316c4d</span>
       <span class="ok">b984fb3c2fc61ccb3012b6167ea1eb5</span>
 cause="token held by nodes [2 3]"</pre>
-    <p class="note">The trace identifies the point within the run. Exact
-    reproduction also retains the seed and repeats the same caller actions.</p>
   </div>
 </div>
 
@@ -336,9 +334,10 @@ cause="token held by nodes [2 3]"</pre>
   </div>
 </dl>
 
-<p class="note">The binary size is a qualification result for that toolchain
-and target, not a cross-platform size guarantee. The consumer, its deterministic
-campaigns and the diagnostic negative control are all reviewed source.</p>
+<p class="note downstream-note">The negative-control trace retains the seed and
+caller actions for exact reproduction. The binary size is specific to this
+pinned toolchain and target, not a cross-platform guarantee. The consumer, its
+deterministic campaigns and the diagnostic control are reviewed source.</p>
 
 <h2>Go schedules it. Rust runs it. The trace stays identical.</h2>
 
@@ -414,9 +413,8 @@ cause="token held by nodes [1, 2]"</pre>
 <p class="note">Every figure names the run that produced it in
 <a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">EVIDENCE.md</a>,
 with the host, the commit and the bounds it holds under. Core simulations run
-in your environment and generate their evidence locally. Independent assurance
-status: Promtact has not undergone a third-party
-penetration test, SOC 2 audit or ISO 27001 certification.</p>
+in your environment and generate their evidence locally. Promtact has not
+undergone a SOC 2 audit and is not ISO 27001 certified.</p>
 
 <h2>Deployment and trust boundary</h2>
 
@@ -439,9 +437,9 @@ penetration test, SOC 2 audit or ISO 27001 certification.</p>
   </div>
   <div class="pillar">
     <h3>Explicit assurance limits</h3>
-    <p>The security policy and evidence ledger state what has been tested and
-    what has not, including the absence of SOC 2, ISO 27001 and a third-party
-    penetration test.</p>
+    <p>The security policy and evidence ledger distinguish tested behavior from
+    formal assurance. Promtact does not claim a SOC 2 audit or ISO 27001
+    certification.</p>
   </div>
 </div>
 
