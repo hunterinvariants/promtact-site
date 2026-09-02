@@ -851,7 +851,8 @@ table tr:last-child td {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   max-width: 860px;
-  margin-bottom: 24px;
+  margin: 0 auto 24px;
+  text-align: center;
 }
 
 .section-heading .section-kicker {
@@ -876,7 +877,7 @@ table tr:last-child td {
 }
 
 .section-heading > p:last-child {
-  margin: 0;
+  margin: 0 auto;
   max-width: 64ch;
   color: var(--ink-2);
 }
@@ -1093,8 +1094,12 @@ table tr:last-child td {
   align-items: center;
 }
 
-.upstream-section h2 {
-  margin-bottom: 20px;
+.upstream-heading {
+  grid-column: 1 / -1;
+}
+
+.upstream-heading h2 {
+  margin-bottom: 12px;
 }
 
 .upstream-copy {
