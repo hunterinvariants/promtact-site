@@ -5,21 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security - Promtact</title>
 <meta name="description" content="How to report a vulnerability in Promtact, which surfaces are worth reporting, and how releases are built and verified.">
-<link rel="stylesheet" href="/style.css?v=0bf8c35">
+<link rel="stylesheet" href="/style.css?v=enterprise-policy-20260903">
 </head>
-<body>
-<div class="wrap reading">
+<body class="policy-page security-page">
+<div class="wrap policy-shell">
 
 <header class="site">
   <a class="brand" href="/">promtact</a>
-  <nav>
-    <a href="/security/">Security</a>
-    <a href="/privacy/">Privacy</a>
-    <a href="/terms/">Terms</a>
-    <a href="https://github.com/hunterinvariants/Promtact">Source</a>
+  <nav aria-label="Primary navigation">
+    <a href="/">Product</a>
+    <a href="/developers/">Open Source</a>
+    <a href="/enterprise/">Enterprise</a>
+    <a class="active" href="/security/">Security</a>
+    <a class="nav-cta" href="https://github.com/hunterinvariants/Promtact">View source</a>
   </nav>
 </header>
 
+<div class="policy-layout">
+<aside class="policy-toc" aria-label="Security page sections">
+  <p>On this page</p>
+  <nav>
+    <a href="#reporting">Reporting a vulnerability</a>
+    <a href="#reporting-scope">What is worth reporting</a>
+    <a href="#not-a-vulnerability">What is not a vulnerability</a>
+    <a href="#release-security">How a release is built</a>
+    <a href="#safe-operation">Running it safely</a>
+    <a href="#website-security">This website</a>
+  </nav>
+</aside>
+
+<article class="policy-document">
 <h1>Security</h1>
 <p class="updated">Last reviewed 25 August 2026</p>
 
@@ -28,7 +43,12 @@ no hosted service, no account, and no data held on anyone's behalf. This page
 says how to report a problem, which surfaces matter, and how a release is put
 together.</p>
 
-<h2>Reporting a vulnerability</h2>
+<div class="scope-note">
+  <strong>Scope of this page</strong>
+  <p>This page covers the open-source project's vulnerability policy and release security. Enterprise access control, auditability, deployment boundaries and assessment status are summarized on the <a href="/enterprise/#security-review-title">Enterprise security review</a>.</p>
+</div>
+
+<h2 id="reporting">Reporting a vulnerability</h2>
 
 <p>Use GitHub's private vulnerability reporting on the repository, under
 <em>Security, Report a vulnerability</em>. That opens a private thread with the
@@ -42,7 +62,7 @@ full policy is in
 
 <p>Supported versions: the latest tag only. There are no backports.</p>
 
-<h2>What is worth reporting</h2>
+<h2 id="reporting-scope">What is worth reporting</h2>
 
 <p>The parts where someone else's bytes or privileges are involved.</p>
 
@@ -55,7 +75,7 @@ full policy is in
 <tr><td>Release artifacts</td><td>Anything that would let a published binary, <code>SHA256SUMS</code>, or the build attestation misrepresent what it is.</td></tr>
 </table>
 
-<h2>What is not a vulnerability</h2>
+<h2 id="not-a-vulnerability">What is not a vulnerability</h2>
 
 <table>
 <tr><th>Case</th><th>Why</th></tr>
@@ -64,7 +84,7 @@ full policy is in
 <tr><td>A documented bound on a correctness claim</td><td><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">EVIDENCE.md</a> states what each result establishes and what it does not. If a documented bound is wrong, that is worth reporting - with the measurement that shows it.</td></tr>
 </table>
 
-<h2>How a release is built</h2>
+<h2 id="release-security">How a release is built</h2>
 
 <p><strong>The wire format is fuzzed.</strong> Four Go fuzz targets cover frame
 reading and message decoding. They run in CI on every change and in a longer
@@ -98,7 +118,7 @@ A downloaded binary also reports its own tag, commit and toolchain through
 commands build against the standard library. A smaller dependency graph is
 fewer places for someone else's compromise to become yours.</p>
 
-<h2>Running it safely</h2>
+<h2 id="safe-operation">Running it safely</h2>
 
 <p>The chaos controller and the raw block-device benchmark do real, privileged
 things to the machine they run on. Use them only on a dedicated test host,
@@ -106,21 +126,23 @@ inside the namespace and veth pair the controller creates, and never
 attach a fault policy to a management interface. See
 <a href="https://github.com/hunterinvariants/Promtact/blob/main/bpf/README.md">bpf/README.md</a>.</p>
 
-<h2>This website</h2>
+<h2 id="website-security">This website</h2>
 
 <p>The site is static, served from Cloudflare Pages. Its content security policy
 is <code>default-src 'none'</code>: no scripts, no fonts, no images from
 anywhere else, no third-party requests of any kind. Machine-readable contact
 details are at
 <a href="/.well-known/security.txt">/.well-known/security.txt</a>.</p>
+</article>
+</div>
 
 <footer class="site">
   <div class="cols">
     <div>
       <h3>Product</h3>
       <p><a href="/">Overview</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a></p>
+      <p><a href="/developers/">Open Source</a></p>
+      <p><a href="/enterprise/">Enterprise</a></p>
       <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a></p>
     </div>
     <div>

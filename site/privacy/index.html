@@ -5,23 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy - Promtact</title>
 <meta name="description" content="What promtact.com processes, what the software sends back, and your rights under the Swiss Data Protection Act and the GDPR.">
-<link rel="stylesheet" href="/style.css?v=0bf8c35">
+<link rel="stylesheet" href="/style.css?v=enterprise-policy-20260903">
 </head>
-<body>
-<div class="wrap reading">
+<body class="policy-page privacy-page">
+<div class="wrap policy-shell">
 
 <header class="site">
   <a class="brand" href="/">promtact</a>
-  <nav>
+  <nav aria-label="Primary navigation">
+    <a href="/">Product</a>
+    <a href="/developers/">Open Source</a>
+    <a href="/enterprise/">Enterprise</a>
     <a href="/security/">Security</a>
-    <a href="/privacy/">Privacy</a>
-    <a href="/terms/">Terms</a>
-    <a href="https://github.com/hunterinvariants/Promtact">Source</a>
+    <a class="nav-cta" href="https://github.com/hunterinvariants/Promtact">View source</a>
   </nav>
 </header>
 
+<div class="policy-layout">
+<aside class="policy-toc" aria-label="Privacy page sections">
+  <p>On this page</p>
+  <nav>
+    <a href="#controller">Controller</a>
+    <a href="#website-data">Website and contact data</a>
+    <a href="#sub-processors">Sub-processors</a>
+    <a href="#rights">Your rights</a>
+    <a href="#privacy-contact">Contact</a>
+  </nav>
+</aside>
+
+<article class="policy-document">
 <h1>Privacy</h1>
-<p class="updated">Last reviewed 17 August 2026</p>
+<p class="updated">Last reviewed 3 September 2026</p>
 
 <p class="lede">Promtact is software you download and run yourself. This page
 covers the only two places personal data can arise: this website, and writing to
@@ -32,17 +46,16 @@ no phone home, no licence check that transmits usage, and no endpoint here for
 it to reach. Your seeds, traces, scenarios and measurements stay on your
 machine. You can confirm that from the source rather than from this sentence.</p>
 
-<h2>Controller</h2>
+<h2 id="controller">Controller</h2>
 
 <p>Promtact, Zurich, Switzerland.
 <a href="mailto:contact@promtact.com">contact@promtact.com</a>.</p>
 
-<h2>This website</h2>
+<h2 id="website-data">Website and contact data</h2>
 
-<p>promtact.com sets no cookies, loads no fonts, scripts, images or anything
-else from a third party, and runs no analytics. Its content security policy is
-<code>default-src 'none'</code>, which forbids every outbound request and is
-checkable in the response headers rather than promised here.</p>
+<p>promtact.com sets no cookies and runs no analytics. The technical controls
+that prevent third-party requests are maintained in one place on the
+<a href="/security/#website-security">Security page</a>.</p>
 
 <p>The hosting provider records ordinary server logs - address, user agent,
 referrer, time, requested path. These are technically necessary to serve the
@@ -55,18 +68,18 @@ not used to build a profile.</p>
 <tr><td>Email you send us</td><td>Answering you and handling what follows</td><td>Legitimate interest, or steps prior to a contract, Art. 6(1)(b) and (f) GDPR</td><td>As long as it takes to answer, and any period the law requires</td></tr>
 </table>
 
-<h2>Sub-processors</h2>
+<h2 id="sub-processors">Sub-processors</h2>
 
 <table>
-<tr><th>Provider</th><th>Purpose</th><th>Location</th></tr>
-<tr><td>Cloudflare</td><td>Static hosting and TLS for promtact.com</td><td>Global edge network</td></tr>
-<tr><td>Spacemail</td><td>Email for contact@promtact.com</td><td>European Union</td></tr>
+<tr><th>Provider</th><th>Purpose</th><th>Location</th><th>Processing terms</th></tr>
+<tr><td>Cloudflare</td><td>Static hosting and TLS for promtact.com</td><td>Global edge network</td><td><a href="https://www.cloudflare.com/cloudflare-customer-dpa/">DPA</a></td></tr>
+<tr><td>Spacemail (Spaceship)</td><td>Email for contact@promtact.com</td><td>European Union</td><td><a href="https://www.spaceship.com/legal/data-processing-addendum/">DPA</a></td></tr>
 </table>
 
 <p>The source code is on GitHub. Visiting the repository is your relationship
 with GitHub, under their privacy policy, not ours.</p>
 
-<h2>Your rights</h2>
+<h2 id="rights">Your rights</h2>
 
 <p>Under the revised Swiss Data Protection Act and, where it applies, the GDPR,
 you may ask what is held about you, ask for it to be corrected or deleted, ask
@@ -77,19 +90,21 @@ for a copy, and object to processing based on legitimate interest. Write to
 Switzerland the Federal Data Protection and Information Commissioner, and in the
 EU the authority for your country of residence.</p>
 
-<h2>Contact</h2>
+<h2 id="privacy-contact">Contact</h2>
 
 <p>Data protection enquiries:
 <a href="mailto:contact@promtact.com">contact@promtact.com</a><br>
 Security reports: see <a href="/security/">Security</a>.</p>
+</article>
+</div>
 
 <footer class="site">
   <div class="cols">
     <div>
       <h3>Product</h3>
       <p><a href="/">Overview</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a></p>
+      <p><a href="/developers/">Open Source</a></p>
+      <p><a href="/enterprise/">Enterprise</a></p>
       <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a></p>
     </div>
     <div>
