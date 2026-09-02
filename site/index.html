@@ -88,6 +88,14 @@
       </svg>
       <figcaption>A failing execution becomes a stable coordinate that can be checked wherever the team works.</figcaption>
     </figure>
+
+    <div class="quickstart-strip" aria-label="Promtact command example">
+      <div>
+        <p class="section-kicker">Run a real scenario</p>
+        <code>go run ./cmd/promtact simulate -config examples/leader-partition.json</code>
+      </div>
+      <a href="/developers/">See the complete Open Source workflow</a>
+    </div>
   </section>
 
   <section class="section-block" aria-labelledby="outcomes-title">
@@ -122,9 +130,9 @@
       <p>Promtact focuses the campaign on the behavior that matters, then preserves any violation as an execution your team can revisit.</p>
     </div>
     <ol class="flow-grid">
-      <li><span class="flow-number">1</span><div><h3>Connect your system</h3><p>Model or adapt the protocol behavior that matters to your correctness boundary.</p></div></li>
-      <li><span class="flow-number">2</span><div><h3>Define properties and faults</h3><p>Describe what must never happen and which partitions, delays, losses or failures should be exercised.</p></div></li>
-      <li><span class="flow-number">3</span><div><h3>Replay every violation</h3><p>Return to the same seed, step and trace locally, in CI or during review.</p></div></li>
+      <li><span class="flow-number">01</span><div><h3>Connect your system</h3><p>Model or adapt the protocol behavior that matters to your correctness boundary.</p></div></li>
+      <li><span class="flow-number">02</span><div><h3>Define properties and faults</h3><p>Describe what must never happen and which partitions, delays, losses or failures should be exercised.</p></div></li>
+      <li><span class="flow-number">03</span><div><h3>Replay every violation</h3><p>Return to the same seed, step and trace locally, in CI or during review.</p></div></li>
     </ol>
   </section>
 
@@ -156,16 +164,10 @@
         <h3>Operate a controlled self-hosted product</h3>
         <p>Use a verified distribution and lifecycle tooling when the verification environment must stay inside your infrastructure and meet an explicit operating boundary.</p>
         <ul>
-          <li>self-hosted distribution</li>
-          <li>verified installation artifacts</li>
-          <li>native Go verification</li>
-          <li>tested Rust reference adapter</li>
-          <li>scoped C++ and Java integrations</li>
-          <li>TLS and protected configuration</li>
-          <li>status and diagnostic tooling</li>
-          <li>upgrade, rollback, backup and restore lifecycle</li>
-          <li>versioned qualification evidence</li>
-          <li>scoped support and qualification work</li>
+          <li>Go, Rust, C++ and Java integration</li>
+          <li>verified self-hosted installation and TLS</li>
+          <li>status, diagnostics, upgrade and rollback</li>
+          <li>backup, restore, qualification and support</li>
         </ul>
         <div class="text-links">
           <a class="btn btn-primary" href="/enterprise/">Enterprise path</a>
@@ -201,12 +203,13 @@
       <h2 id="upstream-title">Built by an upstream contributor</h2>
     </div>
     <div class="upstream-details">
-      <p>Review the public record directly on GitHub. It is presented as engineering history, not as a substitute for product evidence.</p>
+      <p>Review every pull request and upstream commit directly on GitHub. The record is engineering history, not a substitute for product evidence.</p>
       <a href="https://github.com/hunterinvariants">Review the public contribution profile</a>
     </div>
     <a class="proof-card" href="https://github.com/hunterinvariants" aria-label="Review eight merged upstream pull requests on GitHub">
       <strong>8 merged pull requests</strong>
       <span>3 curl · 3 libssh2 · 2 libuv</span>
+      <small>Merged into three foundational networking projects.</small>
     </a>
   </section>
 

@@ -699,6 +699,30 @@ table tr:last-child td {
   font-size: 13px;
 }
 
+.quickstart-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.quickstart-strip .section-kicker {
+  margin-bottom: 6px;
+}
+
+.quickstart-strip code {
+  color: var(--ink);
+}
+
+.quickstart-strip > a {
+  flex: 0 0 auto;
+}
+
 .visual-shell {
   height: 100%;
   color: var(--ink);
@@ -1004,12 +1028,9 @@ table tr:last-child td {
 }
 
 .flow-number {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
+  display: block;
+  min-width: 24px;
+  padding-top: 4px;
   color: var(--accent);
   font: 600 12px/1 var(--mono);
 }
@@ -1136,9 +1157,13 @@ table tr:last-child td {
 
 .upstream-section {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
-  gap: clamp(34px, 7vw, 100px);
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+  gap: 28px;
   align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .upstream-heading {
@@ -1178,6 +1203,12 @@ table tr:last-child td {
 .proof-card span {
   color: var(--accent);
   font: 600 14px/1.5 var(--mono);
+}
+
+.proof-card small {
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.55;
 }
 
 .final-cta {
@@ -1721,5 +1752,16 @@ table tr:last-child td {
   .code-panel {
     padding: 20px 16px;
     font-size: 12px;
+  }
+}
+
+@media (max-width: 760px) {
+  .quickstart-strip {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .quickstart-strip code {
+    overflow-wrap: anywhere;
   }
 }
