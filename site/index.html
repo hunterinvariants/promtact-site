@@ -3,571 +3,231 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Promtact - deterministic testing for distributed protocols</title>
-<meta name="description" content="Find distributed-system correctness failures before production. Run protocols under deterministic virtual time and network faults, check invariants after every step, and repeat failing executions locally or in CI.">
-<link rel="stylesheet" href="/style.css?v=0bf8c35">
+<title>Promtact - reproducible verification for distributed systems</title>
+<meta name="description" content="Turn rare distributed-system failures into deterministic tests your team can replay locally, in CI and inside its own infrastructure.">
+<link rel="stylesheet" href="/style.css?v=product-home">
 </head>
-<body>
+<body class="home">
 <div class="wrap">
 
 <header class="site">
-  <a class="brand" href="/">promtact</a>
-  <nav>
-    <a href="/security/">Security</a>
-    <a href="/privacy/">Privacy</a>
-    <a href="/terms/">Terms</a>
-    <a href="https://github.com/hunterinvariants/Promtact">Source</a>
-    <a class="nav-cta" href="mailto:contact@promtact.com?subject=Promtact%20protocol%20discussion&amp;body=Protocol%2C%20system%2C%20and%20implementation%20language%3A%0ACurrent%20stage%20%28design%2C%20test%2C%20or%20production%29%3A%0AMain%20correctness%20risk%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your protocol</a>
+  <a class="brand" href="/" aria-label="Promtact home">promtact</a>
+  <nav aria-label="Primary navigation">
+    <a href="#product">Product</a>
+    <a href="#open-source">Open Source</a>
+    <a href="#enterprise">Enterprise</a>
+    <a href="#evidence">Evidence</a>
+    <a href="mailto:contact@promtact.com">Contact</a>
+    <a class="nav-cta" href="mailto:contact@promtact.com?subject=Promtact%20system%20evaluation&amp;body=System%20and%20implementation%20language%3A%0ACurrent%20stage%3A%0AFailure%20mode%20or%20correctness%20risk%3A%0AExisting%20test%20approach%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your system</a>
   </nav>
 </header>
 
-<section class="hero">
-  <div>
-    <p class="eyebrow">Deterministic testing for distributed protocols</p>
+<main>
+  <section class="hero" id="product" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow">Deterministic verification for distributed systems</p>
+      <h1 id="hero-title">Make rare distributed-system failures reproducible.</h1>
+      <p class="lede">Promtact turns race conditions, network faults and persistence failures into deterministic tests your team can replay locally, in CI and inside its own infrastructure.</p>
+      <p class="trust-line">Self-hosted. Evidence-backed. No required control plane.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20system%20evaluation&amp;body=System%20and%20implementation%20language%3A%0ACurrent%20stage%3A%0AFailure%20mode%20or%20correctness%20risk%3A%0AExisting%20test%20approach%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your system</a>
+        <a class="btn" href="https://github.com/hunterinvariants/Promtact">Explore open source</a>
+      </div>
+    </div>
 
-    <h1>Find distributed-system failures before production does.</h1>
+    <figure class="product-visual">
+      <svg role="img" aria-labelledby="replay-title replay-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="replay-title">One failure. Reproduced everywhere.</title>
+        <desc id="replay-desc">A failure in a five-node cluster is captured as a seed, step and trace, then replayed with the same confirmed result on a laptop, in CI and by a teammate.</desc>
+        <foreignObject x="0" y="0" width="100%" height="100%">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="visual-shell">
+            <p class="visual-title">One failure. Reproduced everywhere.</p>
+            <div class="visual-flow">
+              <div class="visual-stage failure-stage">
+                <p class="visual-step">01 · Failure</p>
+                <p class="visual-label">Five-node cluster</p>
+                <div class="cluster-nodes" aria-hidden="true">
+                  <span class="node"></span>
+                  <span class="node node-failed"></span>
+                  <span class="node"></span>
+                  <span class="partition"></span>
+                  <span class="node"></span>
+                  <span class="node"></span>
+                </div>
+                <p class="failure-result">Rare safety failure</p>
+              </div>
 
-    <p class="lede">Turn rare race conditions, lost writes and partition failures
-    into deterministic runs your engineers can repeat locally and in CI. When a
-    safety property breaks, Promtact identifies the step and trace instead of
-    leaving a production incident that cannot be reproduced.</p>
+              <div class="visual-stage capture-stage">
+                <p class="visual-step">02 · Capture</p>
+                <p class="visual-label">Promtact coordinates</p>
+                <dl class="capture-list">
+                  <div><dt>Seed</dt><dd>42</dd></div>
+                  <div><dt>Step</dt><dd>318</dd></div>
+                  <div><dt>Trace</dt><dd>7B3A</dd></div>
+                </dl>
+              </div>
 
-    <p class="lede"><strong>A qualified Raft implementation ships as the worked
-    reference.</strong> Durable <code>io_uring</code> storage, a checksummed
-    write-ahead log, XDP and TC kernel fault injection, Jepsen linearizability,
-    and a bounded TLA+ model. Apache 2.0.</p>
+              <div class="visual-stage replay-stage">
+                <p class="visual-step">03 · Replay</p>
+                <p class="visual-label">Same trace. Same result.</p>
+                <div class="replay-targets">
+                  <div><strong>Laptop</strong><span>7B3A · Confirmed</span></div>
+                  <div><strong>CI</strong><span>7B3A · Confirmed</span></div>
+                  <div><strong>Teammate</strong><span>7B3A · Confirmed</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </foreignObject>
+      </svg>
+      <figcaption>A failing execution becomes a stable coordinate that can be checked wherever the team works.</figcaption>
+    </figure>
+  </section>
 
+  <section class="section-block" aria-labelledby="outcomes-title">
+    <div class="section-heading">
+      <p class="section-kicker">Outcomes</p>
+      <h2 id="outcomes-title">What your team gets</h2>
+      <p>Move correctness work from incident reconstruction into a repeatable engineering workflow with a result that can be shared, reviewed and rerun.</p>
+    </div>
+    <div class="card-grid outcome-grid">
+      <article class="card">
+        <span class="card-number">01</span>
+        <h3>Reproduce the exact failure</h3>
+        <p>Turn a rare production-like interleaving into a stable seed, step and trace your engineers can run again.</p>
+        <p class="card-detail">The reproduction can travel with the issue, giving the engineer who owns the fix the same execution that exposed it.</p>
+      </article>
+      <article class="card">
+        <span class="card-number">02</span>
+        <h3>Make correctness a CI gate</h3>
+        <p>Run declared faults and safety properties on every relevant change instead of relying on occasional manual fault testing.</p>
+        <p class="card-detail">A failing property can block the relevant change with a stable reproduction instead of a flaky symptom.</p>
+      </article>
+      <article class="card">
+        <span class="card-number">03</span>
+        <h3>Review evidence, not anecdotes</h3>
+        <p>Keep versioned scenarios, traces and qualification results with clearly stated technical bounds.</p>
+        <p class="card-detail">Reviewers can inspect the inputs, the result and the stated limits without reconstructing a verbal incident history.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-block" aria-labelledby="flow-title">
+    <div class="section-heading">
+      <p class="section-kicker">Workflow</p>
+      <h2 id="flow-title">From protocol to reproducible evidence</h2>
+      <p>Promtact focuses the campaign on the behavior that matters, then preserves any violation as an execution your team can revisit.</p>
+    </div>
+    <ol class="flow-grid">
+      <li><span class="flow-number">1</span><div><h3>Connect your system</h3><p>Model or adapt the protocol behavior that matters to your correctness boundary.</p></div></li>
+      <li><span class="flow-number">2</span><div><h3>Define properties and faults</h3><p>Describe what must never happen and which partitions, delays, losses or failures should be exercised.</p></div></li>
+      <li><span class="flow-number">3</span><div><h3>Replay every violation</h3><p>Return to the same seed, step and trace locally, in CI or during review.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="section-block" aria-labelledby="adoption-title">
+    <div class="section-heading">
+      <p class="section-kicker">Adoption</p>
+      <h2 id="adoption-title">One verification model. Two ways to adopt it.</h2>
+      <p>Start with the open-source framework or use the Enterprise path when installation, operations and qualification must fit a controlled self-hosted environment.</p>
+    </div>
+    <div class="adoption-grid">
+      <article class="adoption-card" id="open-source">
+        <p class="edition-label">Open Source</p>
+        <h3>Build verification into your codebase</h3>
+        <p>Use the framework directly, keep scenarios beside the implementation and run deterministic campaigns in the CI system you already operate.</p>
+        <p>The public engine exposes the verification model, reference integrations and evidence needed for a team to evaluate the approach before expanding its scope.</p>
+        <ul>
+          <li>Apache 2.0 framework</li>
+          <li>deterministic engine and CLI</li>
+          <li>worked Raft and Paxos references</li>
+          <li>checked process-adapter reference</li>
+          <li>runs locally and in existing CI</li>
+        </ul>
+        <div class="text-links">
+          <a class="btn" href="https://github.com/hunterinvariants/Promtact">View the source</a>
+          <a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Developer documentation</a>
+        </div>
+      </article>
+
+      <article class="adoption-card enterprise-card" id="enterprise">
+        <p class="edition-label">Enterprise</p>
+        <h3>Operate a controlled self-hosted product</h3>
+        <p>Use a verified distribution and lifecycle tooling when the verification environment must stay inside your infrastructure and meet an explicit operating boundary.</p>
+        <p>The Enterprise path adds the operational controls around the same deterministic model; it does not move executions or evidence into a required hosted service.</p>
+        <ul>
+          <li>self-hosted distribution</li>
+          <li>verified installation artifacts</li>
+          <li>TLS and protected configuration</li>
+          <li>status and diagnostic tooling</li>
+          <li>upgrade, rollback, backup and restore lifecycle</li>
+          <li>versioned qualification evidence</li>
+          <li>scoped support and integration work</li>
+        </ul>
+        <div class="text-links">
+          <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20enterprise%20deployment&amp;body=System%20and%20implementation%20language%3A%0ADeployment%20environment%3A%0AFailure%20mode%20or%20correctness%20risk%3A%0AIntegration%20and%20support%20needs%3A%0A">Discuss an enterprise deployment</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-block evidence-section" id="evidence" aria-labelledby="evidence-title">
+    <div class="section-heading">
+      <p class="section-kicker">Trust</p>
+      <h2 id="evidence-title">Built to be checked</h2>
+      <p>Promtact separates product claims from their evidence. Releases, scenarios and qualification results state which behavior was tested, on which commit, and within which bounds.</p>
+    </div>
+    <ul class="trust-points" aria-label="Verification principles">
+      <li>Deterministic replay</li>
+      <li>Bounded verification</li>
+      <li>Signed release artifacts</li>
+      <li>Self-hosted execution</li>
+    </ul>
+    <p class="evidence-copy">The objective is not a blanket promise that distributed software cannot fail. It is a narrower and checkable contract: define the safety boundary, exercise declared faults, retain the exact execution and state what the resulting evidence does—and does not—establish.</p>
+    <p class="evidence-copy">Because execution remains inside the team’s environment, its scenarios and results stay available under the organization’s own access, retention and review controls.</p>
+    <div class="text-links evidence-links">
+      <a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a>
+      <a href="/security/">Security boundary</a>
+      <a href="https://github.com/hunterinvariants/Promtact/releases">Release verification</a>
+    </div>
+  </section>
+
+  <section class="section-block upstream-section" aria-labelledby="upstream-title">
+    <div>
+      <p class="section-kicker">Engineering record</p>
+      <h2 id="upstream-title">Built by an upstream contributor</h2>
+      <p class="upstream-copy">Promtact is built by an engineer with eight pull requests merged upstream across curl, libssh2 and libuv—foundational networking projects used across the industry.</p>
+      <p>The two libuv contributions are an implementation and its v1.x backport. The record is presented as merged work, without turning individual reviews into inflated product claims.</p>
+      <p>This upstream record is public and reviewable, providing a concrete engineering history rather than an anonymous claim about networking experience.</p>
+      <a href="https://github.com/hunterinvariants">Review the public contribution profile</a>
+    </div>
+    <div class="proof-card" aria-label="Eight merged upstream pull requests">
+      <strong>8 merged pull requests</strong>
+      <span>3 curl · 3 libssh2 · 2 libuv</span>
+    </div>
+  </section>
+
+  <section class="final-cta" id="contact" aria-labelledby="cta-title">
+    <p class="section-kicker">Start with the hard case</p>
+    <h2 id="cta-title">Bring us the failure your current tests cannot reproduce.</h2>
+    <p>Start with the protocol, failure mode and correctness property that matters most. We will determine whether Promtact fits directly or whether a scoped adapter and verification campaign is required.</p>
     <div class="actions">
-      <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20protocol%20discussion&amp;body=Protocol%2C%20system%2C%20and%20implementation%20language%3A%0ACurrent%20stage%20%28design%2C%20test%2C%20or%20production%29%3A%0AMain%20correctness%20risk%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your protocol</a>
-      <a class="btn" href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a>
-      <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a>
+      <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20system%20evaluation&amp;body=System%20and%20implementation%20language%3A%0ACurrent%20stage%3A%0AFailure%20mode%20or%20correctness%20risk%3A%0AExisting%20test%20approach%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your system</a>
+      <a href="https://github.com/hunterinvariants/Promtact">Explore open source</a>
+      <a href="#evidence">Review evidence</a>
     </div>
-  </div>
-
-  <div class="demo">
-<pre class="term"><b>$ promtact simulate -config examples/leader-partition.json</b>
-scenario="leader partition and heal" seed=0x4A2C
-nodes=5 steps=1200
-leader=2 proposed=70 max_commit=42
-trace=<span class="ok">0ec85bc87c9895d2432ac5954c149f47</span>
-      <span class="ok">d2a1f1fed20d44a42483f12fcac6f0a4</span>
-fault="split[1]|[2 3 4 5]@[200,700)" dropped=945</pre>
-    <p class="note">The leader was cut off at step 200 and the majority carried
-    on without it. 945 messages were dropped by that partition, and the count is
-    reported because a fault that dropped nothing would have tested nothing.</p>
-  </div>
-</section>
-
-<h2>What changes for the business</h2>
-
-<div class="pillars">
-  <div class="pillar">
-    <h3>Diagnose instead of rediscover</h3>
-    <p>A rare failure becomes a stable seed, step and trace. Engineers can
-    return to the same execution while fixing it instead of waiting for it to
-    happen again.</p>
-  </div>
-  <div class="pillar">
-    <h3>Catch correctness failures before release</h3>
-    <p>Safety invariants run after every simulated step, exposing lost writes,
-    conflicting decisions and invalid state transitions before software reaches
-    customers.</p>
-  </div>
-  <div class="pillar">
-    <h3>Make fault campaigns repeatable in CI</h3>
-    <p>Virtual time, seeded schedules and declared network faults turn protocol
-    testing into a repeatable CI gate instead of an occasional lab exercise.</p>
-  </div>
-  <div class="pillar">
-    <h3>Give reviews concrete evidence</h3>
-    <p>Scenarios, trace hashes, model checks and recorded qualification runs give
-    architecture and risk reviews concrete results with clearly stated bounds.</p>
-  </div>
-</div>
-
-<h2>The bug you cannot reproduce</h2>
-
-<div class="prose2">
-  <div>
-    <p>A partition arrives during an election. A node crashes between the write
-    and the fsync. Two messages swap places on the wire. The cluster loses an
-    acknowledged write, and by the time anyone looks, the interleaving that
-    caused it is gone.</p>
-  </div>
-  <div>
-    <p>Promtact removes the part that makes this hard. Time is virtual,
-    scheduling is seeded, and every message loss and delay is drawn from that
-    seed. The same seed and caller actions produce the same execution, so a
-    failure found once is a failure you can return to.</p>
-  </div>
-</div>
-
-<h2>Where it fits</h2>
-
-<div class="pillars">
-  <div class="pillar">
-    <h3>Financial systems</h3>
-    <p>Ledger, payment and transaction engines where two accepted answers or a
-    lost acknowledged write become business-critical correctness failures.</p>
-  </div>
-  <div class="pillar">
-    <h3>Cloud and data infrastructure</h3>
-    <p>Databases, replicated storage, key-value systems, caches and control
-    planes that must remain safe through elections, retries and partitions.</p>
-  </div>
-  <div class="pillar">
-    <h3>Industrial and edge systems</h3>
-    <p>Message-passing protocols operating across intermittent, delayed or
-    one-way network links where production conditions are difficult to recreate.</p>
-  </div>
-  <div class="pillar">
-    <h3>Platform engineering</h3>
-    <p>Internal protocol libraries and shared infrastructure that need a reusable
-    way to define invariants, inject faults and preserve failing executions.</p>
-  </div>
-</div>
-
-<h2>Four things you plug in</h2>
-
-<div class="pillars">
-  <div class="pillar">
-    <h3>Your protocol</h3>
-    <p>Implement four methods for <code>dst.Cluster</code> and two for
-    <code>dst.Wire</code>. The engine supplies virtual time, a seeded schedule,
-    message loss and delay, and a reproducible execution trace.</p>
-    <p><span class="limit">Generic over your message type, so nothing is boxed
-    and the hot path allocates nothing.</span></p>
-  </div>
-  <div class="pillar">
-    <h3>Your properties</h3>
-    <p>A <code>dst.Invariant</code> is evaluated after every step. A failure
-    comes back as a <code>dst.Violation</code> carrying the property name, the
-    step, and the trace hash.</p>
-    <p><span class="limit">Invariants are safety properties. Progress is
-    asserted separately, where you decide what progress means.</span></p>
-  </div>
-  <div class="pillar">
-    <h3>Your faults</h3>
-    <p>Partitions, isolated nodes, one-way link failures, and time windows that
-    open and heal on their own. Declared once, applied deterministically.</p>
-    <p><span class="limit">Injectors are consulted after the engine draws each
-    message's loss and delay, so the same seed runs the same schedule with and
-    without a fault.</span></p>
-  </div>
-  <div class="pillar">
-    <h3>Your storage</h3>
-    <p>Implement <code>wal.Device</code> and inherit the checksummed record
-    format, sequence validation, and torn-tail recovery of <code>wal.Log</code>.</p>
-    <p><span class="limit">A conformance suite checks the ten properties the log
-    relies on before you trust it with consensus state.</span></p>
-  </div>
-</div>
-
-<h2>Cross-language protocol verification</h2>
-
-<div class="split">
-  <div>
-    <h3>Rust reference, checked end to end</h3>
-    <p>The versioned
-    <a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/PROCESS-ADAPTER-PROTOCOL.md">process adapter protocol</a>
-    lets protocol state live in a separate operating-system process while the
-    Go host retains virtual time, deterministic scheduling, fault injection and
-    trace hashing. The checked
-    <a href="https://github.com/hunterinvariants/Promtact/tree/main/examples/rust-tokenring-adapter">Rust token-ring adapter</a>
-    is the first reference implementation.</p>
-    <p class="note">This is a tested process boundary and reference adapter,
-    not a general Rust SDK or an in-process native binding.</p>
-  </div>
-  <div>
-    <h3>Commissioned C++ and Java integrations</h3>
-    <p>For teams whose protocols are implemented in C++ or Java, Promtact offers
-    scoped commercial engineering to build and qualify a process adapter around
-    the existing implementation. A scope can include wire mapping, invariants,
-    deterministic fault campaigns, a CI gate and a versioned evidence report.</p>
-    <p class="note">No off-the-shelf C++ or Java SDK ships today. Deliverables,
-    licensing, support boundaries, milestones and acceptance evidence are agreed
-    for each engagement before implementation begins.</p>
-  </div>
-</div>
-
-<h2>A run is a file, not a test you have to rewrite</h2>
-
-<figure class="diagram">
-<svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg" role="img"
-     aria-label="One scenario file drives three separate machines - a laptop, a CI runner and a colleague's checkout - and all three produce the same trace hash.">
-  <defs>
-    <marker id="d-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
-      <path class="d-head" d="M0,0 L9,4.5 L0,9 Z"/>
-    </marker>
-  </defs>
-
-  <rect class="d-file" x="460" y="6" width="280" height="104" rx="3"/>
-  <text class="d-k" x="478" y="32">scenario.json</text>
-  <text class="d-m" x="478" y="58">seed   0x4A2C</text>
-  <text class="d-m" x="478" y="78">nodes  5</text>
-  <text class="d-m" x="478" y="98">split  [200,700)</text>
-
-  <path class="d-line" d="M600,110 V142"/>
-  <path class="d-line" d="M180,142 H1020"/>
-  <path class="d-line" d="M180,142 V166" marker-end="url(#d-arrow)"/>
-  <path class="d-line" d="M600,142 V166" marker-end="url(#d-arrow)"/>
-  <path class="d-line" d="M1020,142 V166" marker-end="url(#d-arrow)"/>
-
-  <rect class="d-box" x="70" y="178" width="220" height="54" rx="3"/>
-  <text class="d-t" x="180" y="202" text-anchor="middle">your laptop</text>
-  <text class="d-s" x="180" y="221" text-anchor="middle">go test ./...</text>
-
-  <rect class="d-box" x="490" y="178" width="220" height="54" rx="3"/>
-  <text class="d-t" x="600" y="202" text-anchor="middle">a CI runner</text>
-  <text class="d-s" x="600" y="221" text-anchor="middle">nightly sweep</text>
-
-  <rect class="d-box" x="910" y="178" width="220" height="54" rx="3"/>
-  <text class="d-t" x="1020" y="202" text-anchor="middle">a colleague</text>
-  <text class="d-s" x="1020" y="221" text-anchor="middle">fresh checkout</text>
-
-  <path class="d-line" d="M180,232 V248" marker-end="url(#d-arrow)"/>
-  <path class="d-line" d="M600,232 V248" marker-end="url(#d-arrow)"/>
-  <path class="d-line" d="M1020,232 V248" marker-end="url(#d-arrow)"/>
-
-  <rect class="d-out" x="70" y="256" width="220" height="40" rx="3"/>
-  <text class="d-h" x="180" y="281" text-anchor="middle">trace 0ec85bc8</text>
-
-  <rect class="d-out" x="490" y="256" width="220" height="40" rx="3"/>
-  <text class="d-h" x="600" y="281" text-anchor="middle">trace 0ec85bc8</text>
-
-  <rect class="d-out" x="910" y="256" width="220" height="40" rx="3"/>
-  <text class="d-h" x="1020" y="281" text-anchor="middle">trace 0ec85bc8</text>
-</svg>
-<figcaption>The seed and the faults live in the file, so the execution is a
-property of the file rather than of the machine that ran it. Three machines,
-one hash. A hash that differs is itself the bug report.</figcaption>
-</figure>
-
-<div class="split">
-  <div>
-    <p>The seed, the topology, the faults and when they open are declared once.
-    Anyone holding the file reproduces the run exactly, on any machine, without
-    reading the test that produced it.</p>
-<pre class="term">{"seed": "0x4A2C", "nodes": 5, "steps": 1200,
- "proposeEvery": 17,
- "faults": [{"type": "split",
-             "a": [1], "b": [2,3,4,5],
-             "start": 200, "end": 700}]}</pre>
-  </div>
-  <div>
-    <p>When a property breaks, the engine stops on the step it broke on and
-    hands back the coordinate rather than a message you have to reproduce by
-    guesswork.</p>
-<pre class="term"><b>$ go run .</b>
-violated=<span class="stop">"one adopted value"</span> step=1
-trace=29f79b95c06cc89754c99c2b0ed7b107
-      da682cbe28b7d728830cbb9430855c93</pre>
-    <p class="note">That output comes from the starter project
-    <code>promtact new</code> generates. Its placeholder protocol is unsafe when
-    two nodes propose at once, and the generated test suite requires the engine
-    to catch it.</p>
-  </div>
-</div>
-
-<h2>Not just Raft</h2>
-
-<div class="prose2">
-  <div>
-    <p>The repository carries a complete single-decree Paxos implementation
-    driven through the same engine, with its own invariants, its own scenario
-    file, and partition campaigns across a thousand seeds. Sixty lines of
-    adapter connect it.</p>
-  </div>
-  <div>
-    <p>Its campaigns assert that a proposer actually had to abandon its own
-    value for one already accepted elsewhere. Across two hundred seeds that
-    happens about three thousand times, which is the situation Paxos exists to
-    survive.</p>
-  </div>
-</div>
-
-<h2>Proven as a downstream dependency</h2>
-
-<div class="split">
-  <div>
-    <h3>No local shortcut</h3>
-    <p>The checked-in
-    <a href="https://github.com/hunterinvariants/Promtact/tree/main/examples/tokenring-consumer">token-ring consumer</a>
-    is a separate Go module. Its <code>go.mod</code> pins Promtact v0.3.6, has no
-    local <code>replace</code> directive, and the simulation imports only the
-    public <code>dst</code> package.</p>
-<pre class="term"><b>$ go list -m all</b>
-github.com/hunterinvariants/promtact/examples/tokenring-consumer
-github.com/hunterinvariants/promtact v0.3.6</pre>
-  </div>
-  <div>
-    <h3>A failure an engineer can act on</h3>
-    <p>An intentional negative control gives two nodes the token. The invariant
-    stops the run immediately and reports the property, virtual step, trace and
-    conflicting protocol state.</p>
-<pre class="term">invariant=<span class="stop">"at-most-one-token"</span> step=1
-trace=<span class="ok">05fdf979afc105899fe55c01094316c4d</span>
-      <span class="ok">b984fb3c2fc61ccb3012b6167ea1eb5</span>
-cause="token held by nodes [2 3]"</pre>
-  </div>
-</div>
-
-<dl class="facts">
-  <div>
-    <dt>Dependency graph</dt>
-    <dd>Two modules: the consumer and Promtact v0.3.6.</dd>
-  </div>
-  <div>
-    <dt>Promtact surface compiled</dt>
-    <dd>One public package: <code>github.com/hunterinvariants/promtact/dst</code>.</dd>
-  </div>
-  <div>
-    <dt>Clean-room qualification</dt>
-    <dd>Go 1.25.13 on Debian Bookworm, fresh module and build caches, read-only
-    source mount.</dd>
-  </div>
-  <div>
-    <dt>Test binary</dt>
-    <dd>4,361,726 bytes on linux/amd64 in that pinned clean-room build.</dd>
-  </div>
-</dl>
-
-<p class="note">The negative-control trace retains the seed and
-caller actions for exact reproduction. The binary size is specific to this
-pinned toolchain and target, not a cross-platform guarantee. The consumer, its
-deterministic campaigns and the diagnostic control are reviewed source.</p>
-
-<h2>Go schedules it. Rust runs it. The trace stays identical.</h2>
-
-<div class="split">
-  <div>
-    <h3>One campaign across two implementations</h3>
-    <p>The Go token-ring consumer and the Rust subprocess use the same seed,
-    maximum delay, timed partition, node order and 200-step limit. Both produce
-    the same trace, fault name, non-zero drop count and empty pending queue.</p>
-<pre class="term">host=Go adapter=<span class="ok">Rust</span> seed=29157 step=200
-fault="split[1]|[2 3]@[20,60)" dropped=1 pending=0
-trace=<span class="ok">77a8aabf3cbd3ad3ee4b4543d36564c0</span>
-      <span class="ok">2a4888940d5f05c048db37eee56bada8</span></pre>
-  </div>
-  <div>
-    <h3>The failure path crosses the boundary too</h3>
-    <p>A separate negative control injects a second valid token into the real
-    Rust process. The Rust adapter reports the declared invariant and conflicting
-    protocol state back through the framed process protocol.</p>
-<pre class="term">invariant=<span class="stop">"at-most-one-token"</span>
-cause="token held by nodes [1, 2]"</pre>
-    <p class="note">The complete matrix runs in CI with pinned Go and Rust
-    toolchains. A read-only clean-room run with fresh Cargo, Go module and build
-    caches reproduced the same result.</p>
-  </div>
-</div>
-
-<h2>What has been measured</h2>
-
-<dl class="facts">
-  <div>
-    <dt>Bounded model check</dt>
-    <dd>46,667,923 states generated, 6,121,927 distinct, state graph exhausted,
-    no invariant violation.</dd>
-  </div>
-  <div>
-    <dt>Engine equivalence</dt>
-    <dd>7,000 paired runs compare the engine against the qualified simulator at
-    every tick and require a bit-identical execution.</dd>
-  </div>
-  <div>
-    <dt>Linearizability</dt>
-    <dd>Jepsen with the Knossos register checker reports <code>valid? true</code>
-    under leader kill and network loss, re-checked in CI on every change to the
-    server or the workload.</dd>
-  </div>
-  <div>
-    <dt>Deterministic sweep</dt>
-    <dd>1,000 seeds at 1,000 steps each, run in parallel, no divergence.</dd>
-  </div>
-  <div>
-    <dt>Durable NVMe writes</dt>
-    <dd>10,000 operations at 7,971 ops/s, p50 117 us, p99 196 us, one completed
-    <code>FSYNC</code> each.</dd>
-  </div>
-  <div>
-    <dt>Durable file writes</dt>
-    <dd>1,000 operations at 2,189 ops/s, p50 450 us, p99 544 us, on ext4.</dd>
-  </div>
-  <div>
-    <dt>Record encoding</dt>
-    <dd>23.34 ns per operation, zero allocations.</dd>
-  </div>
-  <div>
-    <dt>Kernel fault injection</dt>
-    <dd>Live XDP drop and IPv4 partition, TC drop and corruption, and
-    <code>netem</code> delay and loss were measured on an isolated veth pair.
-    The controller refused resources it did not own, and every run cleaned up
-    its own resources.</dd>
-  </div>
-</dl>
-
-<p class="note">Every figure names the run that produced it in
-<a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">EVIDENCE.md</a>,
-with the host, the commit and the bounds it holds under. Core simulations run
-in your environment and generate their evidence locally.</p>
-
-<h2>Deployment and trust boundary</h2>
-
-<div class="pillars">
-  <div class="pillar">
-    <h3>Runs in your environment</h3>
-    <p>The deterministic engine is a Go library and command-line tool for local
-    development and CI. Core simulation runs require no hosted control plane or
-    Promtact account.</p>
-  </div>
-  <div class="pillar">
-    <h3>Works inside restricted networks</h3>
-    <p>Once the source or release artifacts are available inside your boundary,
-    deterministic scenarios and replays do not depend on an external service.</p>
-  </div>
-  <div class="pillar">
-    <h3>Verifiable releases</h3>
-    <p>Published binaries carry checksums, GitHub build attestations and public
-    source, so teams can verify what they run before admitting it to CI.</p>
-  </div>
-  <div class="pillar">
-    <h3>Evidence with stated bounds</h3>
-    <p>The security policy and evidence ledger state which behavior was tested,
-    on which host and commit, and what each result establishes.</p>
-  </div>
-</div>
-
-<h2>Who wrote this</h2>
-
-<div class="prose2">
-  <div>
-    <p>Promtact is the work of one person. The same hands have five patches
-    merged into <a href="https://github.com/curl/curl">curl</a> and
-    <a href="https://github.com/libssh2/libssh2">libssh2</a>, upstream on
-    master, through maintainer review.</p>
-  </div>
-  <div>
-    <p class="note">Two of them free state that nothing was freeing. One is a
-    test that pins down whether an authorisation scope survives a redirect.
-    Those are defects that need a particular sequence before they show
-    themselves, which is the reason the engine above exists.</p>
-  </div>
-</div>
-
-<table>
-<tr><th>Project</th><th>Merged upstream</th></tr>
-<tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/c7c42afab91c46e6baaa0e2801626e13acd6c30a"><code>file: support directory listing on Windows</code></a></td></tr>
-<tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/419f6404d46d8f5e404988149a0881d015113bb9"><code>schannel: reuse the send buffer</code></a></td></tr>
-<tr><td>curl</td><td><a href="https://github.com/curl/curl/commit/574749016d6286c7a075041ef70edef7ee50c4be"><code>tests: verify AWS SigV4 redirect auth scope</code></a></td></tr>
-<tr><td>libssh2</td><td><a href="https://github.com/libssh2/libssh2/commit/75b472cf0e8b790d60d485d5b2332a957beaa2d7"><code>session: free keyboard-interactive state in session_free()</code></a></td></tr>
-<tr><td>libssh2</td><td><a href="https://github.com/libssh2/libssh2/commit/fb2b6d576e220b9da681766ddc965e6d693142ff"><code>test_hostkey: free decoded expected hostkey</code></a></td></tr>
-</table>
-
-<h2>How to engage</h2>
-
-<div class="pillars engagement-options">
-  <div class="pillar">
-    <h3>Adopt the open-source framework</h3>
-    <p>Use the Apache 2.0 engine directly, start from the working protocol
-    examples, including the checked Rust process reference, and keep simulations
-    in the same repository and CI system as your implementation.</p>
-    <p>The framework stays in your environment, alongside the scenarios and
-    evidence produced by your own runs.</p>
-  </div>
-  <div class="pillar">
-    <h3>Discuss a scoped verification engagement</h3>
-    <p>An engagement can include a protocol adapter, safety invariants,
-    deterministic fault campaigns, CI-ready scenarios and a versioned evidence
-    report.</p>
-    <p>For a non-Go system, work starts with the process lifecycle, message
-    schema, invariants and build constraints. Scope, milestones and acceptance
-    evidence are agreed before implementation begins.</p>
-  </div>
-</div>
-
-<div class="actions">
-  <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20protocol%20discussion&amp;body=Protocol%2C%20system%2C%20and%20implementation%20language%3A%0ACurrent%20stage%20%28design%2C%20test%2C%20or%20production%29%3A%0AMain%20correctness%20risk%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your protocol</a>
-  <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Developer guide</a>
-  <a class="btn" href="/security/">Review the security boundary</a>
-</div>
-
-<h2>Start</h2>
-
-<div class="split">
-  <div>
-    <p>A released binary needs no Go, no compiler and no account. The installer
-    refuses to install anything whose checksum does not match, and checks the
-    build attestation when it can:</p>
-<pre class="term"><b>$ git clone https://github.com/hunterinvariants/Promtact.git</b>
-<b>$ cd Promtact</b>
-<b>$ less scripts/install.sh</b>
-<b>$ ./scripts/install.sh</b>
-
-== checking the checksum
-   <span class="ok">ok</span>  2d28e7e93e9eebe6b6e7bef82cecbf6fd408c6cd
-       4c8c8e3d4e632b0a5c9d49d2
-== checking the build attestation
-   <span class="ok">ok</span>  built by hunterinvariants/Promtact/.github/
-       workflows/release.yml@refs/tags/v0.3.6</pre>
-    <p class="note">Reading it before running it is the point, which is why
-    there is no one-line pipe from the network into a shell. A script you have
-    not read cannot prove anything to you, and proving where a binary came from
-    is what this one is for.</p>
-  </div>
-  <div>
-    <p>From source instead, in that same checkout: the suite, the non-Raft
-    example, and a scenario.</p>
-<pre class="term"><b>$ go test ./...</b>
-<b>$ go test ./examples/paxos -v</b>
-<b>$ go run ./cmd/promtact simulate \
-    -config examples/leader-partition.json</b></pre>
-    <p>Or start your own from a skeleton that builds, runs and tests
-    immediately:</p>
-<pre class="term"><b>$ go run ./cmd/promtact new ../mysystem</b>
-<b>$ cd ../mysystem</b>
-<b>$ go mod tidy && go test ./... -v</b></pre>
-    <p class="note">Every command lives behind one binary. Commands that need
-    kernel facilities a build cannot reach are absent rather than listed and
-    failing.</p>
-  </div>
-</div>
-
-<div class="actions">
-  <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20protocol%20discussion&amp;body=Protocol%2C%20system%2C%20and%20implementation%20language%3A%0ACurrent%20stage%20%28design%2C%20test%2C%20or%20production%29%3A%0AMain%20correctness%20risk%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your protocol</a>
-  <a class="btn" href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a>
-  <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/API.md">What is contractual</a>
-</div>
-
-<footer class="site">
-  <div class="cols">
-    <div>
-      <h3>Product</h3>
-      <p><a href="/">Overview</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact">Source on GitHub</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a></p>
-    </div>
-    <div>
-      <h3>Security</h3>
-      <p><a href="/security/">Security policy</a></p>
-      <p><a href="/.well-known/security.txt">security.txt</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md">SECURITY.md</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/LICENSE">Licence</a></p>
-    </div>
-    <div>
-      <h3>Contact</h3>
-      <p><a href="mailto:contact@promtact.com">contact@promtact.com</a></p>
-      <p><a href="/privacy/">Privacy</a></p>
-      <p><a href="/terms/">Terms of use</a></p>
-      <p><a href="/cookies/">Cookies</a></p>
-    </div>
-  </div>
-  <p class="colophon">&copy; 2026 Promtact, Zurich, Switzerland.
-  No cookies, no analytics, no third-party requests on this site.</p>
-</footer>
-
-</div>
-</body>
-</html>
+  </section>
++</main>
++
++<footer class="site">
++  <div class="cols">
++    <div><h3>Product</h3><p><a href="#product">Product</a></p><p><a href="#open-source">Open Source</a></p><p><a href="#enterprise">Enterprise</a></p></div>
++    <div><h3>Resources</h3><p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a></p><p><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a></p><p><a href="/security/">Security</a></p></div>
++    <div><h3>Legal and contact</h3><p><a href="/privacy/">Privacy</a></p><p><a href="/terms/">Terms</a></p><p><a href="/cookies/">Cookies</a></p><p><a href="mailto:contact@promtact.com">contact@promtact.com</a></p></div>
++  </div>
++  <p class="colophon">&copy; 2026 Promtact, Zurich, Switzerland. No cookies, no analytics, no third-party requests on this site.</p>
++</footer>
++
++</div>
++</body>
++</html>
