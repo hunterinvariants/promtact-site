@@ -1396,55 +1396,41 @@ table tr:last-child td {
 /* ---------- Security policy ---------- */
 
 .policy-shell {
-  max-width: 1440px;
+  max-width: 1080px;
 }
 
 .policy-page header.site nav a.active {
   color: var(--ink);
 }
 
-.policy-layout {
-  display: grid;
-  grid-template-columns: minmax(210px, 250px) minmax(0, 860px);
-  gap: clamp(42px, 7vw, 96px);
-  align-items: start;
-  justify-content: center;
-}
-
-.policy-toc {
-  position: sticky;
-  top: 24px;
-  overflow: hidden;
+.policy-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: baseline;
+  margin: 30px 0 44px;
+  padding: 14px 16px;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--surface);
 }
 
-.policy-toc > p {
-  margin: 0;
-  padding: 16px 18px;
+.policy-jump strong {
   color: var(--ink-3);
   font: 600 11px/1.4 var(--mono);
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
-.policy-toc nav {
-  display: grid;
-}
-
-.policy-toc a {
-  padding: 11px 18px;
-  border-top: 1px solid var(--line);
+.policy-jump a {
   color: var(--ink-2);
   font-size: 13.5px;
   line-height: 1.4;
-  text-decoration: none;
+  text-underline-offset: 3px;
 }
 
-.policy-toc a:hover,
-.policy-toc a:focus-visible {
-  background: var(--raised);
+.policy-jump a:hover,
+.policy-jump a:focus-visible {
   color: var(--ink);
 }
 
@@ -1909,18 +1895,6 @@ table tr:last-child td {
     align-items: start;
   }
 
-  .policy-layout {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-
-  .policy-toc {
-    position: static;
-  }
-
-  .policy-toc nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 700px) {
@@ -1945,10 +1919,6 @@ table tr:last-child td {
     grid-column: auto;
     grid-template-columns: 1fr;
     align-items: start;
-  }
-
-  .policy-toc nav {
-    grid-template-columns: 1fr;
   }
 
   .support-row {
