@@ -84,7 +84,7 @@ go run ./cmd/promtact simulate \
     </div>
     <pre class="code-panel code-panel-wide"><code>go test ./...
 go test -race ./...
-go run ./cmd/promtact simulate -config examples/leader-partition.json</code></pre>
+(cd examples/tokenring-consumer &amp;&amp; go test -count=20 ./...)</code></pre>
   </section>
 
   <section class="page-section" aria-labelledby="languages-title">
@@ -97,7 +97,7 @@ go run ./cmd/promtact simulate -config examples/leader-partition.json</code></pr
       <div class="support-row" role="row"><strong role="cell">Go</strong><span role="cell">Native framework and CLI</span><span role="cell">Library-level verification</span></div>
       <div class="support-row" role="row"><strong role="cell">Rust</strong><span role="cell">Tested reference adapter</span><span role="cell">Process adapter, not a general Rust SDK</span></div>
       <div class="support-row" role="row"><strong role="cell">C++</strong><span role="cell">Scoped enterprise integration</span><span role="cell">Process adapter, no off-the-shelf SDK</span></div>
-      <div class="support-row" role="row"><strong role="cell">Java</strong><span role="cell">Scoped enterprise integration</span><span role="cell">Process adapter; Java runtime also supports verification tooling</span></div>
+      <div class="support-row" role="row"><strong role="cell">Java</strong><span role="cell">Scoped enterprise integration</span><span role="cell">Process adapter, no off-the-shelf SDK</span></div>
     </div>
   </section>
 
@@ -109,7 +109,7 @@ go run ./cmd/promtact simulate -config examples/leader-partition.json</code></pr
     <div class="comparison-grid">
       <article class="featured"><h3>Promtact</h3><p>Deterministic simulation and replay with invariants checked after each step. A failed execution becomes a stable seed, step and trace.</p></article>
       <article><h3>Chaos engineering</h3><p>Perturbs a live or staging system to observe resilience. Valuable for operational behavior, but not inherently deterministic or replayable.</p></article>
-      <article><h3>External consistency checking</h3><p>Tools such as Jepsen and Knossos analyze observed histories. They are complementary and also appear in Promtact's own qualification work.</p></article>
+      <article><h3>External consistency checking</h3><p>Tools such as Jepsen and Knossos analyze observed histories. They complement deterministic simulation. <a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Review their role in Promtact qualification.</a></p></article>
       <article><h3>Managed testing platforms</h3><p>Provide a hosted testing environment. Promtact keeps local and CI execution available, while Enterprise adds a self-hosted operational boundary.</p></article>
     </div>
   </section>
