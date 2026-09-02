@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Promtact for developers</title>
+<meta name="description" content="Run deterministic distributed-systems verification locally and in CI, reproduce failures by seed and connect Go, Rust, C++ or Java systems.">
+<link rel="stylesheet" href="/style.css?v=audience-pages">
+</head>
+<body class="product-page">
+<div class="wrap">
+
+<header class="site">
+  <a class="brand" href="/" aria-label="Promtact home">promtact</a>
+  <nav aria-label="Primary navigation">
+    <a href="/">Product</a>
+    <a class="active" href="/developers/">Developers</a>
+    <a href="/enterprise/">Enterprise</a>
+    <a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a>
+    <a href="/security/">Security</a>
+    <a class="nav-cta" href="https://github.com/hunterinvariants/Promtact">View source</a>
+  </nav>
+</header>
+
+<main>
+  <section class="page-hero" aria-labelledby="page-title">
+    <div>
+      <p class="eyebrow">For developers</p>
+      <h1 id="page-title">See a failure become a test.</h1>
+      <p class="lede">Promtact runs a distributed system under deterministic virtual time and injected faults. If a property fails, the seed, step and trace turn that execution into a result another engineer can run again.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/hunterinvariants/Promtact">Explore the repository</a>
+        <a class="btn" href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Read the developer guide</a>
+      </div>
+    </div>
+    <pre class="code-panel" aria-label="Promtact quick start"><code>git clone https://github.com/hunterinvariants/Promtact.git
+cd Promtact
+
+go test ./examples/paxos -v
+go run ./cmd/promtact simulate \
+  -config examples/leader-partition.json</code></pre>
+  </section>
+
+  <section class="page-section" aria-labelledby="model-title">
+    <div class="section-heading">
+      <p class="section-kicker">Verification model</p>
+      <h2 id="model-title">Four parts you can replace</h2>
+      <p>Connect the system behavior that matters, state the safety boundary, choose the faults and preserve the resulting execution.</p>
+    </div>
+    <div class="fact-grid four-up">
+      <article><h3>Protocol</h3><p>Model the messages, nodes and transitions that define the system.</p></article>
+      <article><h3>Properties</h3><p>Evaluate invariants after each step and name the exact violation.</p></article>
+      <article><h3>Faults</h3><p>Exercise partitions, isolation, one-way links and bounded fault windows.</p></article>
+      <article><h3>Storage</h3><p>Bring the persistence behavior inside the same repeatable execution.</p></article>
+    </div>
+  </section>
+
+  <section class="page-section split-section" aria-labelledby="scenario-title">
+    <div>
+      <p class="section-kicker">Concrete input</p>
+      <h2 id="scenario-title">A scenario is reviewable data</h2>
+      <p>Version the seed, node count, step budget and declared faults beside the code. The same input can run on a laptop, in CI and during review.</p>
+    </div>
+    <pre class="code-panel"><code>{
+  "seed": "0x4A2C",
+  "nodes": 5,
+  "steps": 1200,
+  "proposeEvery": 17,
+  "faults": [{
+    "type": "split",
+    "a": [1],
+    "b": [2, 3, 4, 5],
+    "start": 200,
+    "end": 700
+  }]
+}</code></pre>
+  </section>
+
+  <section class="page-section" aria-labelledby="ci-title">
+    <div class="section-heading">
+      <p class="section-kicker">Existing CI</p>
+      <h2 id="ci-title">Promote a reproduction into a gate</h2>
+      <p>No required hosted runner or control plane. Keep deterministic tests and scenario files in the repository and run them in the CI system you already operate.</p>
+    </div>
+    <pre class="code-panel code-panel-wide"><code>go test ./...
+go test -race ./...
+go run ./cmd/promtact simulate -config examples/leader-partition.json</code></pre>
+  </section>
+
+  <section class="page-section" aria-labelledby="languages-title">
+    <div class="section-heading">
+      <p class="section-kicker">Language support</p>
+      <h2 id="languages-title">Clear about what is native and what is integrated</h2>
+    </div>
+    <div class="support-table" role="table" aria-label="Promtact language support">
+      <div class="support-row support-head" role="row"><span role="columnheader">Language</span><span role="columnheader">Current path</span><span role="columnheader">Boundary</span></div>
+      <div class="support-row" role="row"><strong role="cell">Go</strong><span role="cell">Native framework and CLI</span><span role="cell">Library-level verification</span></div>
+      <div class="support-row" role="row"><strong role="cell">Rust</strong><span role="cell">Tested reference adapter</span><span role="cell">Process adapter, not a general Rust SDK</span></div>
+      <div class="support-row" role="row"><strong role="cell">C++</strong><span role="cell">Scoped enterprise integration</span><span role="cell">Process adapter, no off-the-shelf SDK</span></div>
+      <div class="support-row" role="row"><strong role="cell">Java</strong><span role="cell">Scoped enterprise integration</span><span role="cell">Process adapter; Java runtime also supports verification tooling</span></div>
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="difference-title">
+    <div class="section-heading">
+      <p class="section-kicker">Where it fits</p>
+      <h2 id="difference-title">Different tools answer different questions</h2>
+    </div>
+    <div class="comparison-grid">
+      <article class="featured"><h3>Promtact</h3><p>Deterministic simulation and replay with invariants checked after each step. A failed execution becomes a stable seed, step and trace.</p></article>
+      <article><h3>Chaos engineering</h3><p>Perturbs a live or staging system to observe resilience. Valuable for operational behavior, but not inherently deterministic or replayable.</p></article>
+      <article><h3>External consistency checking</h3><p>Tools such as Jepsen and Knossos analyze observed histories. They are complementary and also appear in Promtact's own qualification work.</p></article>
+      <article><h3>Managed testing platforms</h3><p>Provide a hosted testing environment. Promtact keeps local and CI execution available, while Enterprise adds a self-hosted operational boundary.</p></article>
+    </div>
+  </section>
+
+  <section class="final-cta" aria-labelledby="developer-cta-title">
+    <p class="section-kicker">Start with evidence</p>
+    <h2 id="developer-cta-title">Run the reference systems before adapting your own.</h2>
+    <p>Inspect the source, scenarios and stated evidence bounds. If the model fits, connect the smallest correctness boundary that can reproduce your hard case.</p>
+    <div class="actions"><a class="btn btn-primary" href="https://github.com/hunterinvariants/Promtact">Open GitHub</a><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Review evidence</a></div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="cols">
+    <div><h3>Product</h3><p><a href="/">Overview</a></p><p><a href="/developers/">Developers</a></p><p><a href="/enterprise/">Enterprise</a></p></div>
+    <div><h3>Resources</h3><p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a></p><p><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a></p><p><a href="/security/">Security</a></p></div>
+    <div><h3>Legal and contact</h3><p><a href="/privacy/">Privacy</a></p><p><a href="/terms/">Terms</a></p><p><a href="/cookies/">Cookies</a></p><p><a href="mailto:contact@promtact.com">contact@promtact.com</a></p></div>
+  </div>
+  <p class="colophon">&copy; 2026 Promtact, Zurich, Switzerland. No cookies, no analytics, no third-party requests on this site.</p>
+</footer>
+
+</div>
+</body>
+</html>

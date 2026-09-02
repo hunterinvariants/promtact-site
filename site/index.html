@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Promtact - reproducible verification for distributed systems</title>
 <meta name="description" content="Turn rare distributed-system failures into deterministic tests your team can replay locally, in CI and inside its own infrastructure.">
-<link rel="stylesheet" href="/style.css?v=product-home">
+<link rel="stylesheet" href="/style.css?v=audience-pages">
 </head>
 <body class="home">
 <div class="wrap">
@@ -14,8 +14,8 @@
   <a class="brand" href="/" aria-label="Promtact home">promtact</a>
   <nav aria-label="Primary navigation">
     <a href="#product">Product</a>
-    <a href="#open-source">Open Source</a>
-    <a href="#enterprise">Enterprise</a>
+    <a href="/developers/">Developers</a>
+    <a href="/enterprise/">Enterprise</a>
     <a href="#evidence">Evidence</a>
     <a href="/security/">Security</a>
     <a href="mailto:contact@promtact.com">Contact</a>
@@ -27,12 +27,17 @@
   <section class="hero" id="product" aria-labelledby="hero-title">
     <div class="hero-copy">
       <p class="eyebrow">Deterministic verification for distributed systems</p>
-      <h1 id="hero-title">Make rare distributed-system failures reproducible.</h1>
+      <h1 id="hero-title">The failure happened once. Reproduce it every time.</h1>
       <p class="lede">Promtact turns race conditions, network faults and persistence failures into deterministic tests your team can replay locally, in CI and inside its own infrastructure.</p>
-      <p class="trust-line">Self-hosted. Evidence-backed. No required control plane.</p>
+      <p class="business-line">Spend less time reconstructing rare incidents. Give release owners a repeatable result they can inspect before the next change ships.</p>
+      <ul class="trust-badges" aria-label="Promtact operating principles">
+        <li>Self-hosted</li>
+        <li>Evidence-backed</li>
+        <li>No required control plane</li>
+      </ul>
       <div class="actions">
         <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20system%20evaluation&amp;body=System%20and%20implementation%20language%3A%0ACurrent%20stage%3A%0AFailure%20mode%20or%20correctness%20risk%3A%0AExisting%20test%20approach%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your system</a>
-        <a class="btn" href="https://github.com/hunterinvariants/Promtact">Explore open source</a>
+        <a class="btn" href="/developers/">See how it works</a>
       </div>
     </div>
 
@@ -96,19 +101,16 @@
         <span class="card-number">01</span>
         <h3>Reproduce the exact failure</h3>
         <p>Turn a rare production-like interleaving into a stable seed, step and trace your engineers can run again.</p>
-        <p class="card-detail">The reproduction can travel with the issue, giving the engineer who owns the fix the same execution that exposed it.</p>
       </article>
       <article class="card">
         <span class="card-number">02</span>
         <h3>Make correctness a CI gate</h3>
         <p>Run declared faults and safety properties on every relevant change instead of relying on occasional manual fault testing.</p>
-        <p class="card-detail">A failing property can block the relevant change with a stable reproduction instead of a flaky symptom.</p>
       </article>
       <article class="card">
         <span class="card-number">03</span>
         <h3>Review evidence, not anecdotes</h3>
         <p>Keep versioned scenarios, traces and qualification results with clearly stated technical bounds.</p>
-        <p class="card-detail">Reviewers can inspect the inputs, the result and the stated limits without reconstructing a verbal incident history.</p>
       </article>
     </div>
   </section>
@@ -137,17 +139,15 @@
         <p class="edition-label">Open Source</p>
         <h3>Build verification into your codebase</h3>
         <p>Use the framework directly, keep scenarios beside the implementation and run deterministic campaigns in the CI system you already operate.</p>
-        <p>The public engine exposes the verification model, reference integrations and evidence needed for a team to evaluate the approach before expanding its scope.</p>
         <ul>
           <li>Apache 2.0 framework</li>
           <li>deterministic engine and CLI</li>
           <li>worked Raft and Paxos references</li>
-          <li>checked process-adapter reference</li>
           <li>runs locally and in existing CI</li>
         </ul>
         <div class="text-links">
-          <a class="btn" href="https://github.com/hunterinvariants/Promtact">View the source</a>
-          <a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Developer documentation</a>
+          <a class="btn" href="/developers/">Developer path</a>
+          <a href="https://github.com/hunterinvariants/Promtact">View the source</a>
         </div>
       </article>
 
@@ -155,22 +155,15 @@
         <p class="edition-label">Enterprise</p>
         <h3>Operate a controlled self-hosted product</h3>
         <p>Use a verified distribution and lifecycle tooling when the verification environment must stay inside your infrastructure and meet an explicit operating boundary.</p>
-        <p>The Enterprise path adds the operational controls around the same deterministic model; it does not move executions or evidence into a required hosted service.</p>
-        <p>Use Promtact natively with Go. Integrate other systems through the process-adapter boundary: a tested Rust reference is available today, while C++ and Java integrations are delivered as scoped enterprise engineering.</p>
         <ul>
           <li>self-hosted distribution</li>
           <li>verified installation artifacts</li>
           <li>native Go verification</li>
-          <li>Rust reference adapter</li>
-          <li>scoped C++ and Java integrations</li>
-          <li>TLS and protected configuration</li>
           <li>status and diagnostic tooling</li>
           <li>upgrade, rollback, backup and restore lifecycle</li>
-          <li>versioned qualification evidence</li>
-          <li>scoped support and qualification work</li>
         </ul>
         <div class="text-links">
-          <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20enterprise%20deployment&amp;body=System%20and%20implementation%20language%3A%0ADeployment%20environment%3A%0AFailure%20mode%20or%20correctness%20risk%3A%0AIntegration%20and%20support%20needs%3A%0A">Discuss an enterprise deployment</a>
+          <a class="btn btn-primary" href="/enterprise/">Enterprise path</a>
         </div>
       </article>
     </div>
@@ -201,11 +194,9 @@
     <div class="section-heading upstream-heading">
       <p class="section-kicker">Engineering record</p>
       <h2 id="upstream-title">Built by an upstream contributor</h2>
-      <p class="upstream-copy">Promtact is built by an engineer with eight pull requests merged upstream across curl, libssh2 and libuv - foundational networking projects used across the industry.</p>
     </div>
     <div class="upstream-details">
-      <p>The two libuv contributions are an implementation and its v1.x backport. The record is presented as merged work, without turning individual reviews into inflated product claims.</p>
-      <p>This upstream record is public and reviewable, providing a concrete engineering history rather than an anonymous claim about networking experience.</p>
+      <p>Review the public record directly on GitHub. It is presented as engineering history, not as a substitute for product evidence.</p>
       <a href="https://github.com/hunterinvariants">Review the public contribution profile</a>
     </div>
     <a class="proof-card" href="https://github.com/hunterinvariants" aria-label="Review eight merged upstream pull requests on GitHub">
@@ -228,7 +219,7 @@
 
 <footer class="site">
   <div class="cols">
-    <div><h3>Product</h3><p><a href="#product">Product</a></p><p><a href="#open-source">Open Source</a></p><p><a href="#enterprise">Enterprise</a></p></div>
+    <div><h3>Product</h3><p><a href="#product">Overview</a></p><p><a href="/developers/">Developers</a></p><p><a href="/enterprise/">Enterprise</a></p></div>
     <div><h3>Resources</h3><p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a></p><p><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a></p><p><a href="/security/">Security</a></p></div>
     <div><h3>Legal and contact</h3><p><a href="/privacy/">Privacy</a></p><p><a href="/terms/">Terms</a></p><p><a href="/cookies/">Cookies</a></p><p><a href="mailto:contact@promtact.com">contact@promtact.com</a></p></div>
   </div>
