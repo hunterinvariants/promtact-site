@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Promtact Enterprise</title>
-<meta name="description" content="Operate deterministic verification inside your own infrastructure with verified artifacts, qualification evidence and a complete self-hosted lifecycle.">
-<link rel="stylesheet" href="/style.css?v=enterprise-policy-20260903">
+<meta name="description" content="Run deterministic verification on a single host or Kubernetes, with controlled execution, replayable results and a complete self-hosted lifecycle.">
+<link rel="stylesheet" href="/style.css?v=20260920">
 </head>
 <body class="product-page enterprise-page">
 <div class="wrap">
@@ -26,9 +26,9 @@
   <section class="page-hero enterprise-hero" aria-labelledby="page-title">
     <div>
       <p class="eyebrow">Promtact Enterprise</p>
-      <h1 id="page-title">Turn rare failures into controlled release evidence.</h1>
-      <p class="lede">Operate deterministic verification inside your own infrastructure, with verified installation artifacts, lifecycle tooling and an explicit qualification boundary.</p>
-      <p class="business-line">Reduce incident reconstruction work, make critical correctness checks repeatable and give release owners evidence tied to an exact version and commit.</p>
+      <h1 id="page-title">Run deterministic verification on your infrastructure.</h1>
+      <p class="lede">Run deterministic verification inside your own infrastructure, from a single host to Kubernetes, with controlled execution and replayable results.</p>
+      <p class="business-line">Turn difficult failures into tests your team can run, share and replay before the next change ships.</p>
       <div class="actions">
         <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20enterprise%20evaluation&amp;body=System%20and%20implementation%20language%3A%0ADeployment%20environment%3A%0AFailure%20mode%20or%20correctness%20risk%3A%0AIntegration%20and%20support%20needs%3A%0A">Discuss an evaluation</a>
         <a class="btn" href="/security/">Review security</a>
@@ -38,10 +38,10 @@
       <p class="visual-step">Enterprise at a glance</p>
       <h2>Verification across your stack</h2>
       <ul>
-        <li>Qualified Go, Rust, C++ and Java paths</li>
-        <li>Container, Model and Instrumented execution</li>
-        <li>Role-bound access and auditable changes</li>
-        <li>Self-hosted with no required control plane</li>
+        <li>Single-host and Kubernetes deployment</li>
+        <li>Go, Rust, C++ and Java integration</li>
+        <li>Controlled execution with project-scoped access</li>
+        <li>Self-hosted with no required cloud control plane</li>
       </ul>
     </aside>
   </section>
@@ -50,7 +50,7 @@
     <div class="section-heading">
       <p class="section-kicker">Enterprise features</p>
       <h2 id="features-title">The complete controlled operating path</h2>
-      <p>Enterprise combines language integration, verified delivery, day-two operations and qualification evidence around the deterministic engine.</p>
+      <p>Enterprise combines language integration, controlled execution, replay and day-two operations around the deterministic engine.</p>
     </div>
     <div class="capability-groups">
       <article>
@@ -58,8 +58,8 @@
         <h3>Connect the systems your team ships</h3>
         <ul>
           <li>Native Go verification</li>
-          <li>Qualified Rust, C++ and Java process-adapter SDKs</li>
-          <li>Instrumented Mode for qualified Go and Java runtimes</li>
+          <li>Rust, C++ and Java process adapters</li>
+          <li>Instrumented execution for Go and Java runtimes</li>
           <li>Container, Model and Instrumented execution paths</li>
         </ul>
       </article>
@@ -67,20 +67,20 @@
         <p class="group-label">Delivery and security</p>
         <h3>Keep deployment inside a controlled boundary</h3>
         <ul>
-          <li>Provider-neutral offline bootstrap</li>
-          <li>Signed artifacts, provenance and SPDX SBOM</li>
-          <li>NGINX ingress with qualified TLS 1.2 and TLS 1.3</li>
+          <li>Single-host and Kubernetes installation</li>
+          <li>Provider-neutral and offline delivery</li>
+          <li>TLS, signed artifacts, provenance and SPDX SBOM</li>
           <li>Role-bound access, OIDC mapping and audit records</li>
         </ul>
       </article>
       <article>
-        <p class="group-label">Operations and evidence</p>
-        <h3>Operate and review the complete lifecycle</h3>
+        <p class="group-label">Operations and replay</p>
+        <h3>Keep failures useful after the first run</h3>
         <ul>
-          <li>Status, diagnostics and active-generation checks</li>
+          <li>PostgreSQL-backed job history and persistent runner journal</li>
+          <li>Share and replay a stored failure</li>
+          <li>Verify a candidate fix against the same recorded test</li>
           <li>Upgrade, rollback, backup, restore and disaster recovery</li>
-          <li>Immutable evidence, reports, audit export and retention</li>
-          <li>Scoped qualification and operating support</li>
         </ul>
       </article>
     </div>
@@ -93,10 +93,10 @@
       <p>The current boundary states what is implemented, qualified and still pending rather than hiding those distinctions behind a generic security claim.</p>
     </div>
     <div class="security-review-grid">
-      <article><h3>Identity and authorization</h3><p>Viewer, Editor and Admin roles protect organization and project operations. Tokens are stored only as SHA-256 digests. OIDC organization mapping is part of the qualified 1.5.0 workflow; SAML is not currently claimed.</p></article>
-      <article><h3>Audit and retention</h3><p>Successful mutations create append-only audit events. Qualified managed workflows add immutable audit export, project policy and enforced retention.</p></article>
-      <article><h3>Network and privilege boundary</h3><p>The server binds to loopback behind NGINX with TLS 1.2/1.3 and HSTS. The server receives neither the Docker socket nor Linux capabilities; privileged execution stays in a separate agent.</p></article>
-      <article><h3>Supply-chain controls</h3><p>Release signatures, canonical manifests, provenance and an SPDX SBOM accompany the qualified artifacts. CI runs CodeQL, reachable-vulnerability analysis, fuzzing and Trivy scans.</p></article>
+      <article><h3>Identity and authorization</h3><p>Viewer, Editor and Admin roles protect organization and project operations. Tokens are stored only as SHA-256 digests, and OIDC can map users into the appropriate organization.</p></article>
+      <article><h3>Audit and retention</h3><p>Successful mutations create append-only audit events. Project policy, audit export and retention controls keep operational history available for review.</p></article>
+      <article><h3>Network and privilege boundary</h3><p>Single-host deployments isolate privileged execution in a separate agent. Kubernetes deployments use a project-scoped, unprivileged runner with restricted access to its execution namespace.</p></article>
+      <article><h3>Supply-chain controls</h3><p>Release signatures, canonical manifests, provenance and an SPDX SBOM accompany release artifacts. CI adds static analysis, fuzzing and container scanning.</p></article>
       <article class="security-status"><h3>Independent assessment status</h3><p>An independent security review is planned. No completed external audit or certification is currently claimed.</p><a href="/security/">Review the public security policy</a></article>
     </div>
   </section>
@@ -105,7 +105,7 @@
     <div>
       <p class="section-kicker">Commercial stage</p>
       <h2 id="commercial-title">Design-partner evaluations are the current entry point.</h2>
-      <p>No customer case study is published yet. Early engagements begin with one consequential correctness boundary and produce an explicit integration, qualification and operating scope.</p>
+      <p>No customer case study is published yet. Early engagements begin with one consequential correctness boundary and produce a clear integration, deployment and operating scope.</p>
     </div>
     <div class="commercial-facts">
       <div><strong>Pricing</strong><span>Scoped per engagement</span></div>
@@ -123,24 +123,24 @@
     <ol class="timeline-grid">
       <li><span>01</span><div><h3>Define the boundary</h3><p>Name the protocol behavior, failure mode and property that cannot be violated.</p></div></li>
       <li><span>02</span><div><h3>Connect the system</h3><p>Select the qualified integration or execution path that matches the target boundary.</p></div></li>
-      <li><span>03</span><div><h3>Install and qualify</h3><p>Deploy the verified self-hosted distribution and record the tested version, commit and environment.</p></div></li>
+      <li><span>03</span><div><h3>Install and operate</h3><p>Deploy the self-hosted distribution and connect it to the team's release workflow.</p></div></li>
       <li><span>04</span><div><h3>Make it repeatable</h3><p>Place the scenario and its evidence into the team's release and review workflow.</p></div></li>
     </ol>
   </section>
 
   <section class="page-section split-section baseline-section" aria-labelledby="baseline-title">
     <div>
-      <p class="section-kicker">Qualified baseline</p>
-      <h2 id="baseline-title">Deliberately specific about deployment</h2>
-      <p>The currently qualified Enterprise deployment target is Ubuntu 24.04 on amd64. The install preflight requires at least 15 GB free; 30 GB free is the recommended production baseline.</p>
-      <p>GCP can be used as an optional adapter, but it is not a required dependency. The customer path is provider-neutral and supports offline delivery.</p>
+      <p class="section-kicker">Deployment</p>
+      <h2 id="baseline-title">Run it where your system already lives</h2>
+      <p>Promtact Enterprise supports a compact single-host installation and a Kubernetes deployment with separate control and execution boundaries.</p>
+      <p>The Kubernetes path uses PostgreSQL for durable state, a persistent runner journal and project-scoped execution. Delivery remains provider-neutral and can operate without a hosted Promtact control plane.</p>
     </div>
     <dl class="spec-list">
-      <div><dt>Host</dt><dd>Ubuntu 24.04 amd64</dd></div>
-      <div><dt>Install free space</dt><dd>15 GB minimum</dd></div>
-      <div><dt>Production free space</dt><dd>30 GB recommended</dd></div>
+      <div><dt>Deployment</dt><dd>Single host or Kubernetes</dd></div>
+      <div><dt>State</dt><dd>PostgreSQL</dd></div>
+      <div><dt>Execution</dt><dd>Project-scoped runner</dd></div>
       <div><dt>Cloud dependency</dt><dd>None required</dd></div>
-      <div><dt>Execution and evidence</dt><dd>Self-hosted</dd></div>
+      <div><dt>Operation</dt><dd>Self-hosted</dd></div>
     </dl>
   </section>
 
@@ -148,12 +148,12 @@
     <div class="section-heading">
       <p class="section-kicker">Support model</p>
       <h2 id="support-title">Engineering support with explicit scope</h2>
-      <p>Evaluation, adapter work, qualification and operating support are scoped around the system and correctness boundary being verified.</p>
+      <p>Evaluation, adapter work and operating support are scoped around the system and correctness boundary being verified.</p>
     </div>
     <div class="fact-grid four-up">
       <article><h3>Evaluation</h3><p>Determine whether Promtact fits the target protocol and failure mode.</p></article>
       <article><h3>Integration</h3><p>Connect the supported adapter or runtime boundary required by the target system.</p></article>
-      <article><h3>Qualification</h3><p>Define the gates, environment and evidence required for a release decision.</p></article>
+      <article><h3>Release workflow</h3><p>Connect repeatable checks and results to the team's release decision.</p></article>
       <article><h3>Operations</h3><p>Establish installation, diagnostics, upgrade, rollback and recovery procedures.</p></article>
     </div>
   </section>
