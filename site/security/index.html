@@ -4,162 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security - Promtact</title>
-<meta name="description" content="How to report a vulnerability in Promtact, which surfaces are worth reporting, and how releases are built and verified.">
+<meta name="description" content="Promtact Enterprise security boundaries and vulnerability reporting.">
 <link rel="stylesheet" href="/style.css?v=20260920">
 </head>
 <body class="policy-page security-page">
 <div class="wrap policy-shell">
-
-<header class="site">
-  <a class="brand" href="/">promtact</a>
-  <nav aria-label="Primary navigation">
-    <a href="/">Product</a>
-    <a href="/developers/">Open Source</a>
-    <a href="/enterprise/">Enterprise</a>
-    <a class="active" href="/security/">Security</a>
-    <a class="nav-cta" href="https://github.com/hunterinvariants/Promtact">View source</a>
-  </nav>
-</header>
-
+<header class="site"><a class="brand" href="/">promtact</a><nav aria-label="Primary navigation"><a href="/">Product</a><a href="/enterprise/">Enterprise</a><a href="/blog/">Blog</a><a class="active" href="/security/">Security</a><a class="nav-cta" href="mailto:contact@promtact.com">Contact</a></nav></header>
 <article class="policy-document">
 <h1>Security</h1>
-<p class="updated">Last reviewed 25 August 2026</p>
-
-<p class="lede">Promtact is open-source software. There is
-no hosted service, no account, and no data held on anyone's behalf. This page
-says how to report a problem, which surfaces matter, and how a release is put
-together.</p>
-
-<div class="scope-note">
-  <strong>Scope of this page</strong>
-  <p>This page covers the open-source project's vulnerability policy and release security. Enterprise access control, auditability, deployment boundaries and assessment status are summarized on the <a href="/enterprise/#security-review-title">Enterprise security review</a>.</p>
-</div>
-
-<nav class="policy-jump" aria-label="Security page sections">
-  <strong>Jump to</strong>
-  <a href="#reporting">Reporting</a>
-  <a href="#reporting-scope">Reporting scope</a>
-  <a href="#not-a-vulnerability">Exclusions</a>
-  <a href="#release-security">Release security</a>
-  <a href="#safe-operation">Safe operation</a>
-  <a href="#website-security">Website</a>
-</nav>
-
+<p class="updated">Last reviewed 28 September 2026</p>
+<p class="lede">Promtact Enterprise is self-hosted software. This page describes its operating boundary, the security properties worth reporting and the reporting route.</p>
+<div class="scope-note"><strong>Scope of this page</strong><p>Enterprise access control, auditability, deployment boundaries and assessment status are summarized in the <a href="/enterprise/#security-review-title">Enterprise security review</a>.</p></div>
 <h2 id="reporting">Reporting a vulnerability</h2>
-
-<p>Use GitHub's private vulnerability reporting on the repository, under
-<em>Security, Report a vulnerability</em>. That opens a private thread with the
-maintainer. Please do not open a public issue for a suspected vulnerability.</p>
-
-<p>This is a one-person project. Reports are read and answered as soon as they
-are seen. Once a fix is released, the report may be published as a GitHub
-security advisory, crediting the reporter unless they prefer otherwise. The
-full policy is in
-<a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md">SECURITY.md</a>.</p>
-
-<p>Supported versions: the latest tag only. There are no backports.</p>
-
+<p>Send suspected vulnerabilities privately to <a href="mailto:contact@promtact.com?subject=Promtact%20security%20report">contact@promtact.com</a>. Do not publish exploit details before a fix and coordinated disclosure are available.</p>
 <h2 id="reporting-scope">What is worth reporting</h2>
-
-<p>The parts where someone else's bytes or privileges are involved.</p>
-
-<table>
-<tr><th>Surface</th><th>Why it matters</th></tr>
-<tr><td>The wire format</td><td><code>protocol</code> decodes CRC32C-framed messages from a socket. A crash, hang, or unbounded allocation reachable from a malformed frame is a denial of service against a consensus node.</td></tr>
-<tr><td>The durable format</td><td><code>storage/wal</code> parses records and recovers torn tails from disk. Relevant if a node can be made to accept a crafted log.</td></tr>
-<tr><td>The chaos controller</td><td><code>chaos</code> runs privileged network commands. A dedicated <code>promtact-chaos</code> namespace, <code>promtact-*</code> veth names, address and rate validation, and explicit ownership checks keep faults away from existing resources and management interfaces. A way around any of them is a real finding.</td></tr>
-<tr><td>The raw block-device benchmark</td><td><code>promtact raw-bench</code> refuses to write without a canonical <code>/dev/</code> path, an exact expected size, and an explicit <code>ERASE:</code> confirmation. A way to make it write to the wrong device is a real finding.</td></tr>
-<tr><td>Release artifacts</td><td>Anything that would let a published binary, <code>SHA256SUMS</code>, or the build attestation misrepresent what it is.</td></tr>
-</table>
-
-<h2 id="not-a-vulnerability">What is not a vulnerability</h2>
-
-<table>
-<tr><th>Case</th><th>Why</th></tr>
-<tr><td>The placeholder protocol in <code>promtact new</code></td><td>It is deliberately unsafe when two nodes propose at once, and the generated test suite requires the engine to catch it. That is the lesson, not a defect.</td></tr>
-<tr><td>Running the chaos controller against a real interface</td><td>It refuses by design. Disabling the guards and then reporting the result is not a finding.</td></tr>
-<tr><td>A documented bound on a correctness claim</td><td><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">EVIDENCE.md</a> states what each result establishes and what it does not. If a documented bound is wrong, that is worth reporting - with the measurement that shows it.</td></tr>
-</table>
-
-<h2 id="release-security">How a release is built</h2>
-
-<p><strong>The wire format is fuzzed.</strong> Four Go fuzz targets cover frame
-reading and message decoding. They run in CI on every change and in a longer
-nightly campaign.</p>
-
-<p><strong>Known vulnerabilities block the release.</strong> A release gate runs
-<code>govulncheck</code> with reachability analysis and refuses to publish while
-anything reachable is outstanding. The Go toolchain is pinned in
-<code>go.mod</code> for that reason rather than for language features.</p>
-
-<p><strong>Releases carry provenance.</strong> Each one ships a Sigstore
-keyless build attestation and an SPDX software bill of materials, alongside
-<code>SHA256SUMS</code>. The attestation says more than a checksum does: it
-names the workflow, the repository and the tag that produced the file.</p>
-
-<pre class="term"><b>$ gh attestation verify promtact-v0.3.6-linux-amd64 \
-    --bundle bundle.json --repo hunterinvariants/Promtact</b>
-<span class="ok">&#10003; Verification succeeded!</span>
-
-- Attestation #1
-  - Build repo:..... hunterinvariants/Promtact
-  - Build workflow:. .github/workflows/release.yml@refs/tags/v0.3.6</pre>
-
-<p>The bundle is public, so checking it needs no GitHub account. The commands,
-including how to fetch the bundle, are in
-<a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md#verifying-a-release">SECURITY.md</a>.
-A downloaded binary also reports its own tag, commit and toolchain through
-<code>promtact version</code>, because a file name is not evidence.</p>
-
-<p><strong>Dependencies are kept few on purpose.</strong> The library and its
-commands build against the standard library. A smaller dependency graph is
-fewer places for someone else's compromise to become yours.</p>
-
-<h2 id="safe-operation">Running it safely</h2>
-
-<p>The chaos controller and the raw block-device benchmark do real, privileged
-things to the machine they run on. Use them only on a dedicated test host,
-inside the namespace and veth pair the controller creates, and never
-attach a fault policy to a management interface. See
-<a href="https://github.com/hunterinvariants/Promtact/blob/main/bpf/README.md">bpf/README.md</a>.</p>
-
+<table><tr><th>Surface</th><th>Why it matters</th></tr><tr><td>Authentication and authorization</td><td>A path that bypasses role, tenant, project or execution-scope enforcement.</td></tr><tr><td>Execution isolation</td><td>A way for a job to escape its declared namespace, target or resource boundary.</td></tr><tr><td>Evidence integrity</td><td>A way to alter a signed result without detection or bind it to the wrong execution.</td></tr><tr><td>Secrets</td><td>Credentials exposed through logs, reports, generated manifests or retained resources.</td></tr><tr><td>Cleanup</td><td>Run-owned credentials or privileged resources that remain after documented cleanup.</td></tr></table>
+<h2 id="claims">Bounded claims</h2>
+<p>Each verification result establishes only the properties, faults, versions and execution boundary recorded with it. A documented bound that does not match observed behavior is a valid security or correctness report when accompanied by a reproducible measurement.</p>
 <h2 id="website-security">This website</h2>
-
-<p>The site is static, served from Cloudflare Pages. Its content security policy
-is <code>default-src 'none'</code>: no scripts, no fonts, no images from
-anywhere else, no third-party requests of any kind. Machine-readable contact
-details are at
-<a href="/.well-known/security.txt">/.well-known/security.txt</a>.</p>
+<p>The site is static and served from Cloudflare Pages. It uses no analytics, cookies, third-party scripts or web fonts. Machine-readable contact details are available at <a href="/.well-known/security.txt">/.well-known/security.txt</a>.</p>
 </article>
-
-<footer class="site">
-  <div class="cols">
-    <div>
-      <h3>Product</h3>
-      <p><a href="/">Overview</a></p>
-      <p><a href="/developers/">Open Source</a></p>
-      <p><a href="/enterprise/">Enterprise</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a></p>
-    </div>
-    <div>
-      <h3>Security</h3>
-      <p><a href="/security/">Security policy</a></p>
-      <p><a href="/.well-known/security.txt">security.txt</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/SECURITY.md">SECURITY.md</a></p>
-      <p><a href="https://github.com/hunterinvariants/Promtact/blob/main/LICENSE">Licence</a></p>
-    </div>
-    <div>
-      <h3>Contact</h3>
-      <p><a href="mailto:contact@promtact.com">contact@promtact.com</a></p>
-      <p><a href="/privacy/">Privacy</a></p>
-      <p><a href="/terms/">Terms of use</a></p>
-      <p><a href="/cookies/">Cookies</a></p>
-    </div>
-  </div>
-  <p class="colophon">&copy; 2026 Promtact, Zurich, Switzerland.
-  No cookies, no analytics, no third-party requests on this site.</p>
-</footer>
-
+<footer class="site"><div class="cols"><div><h3>Product</h3><p><a href="/">Overview</a></p><p><a href="/enterprise/">Enterprise</a></p><p><a href="/blog/">Blog</a></p></div><div><h3>Resources</h3><p><a href="/enterprise/how-it-works/">How it works</a></p><p><a href="/security/">Security</a></p><p><a href="/.well-known/security.txt">security.txt</a></p></div><div><h3>Contact</h3><p><a href="mailto:contact@promtact.com">contact@promtact.com</a></p><p><a href="/privacy/">Privacy</a></p><p><a href="/terms/">Terms</a></p><p><a href="/cookies/">Cookies</a></p></div></div><p class="colophon">&copy; 2026 Promtact, Zurich, Switzerland. No cookies, no analytics, no third-party requests on this site.</p></footer>
 </div>
 </body>
 </html>

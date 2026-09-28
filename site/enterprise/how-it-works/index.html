@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Promtact Enterprise works</title>
+<meta name="description" content="How Promtact Enterprise turns declared faults and safety properties into deterministic, replayable verification results.">
+<link rel="stylesheet" href="/style.css?v=20260920">
+</head>
+<body class="product-page">
+<div class="wrap">
+<header class="site">
+  <a class="brand" href="/" aria-label="Promtact home">promtact</a>
+  <nav aria-label="Primary navigation"><a href="/">Product</a><a href="/enterprise/">Enterprise</a><a class="active" href="/enterprise/how-it-works/">How it works</a><a href="/blog/">Blog</a><a href="/security/">Security</a><a class="nav-cta" href="mailto:contact@promtact.com">Contact</a></nav>
+</header>
+<main>
+  <section class="page-hero" aria-labelledby="page-title">
+    <div><p class="eyebrow">Promtact Enterprise</p><h1 id="page-title">See a failure become a test.</h1><p class="lede">Promtact runs the behavior that matters under deterministic virtual time and declared faults. If a property fails, the seed, step and trace turn that execution into a result another engineer can run again.</p></div>
+    <pre class="code-panel" aria-label="Promtact verification coordinates"><code>seed: 0x4A2C
+step: 318
+trace: 7B3A
+result: violation reproduced</code></pre>
+  </section>
+  <section class="page-section" aria-labelledby="model-title">
+    <div class="section-heading"><p class="section-kicker">Verification model</p><h2 id="model-title">Four explicit parts</h2><p>Connect the behavior that matters, state the safety boundary, choose the faults and preserve the resulting execution.</p></div>
+    <div class="fact-grid four-up"><article><h3>System</h3><p>Adapt the messages, nodes and transitions inside the verification boundary.</p></article><article><h3>Properties</h3><p>Evaluate invariants after each step and name the exact violation.</p></article><article><h3>Faults</h3><p>Exercise partitions, isolation, one-way links and bounded fault windows.</p></article><article><h3>Evidence</h3><p>Retain the seed, step, trace, version and bounded result for replay and review.</p></article></div>
+  </section>
+  <section class="page-section split-section" aria-labelledby="scenario-title">
+    <div><p class="section-kicker">Concrete input</p><h2 id="scenario-title">A scenario is reviewable data</h2><p>Version the seed, node count, step budget and declared faults. The same input can run locally, in controlled CI and during review.</p></div>
+    <pre class="code-panel"><code>{
+  "seed": "0x4A2C",
+  "nodes": 5,
+  "steps": 1200,
+  "faults": [{
+    "type": "split",
+    "start": 200,
+    "end": 700
+  }]
+}</code></pre>
+  </section>
+  <section class="page-section" aria-labelledby="boundary-title"><div class="section-heading"><p class="section-kicker">Operating boundary</p><h2 id="boundary-title">Self-hosted and explicit about its limits</h2><p>Execution remains in the customer environment. A result establishes only the properties, faults, versions and execution boundary recorded with it; it is not a blanket proof that a system cannot fail.</p></div></section>
+</main>
+<footer class="site"><div class="cols"><div><h3>Product</h3><p><a href="/">Overview</a></p><p><a href="/enterprise/">Enterprise</a></p><p><a href="/blog/">Blog</a></p></div><div><h3>Resources</h3><p><a href="/enterprise/how-it-works/">How it works</a></p><p><a href="/security/">Security</a></p></div><div><h3>Legal and contact</h3><p><a href="/privacy/">Privacy</a></p><p><a href="/terms/">Terms</a></p><p><a href="/cookies/">Cookies</a></p><p><a href="mailto:contact@promtact.com">contact@promtact.com</a></p></div></div><p class="colophon">&copy; 2026 Promtact, Zurich, Switzerland. No cookies, no analytics, no third-party requests on this site.</p></footer>
+</div>
+</body>
+</html>

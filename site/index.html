@@ -14,8 +14,8 @@
   <a class="brand" href="/" aria-label="Promtact home">promtact</a>
   <nav aria-label="Primary navigation">
     <a href="#product">Product</a>
-    <a href="/developers/">Open Source</a>
     <a href="/enterprise/">Enterprise</a>
+    <a href="/blog/">Blog</a>
     <a href="#evidence">Evidence</a>
     <a href="/security/">Security</a>
     <a href="mailto:contact@promtact.com">Contact</a>
@@ -37,7 +37,7 @@
       </ul>
       <div class="actions">
         <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20system%20evaluation&amp;body=System%20and%20implementation%20language%3A%0ACurrent%20stage%3A%0AFailure%20mode%20or%20correctness%20risk%3A%0AExisting%20test%20approach%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your system</a>
-        <a class="btn" href="/developers/">See how it works</a>
+        <a class="btn" href="/enterprise/how-it-works/">See how it works</a>
       </div>
     </div>
 
@@ -94,7 +94,7 @@
         <p class="section-kicker">Run a real scenario</p>
         <code>go run ./cmd/promtact simulate -config examples/leader-partition.json</code>
       </div>
-      <a href="/developers/">See the complete Open Source workflow</a>
+      <a href="/enterprise/how-it-works/">See the complete workflow</a>
     </div>
   </section>
 
@@ -139,26 +139,10 @@
   <section class="section-block" aria-labelledby="adoption-title">
     <div class="section-heading">
       <p class="section-kicker">Adoption</p>
-      <h2 id="adoption-title">One verification model. Two ways to adopt it.</h2>
-      <p>Start with the open-source framework or use the Enterprise path when deployment and operations must fit a controlled self-hosted environment.</p>
+      <h2 id="adoption-title">A controlled self-hosted verification model.</h2>
+      <p>Use the Enterprise path when deployment and operations must fit a controlled self-hosted environment.</p>
     </div>
     <div class="adoption-grid">
-      <article class="adoption-card" id="open-source">
-        <p class="edition-label">Open Source</p>
-        <h3>Build verification into your codebase</h3>
-        <p>Use the framework directly, keep scenarios beside the implementation and run deterministic campaigns in the CI system you already operate.</p>
-        <ul>
-          <li>Apache 2.0 framework</li>
-          <li>deterministic engine and CLI</li>
-          <li>worked Raft and Paxos references</li>
-          <li>runs locally and in existing CI</li>
-        </ul>
-        <div class="text-links">
-          <a class="btn" href="/developers/">Developer path</a>
-          <a href="https://github.com/hunterinvariants/Promtact">View the source</a>
-        </div>
-      </article>
-
       <article class="adoption-card enterprise-card" id="enterprise">
         <p class="edition-label">Enterprise</p>
         <h3>Operate a controlled self-hosted product</h3>
@@ -191,9 +175,8 @@
     <p class="evidence-copy">The objective is not a blanket promise that distributed software cannot fail. It is a narrower and checkable contract: define the safety boundary, exercise declared faults, retain the exact execution and state what the resulting evidence does - and does not - establish.</p>
     <p class="evidence-copy">Because execution remains inside the team’s environment, its scenarios and results stay available under the organization’s own access, retention and review controls.</p>
     <div class="text-links evidence-links">
-      <a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a>
+      <a href="#evidence">Evidence</a>
       <a href="/security/">Security boundary</a>
-      <a href="https://github.com/hunterinvariants/Promtact/releases">Release verification</a>
     </div>
   </section>
 
@@ -219,7 +202,6 @@
     <p>Start with the protocol, failure mode and correctness property that matters most. We will determine whether Promtact fits directly or whether a scoped adapter and verification campaign is required.</p>
     <div class="actions">
       <a class="btn btn-primary" href="mailto:contact@promtact.com?subject=Promtact%20system%20evaluation&amp;body=System%20and%20implementation%20language%3A%0ACurrent%20stage%3A%0AFailure%20mode%20or%20correctness%20risk%3A%0AExisting%20test%20approach%3A%0APreferred%20call%20times%20and%20time%20zone%3A%0A">Discuss your system</a>
-      <a href="https://github.com/hunterinvariants/Promtact">Explore open source</a>
       <a href="#evidence">Review evidence</a>
     </div>
   </section>
@@ -227,8 +209,8 @@
 
 <footer class="site">
   <div class="cols">
-    <div><h3>Product</h3><p><a href="#product">Overview</a></p><p><a href="/developers/">Open Source</a></p><p><a href="/enterprise/">Enterprise</a></p></div>
-    <div><h3>Resources</h3><p><a href="https://github.com/hunterinvariants/Promtact/blob/main/docs/DEVELOPERS.md">Documentation</a></p><p><a href="https://github.com/hunterinvariants/Promtact/blob/main/EVIDENCE.md">Evidence</a></p><p><a href="/security/">Security</a></p></div>
+    <div><h3>Product</h3><p><a href="#product">Overview</a></p><p><a href="/enterprise/">Enterprise</a></p><p><a href="/blog/">Blog</a></p></div>
+    <div><h3>Resources</h3><p><a href="/enterprise/how-it-works/">How it works</a></p><p><a href="#evidence">Evidence</a></p><p><a href="/security/">Security</a></p></div>
     <div><h3>Legal and contact</h3><p><a href="/privacy/">Privacy</a></p><p><a href="/terms/">Terms</a></p><p><a href="/cookies/">Cookies</a></p><p><a href="mailto:contact@promtact.com">contact@promtact.com</a></p></div>
   </div>
   <p class="colophon">&copy; 2026 Promtact, Zurich, Switzerland. No cookies, no analytics, no third-party requests on this site.</p>
