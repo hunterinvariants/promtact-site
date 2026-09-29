@@ -16,11 +16,15 @@
     <h1 id="blog-title">Blog</h1>
   </header>
   <section class="article-list" aria-label="Articles">
-    <article class="article-card">
-      <p class="article-meta"><span>Protocol Engineering</span><time datetime="2026-09-30">30 September 2026</time></p>
-      <h2><a href="/blog/protocol-engineering/quinn-datagram-tail-loss-probe/">When the DATAGRAM fits but the probe does not</a></h2>
-      <p>Fixing a tail-loss edge case in Quinn.</p>
-      <p class="article-author">hunterinvariants</p>
+    <article class="article-card article-card-featured">
+      <a class="article-card-link" href="/blog/protocol-engineering/quinn-datagram-tail-loss-probe/" aria-label="Read When the DATAGRAM fits but the probe does not">
+        <div class="article-card-copy">
+          <p class="article-meta"><span>Protocol Engineering</span><time datetime="2026-09-30">30 September 2026</time></p>
+          <h2>When the DATAGRAM fits but the probe does not</h2>
+          <p class="article-deck">A queued DATAGRAM fit the established path, but not the smaller loss probe. The fix had to use the packet&rsquo;s actual byte budget.</p>
+          <div class="article-card-footer"><span class="article-author">hunterinvariants</span><span class="article-read">Read article <span aria-hidden="true">&rarr;</span></span></div>
+        </div>
+      </a>
     </article>
   </section>
 </main>

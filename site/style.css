@@ -1991,49 +1991,64 @@ table tr:last-child td {
 }
 
 .blog-index-header {
-  margin-bottom: 42px;
+  margin-bottom: clamp(36px, 5vw, 64px);
 }
 
 .blog-index-header h1 {
   max-width: none;
-  font-size: clamp(40px, 5.2vw, 68px);
+  font-size: clamp(44px, 5.2vw, 72px);
 }
 
 .article-list {
-  border-top: 1px solid var(--line);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
 }
 
 .article-card {
-  padding: 30px 0 34px;
-  border-bottom: 1px solid var(--line);
+  margin: 0;
 }
 
-.article-card h2 {
-  max-width: 26ch;
-  margin: 10px 0 12px;
-  padding: 0;
-  border: 0;
-  color: var(--ink);
-  font-size: clamp(25px, 3.4vw, 38px);
-  font-weight: 400;
-  line-height: 1.16;
-  letter-spacing: -0.022em;
-  text-transform: none;
-}
-
-.article-card h2 a {
+.article-card-link {
+  display: block;
   color: inherit;
   text-decoration: none;
 }
 
-.article-card h2 a:hover,
-.article-card h2 a:focus-visible {
-  color: var(--accent);
+.article-card-copy {
+  display: flex;
+  flex-direction: column;
+  min-height: 390px;
+  min-width: 0;
+  padding: clamp(34px, 5vw, 64px);
+  background: linear-gradient(135deg, rgba(77, 144, 240, 0.08), transparent 52%), var(--surface);
 }
 
-.article-card > p:not(.article-meta):not(.article-author) {
+.article-card h2 {
+  max-width: 18ch;
+  margin: 28px 0 20px;
+  padding: 0;
+  border: 0;
+  color: var(--ink);
+  font-size: clamp(34px, 4.4vw, 56px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+  text-transform: none;
+}
+
+
+.article-card-link:hover h2,
+.article-card-link:focus-visible h2 {
+  color: #f3f7fb;
+}
+
+.article-deck {
+  max-width: 56ch;
+  margin: 0;
   color: var(--ink-2);
-  font-size: 17px;
+  font-size: 17.5px;
 }
 
 .article-meta {
@@ -2053,14 +2068,24 @@ table tr:last-child td {
   text-decoration: none;
 }
 
+.article-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 42px;
+}
+
 .article-author,
 .article-byline {
   color: var(--ink-3);
   font: 500 12.5px/1.5 var(--mono);
 }
 
-.article-author {
-  margin-bottom: 0;
+.article-read {
+  color: var(--accent);
+  font: 600 12.5px/1.5 var(--mono);
 }
 
 .technical-article {
@@ -2186,5 +2211,22 @@ table tr:last-child td {
     margin-left: -8px;
     padding: 16px;
     font-size: 11.5px;
+  }
+}
+
+@media (max-width: 640px) {
+  .article-card-copy {
+    min-height: 350px;
+    padding: 28px 22px;
+  }
+
+  .article-card h2 {
+    margin-top: 22px;
+    font-size: clamp(31px, 10vw, 44px);
+  }
+
+  .article-card-footer {
+    margin-top: 34px;
+    padding-top: 0;
   }
 }
