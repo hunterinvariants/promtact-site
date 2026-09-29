@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When the DATAGRAM fits but the probe does not - Promtact</title>
+<meta name="description" content="Fixing a tail-loss edge case in Quinn where a queued DATAGRAM fit the path but not a size-constrained loss probe.">
+<link rel="canonical" href="https://promtact.com/blog/protocol-engineering/quinn-datagram-tail-loss-probe/">
+<link rel="stylesheet" href="/style.css?v=20260930">
+</head>
+<body class="product-page article-page">
+<div class="wrap reading">
+<header class="site"><a class="brand" href="/" aria-label="Promtact home">promtact</a><nav aria-label="Primary navigation"><a href="/">Product</a><a href="/enterprise/">Enterprise</a><a class="active" href="/blog/">Blog</a><a href="/security/">Security</a><a href="mailto:contact@promtact.com">Contact</a></nav></header>
+<main>
+<article class="technical-article">
+  <header class="article-header">
+    <p class="article-meta"><a href="/blog/">Protocol Engineering</a><time datetime="2026-09-30">30 September 2026</time></p>
+    <h1>When the DATAGRAM fits but the probe does not</h1>
+    <p class="article-subtitle">Fixing a tail-loss edge case in Quinn.</p>
+    <p class="article-byline">By hunterinvariants</p>
+  </header>
+
+  <p>While working on <a href="https://github.com/quinn-rs/quinn/issues/2173">quinn-rs/quinn#2173</a>, I found an edge case in Quinn&rsquo;s loss-probe handling: Quinn could omit the fallback <code>PING</code> even though the queued <code>DATAGRAM</code> did not fit into the probe. In that case, the probe could leave without the ACK-eliciting frame that the fallback was meant to guarantee.</p>
+
+  <p>Quinn avoids adding a fallback <code>PING</code> when ACK-eliciting 1-RTT data is already waiting to be sent. A pending <code>DATAGRAM</code> normally satisfies that condition because <code>DATAGRAM</code> frames are ACK-eliciting.</p>
+
+  <p>The problem was that a pending <code>DATAGRAM</code> was treated as if it would necessarily be included in the probe. That is not always true.</p>
+
+  <h2>What went wrong</h2>
+
+  <p>A loss probe is limited to the smaller of the current segment size and <code>INITIAL_MTU</code>. In Quinn, <code>INITIAL_MTU</code> is 1200 bytes.</p>
+
+  <p>The established path can have a larger MTU. The regression case uses a path MTU of 1452 bytes. A <code>DATAGRAM</code> can therefore be valid for the path and still be too large for the probe.</p>
+
+  <p>That left Quinn in this state:</p>
+  <ul>
+    <li>an ACK-eliciting <code>DATAGRAM</code> was pending;</li>
+    <li>the <code>DATAGRAM</code> fit the current path;</li>
+    <li>it did not fit the 1200-byte probe;</li>
+    <li>the pending <code>DATAGRAM</code> caused Quinn to skip the fallback <code>PING</code>.</li>
+  </ul>
+
+  <p>The queue told us that there was data to send. It did not tell us that the data fit this packet.</p>
+
+  <p>Without ACK Frequency support from the peer, the probe still needed its <code>PING</code>.</p>
+
+  <h2>The fix</h2>
+
+  <p>The decision now uses the space available in the probe. Quinn calculates the packet budget, subtracts the predicted 1-RTT overhead and passes the remaining frame space to <code>can_send_1rtt()</code>.</p>
+
+  <p>Quinn&rsquo;s actual send path also deals with packet spaces, loss state and frame scheduling. The relevant part can be reduced to this pseudocode:</p>
+
+  <pre class="article-code" aria-label="Simplified Rust pseudocode"><code><span class="code-keyword">let</span> probe_size = min(segment_size, INITIAL_MTU);
+<span class="code-keyword">let</span> frame_space =
+    probe_size.saturating_sub(predict_1rtt_overhead(next_packet_number));
+
+<span class="code-keyword">let</span> data_fits = can_send_1rtt(frame_space);
+
+maybe_queue_probe(
+    peer_supports_ack_frequency(),
+    data_fits,
+);</code></pre>
+
+  <p>If ACK-eliciting data fits in the remaining frame space, Quinn can omit the fallback <code>PING</code>. If the queued <code>DATAGRAM</code> is too large, the <code>PING</code> stays.</p>
+
+  <p>Using <code>can_send_1rtt()</code> also avoids adding a separate <code>DATAGRAM</code>-size calculation to the probe code. The decision follows the same send-path rules that packet assembly uses later.</p>
+
+  <h2>Regression coverage</h2>
+
+  <p>The new test is <code>tail_loss_probe_keeps_ping_when_datagram_does_not_fit</code>.</p>
+
+  <p>It configures a path MTU of 1452 bytes and disables peer ACK Frequency support. It then creates an outstanding ACK-eliciting packet, discards it and advances the connection to the probe timeout.</p>
+
+  <p>At that point, the test queues a <code>DATAGRAM</code> at the maximum size permitted by the path. The <code>DATAGRAM</code> fits a normal packet but not the probe capped at <code>INITIAL_MTU</code>.</p>
+
+  <p>The test checks that the fallback <code>PING</code> is transmitted. It also checks that the <code>DATAGRAM</code> is delivered later, when Quinn builds a packet large enough to contain it.</p>
+
+  <p>I also updated the existing test <code>tail_loss_small_segment_size</code>.</p>
+
+  <p>That test covers the opposite case. Its <code>DATAGRAM</code> does fit inside the probe, so no additional <code>PING</code> should be sent.</p>
+
+  <p>Both tests are necessary. Always adding a <code>PING</code> would make the new regression test pass, but it would remove the optimization that the original code was trying to preserve.</p>
+
+  <p>I ran both tests against the exact merged commit:</p>
+
+  <pre class="article-terminal" aria-label="Focused test results"><code>test tests::tail_loss_probe_keeps_ping_when_datagram_does_not_fit ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 299 filtered out
+
+test tests::tail_loss_small_segment_size ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 299 filtered out</code></pre>
+
+  <h2>Merged change</h2>
+
+  <p>The patch was merged through <a href="https://github.com/quinn-rs/quinn/pull/2794">quinn-rs/quinn#2794</a> as commit <a href="https://github.com/quinn-rs/quinn/commit/6469478cf9c54f48bfe845154edd5b94cf9d2aff"><code>6469478</code></a>.</p>
+
+  <p>It changes three files:</p>
+  <ul class="file-list">
+    <li><code>quinn-proto/src/connection/mod.rs</code></li>
+    <li><code>quinn-proto/src/connection/spaces.rs</code></li>
+    <li><code>quinn-proto/src/tests/mod.rs</code></li>
+  </ul>
+
+  <p>The final diff contains 88 insertions and 3 deletions. Most of the added code is in the tests.</p>
+
+  <p>The bug came down to checking whether data was pending when the code needed to know whether that data could be sent in the current packet. Once the probe&rsquo;s actual byte budget was used for the decision, the fallback behaviour became straightforward.</p>
+
+  <p>Thanks to the Quinn maintainers for the review.</p>
+
+  <h2>References</h2>
+  <ul class="reference-list">
+    <li><a href="https://github.com/quinn-rs/quinn/pull/2794">Pull request #2794</a></li>
+    <li><a href="https://github.com/quinn-rs/quinn/commit/6469478cf9c54f48bfe845154edd5b94cf9d2aff">Merged commit <code>6469478</code></a></li>
+    <li><a href="https://github.com/quinn-rs/quinn/issues/2173">Issue #2173</a></li>
+    <li><a href="https://www.rfc-editor.org/rfc/rfc9221.html">RFC 9221: An Unreliable Datagram Extension to QUIC</a></li>
+  </ul>
+</article>
+</main>
+<footer class="site"><div class="cols"><div><h3>Product</h3><p><a href="/">Overview</a></p><p><a href="/enterprise/">Enterprise</a></p><p><a href="/blog/">Blog</a></p></div><div><h3>Resources</h3><p><a href="/enterprise/how-it-works/">How it works</a></p><p><a href="/security/">Security</a></p></div><div><h3>Contact</h3><p><a href="mailto:contact@promtact.com">contact@promtact.com</a></p><p><a href="/privacy/">Privacy</a></p><p><a href="/terms/">Terms</a></p><p><a href="/cookies/">Cookies</a></p></div></div><p class="colophon">&copy; 2026 Promtact, Zurich, Switzerland. No cookies, no analytics, no third-party requests on this site.</p></footer>
+</div>
+</body>
+</html>
